@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class TmpTranscodeProgress extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'file_name',
+        'video_id',
+        'file_format',
+        'progress',
+        'is_complete',
+    ];
 }

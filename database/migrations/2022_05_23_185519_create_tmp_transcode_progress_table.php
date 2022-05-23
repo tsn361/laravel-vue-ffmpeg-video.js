@@ -15,6 +15,11 @@ return new class extends Migration
     {
         Schema::create('tmp_transcode_progress', function (Blueprint $table) {
             $table->id();
+            $table->string('video_id');
+            $table->string('file_name');
+            $table->string('file_format');
+            $table->integer('progress');
+            $table->integer('is_complete')->default(0);
             $table->timestamps();
         });
     }

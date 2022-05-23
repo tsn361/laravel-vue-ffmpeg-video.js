@@ -16,7 +16,6 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    {{ request()->id }}
                     @foreach($newArray as $key => $value)
                     <div class="row my-3">
                         <div class="col-md-1 text-start">
@@ -44,22 +43,6 @@
 @section('script')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script type="text/javascript">
-function uploadProgressHandler(event) {
-    if (event.lengthComputable) {
-        $("#videoFile").hide();
-        var max = event.total;
-        var current = event.loaded;
-        var Percentage = Math.round((current * 100) / max);
-        console.log(Percentage);
-
-        $('.UploadFormProgress').show();
-        $('#progress-bar').width(Percentage + '%');
-        $('#progress-bar').html(Percentage + '%');
-        $('#uploadProgressBtn').show();
-        $('#uploadProgressBtn').html('Uploading: ' + Percentage + '%');
-    }
-}
-
 $.ajaxSetup({
     headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -86,5 +69,36 @@ $.ajax({
         // window.location.reload();
     }
 });
+
+function updateProgress(id, progress) {
+    $('#progress-bar-' + id).css('width', progress + '%');
+    $('#progress-bar-' + id).text(progress + '%');
+}
+
+var myInterval = setInterval(function() {
+    getEncodingProgress()
+}, 4000);
+
+function getEncodingProgress() {
+    $.ajax({
+        url: "{{route('video.transcode',['id' => request()->id])}}",
+        method: 'Get',
+        type: 'Get',
+        dataType: 'json',
+        contentType: 'application/json',
+        processData: false,
+        success: function(result) {
+            if (result.status == 'success') {
+
+            }
+            if (result.status == 'error') {
+                clearInterval(myInterval);
+            }
+            if (result.status == 'complete') {
+                clearInterval(myInterval);
+            }
+        }
+    });
+}
 </script>
 @endsection

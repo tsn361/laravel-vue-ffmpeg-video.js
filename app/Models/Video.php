@@ -27,6 +27,7 @@ class Video extends Model
         'poster',
         'file_name',
         'is_transcoded',
+        'status',
     ];
     
     public function sluggable(): array

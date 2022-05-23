@@ -32,6 +32,7 @@ return new class extends Migration
             $table->integer('upload_speed')->nullable();
             $table->integer('process_time')->nullable();
             $table->integer('is_transcoded')->nullable();
+            $table->integer('status')->default(0);
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
