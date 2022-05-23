@@ -47,8 +47,9 @@ class VideoController extends Controller
         if($request->file()) {
             $fileName = time().'.'.request()->file->getClientOriginalExtension();
             $save_path = Auth::user()->id;
-            $request->file('file')->storeAs($save_path, $fileName,'uploads');
-            // request()->file->move(public_path('files'), $fileName);
+
+            // $request->file('file')->storeAs($save_path, $fileName,'uploads');
+            request()->file->move(public_path('uploads/'.$save_path), $fileName);
     
             return response()->json(['success'=>'true', 'fileName'=>$fileName, 'filePath'=>$save_path]);
         
@@ -57,7 +58,7 @@ class VideoController extends Controller
 
     public function saveVideoInfo(Request $request){
         $request->validate([
-            'title' => 'required',
+            'title' => 'required'
         ]);
 
         $path = Auth::user()->id.'/'.$request->fileName;
