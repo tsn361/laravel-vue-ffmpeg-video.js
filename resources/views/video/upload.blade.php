@@ -107,6 +107,9 @@ $.ajaxSetup({
 
 $('#videoFile').change(function() {
     event.preventDefault();
+
+    console.log("File selected");
+
     var file = $("#videoFile")[0].files[0];
     var formData = new FormData();
     formData.append("file", file);
@@ -134,11 +137,12 @@ $('#videoFile').change(function() {
                 $('#fileName').val(result.fileName);
             } else {
                 console.log(res.message);
-                window.location.reload();
+                //window.location.reload();
             }
         },
         error: function(err) {
-            window.location.reload();
+            console.log(res.message);
+            //window.location.reload();
         }
     });
 });

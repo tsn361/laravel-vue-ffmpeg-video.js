@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Video;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Models\Videos;
@@ -16,7 +17,8 @@ class VideoController extends Controller
 {
     
     public function index(){
-        return view('video.index');
+        $videos = Video::where('user_id', Auth::user()->id)->get();
+        return view('video.index', compact('videos'));
     }
 
     public function upload_UI(){
@@ -24,7 +26,7 @@ class VideoController extends Controller
     }
 
     public function videoTranscodeStatus($id){
-        $video = Videos::find($id);
+        $video = Video::find($id);
         
         if($video){
             $array = array(0 => '1080', 1 => '720', 2 => '480', 3 => '360', 4 => '240');
@@ -39,12 +41,18 @@ class VideoController extends Controller
 
     public function fileUploadPost(Request $request)
     {
-        // dd($request->file('file'));
+        //dd($request->file('file'));
+        \Log::info("fileUploadPost => ". $request->file('file'));
+
         $request->validate([
         'file' => 'required|mimes:mp4,ogx,oga,ogv,ogg,webm'
         ]);
+
         $file = $request->file('file');
         if($request->file()) {
+
+            //\Log::info("fileUploadPost =>yes ". request()->file->getClientOriginalExtension());
+
             $fileName = time().'.'.request()->file->getClientOriginalExtension();
             $save_path = Auth::user()->id;
 
@@ -72,12 +80,12 @@ class VideoController extends Controller
 
 
 
-        $video = new Videos();
+        $video = new Video();
         $video->title = $request->title;
         $video->slug = SlugService::createSlug(Videos::class, 'slug', $request->title);
         $video->description = $request->description;
         $video->playback_url =  $request->fileName;
-        $video->uploaded_by = Auth::user()->id;
+        $video->user_id = Auth::user()->id;
         $video->video_duration = $durationInSeconds;
         $video->original_filesize = $original_filesize;
         $video->original_resolution = $original_resolution;

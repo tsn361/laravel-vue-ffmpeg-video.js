@@ -6,12 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 
-class Videos extends Model
+class Video extends Model
 {
     use Sluggable;
     use HasFactory;
     protected $fillable = [
-        'uploaded_by',
+        'user_id',
         'title',
         'slug',
         'description',
@@ -25,12 +25,19 @@ class Videos extends Model
         'upload_speed',
         'process_time',
     ];
+    
     public function sluggable(): array
     {
         return [
             'slug' => [
-                'source' => ['title', 'id', 'uploaded_by'],
+                'source' => ['title', 'id', 'user_id'],
             ]
         ];
     }
+
+    public function createdBy(){
+        return $this->belongsTo(User::class);
+    }
+
+
 }
