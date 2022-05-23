@@ -7,12 +7,14 @@
     "require": {
         "php": "^8.0.2",
         "aws/aws-sdk-php-laravel": "~3.0",
+        "cviebrock/eloquent-sluggable": "^9.0",
         "doctrine/dbal": "^3.3",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.2",
         "laravel/sanctum": "^2.14.1",
         "laravel/tinker": "^2.7",
         "laravel/ui": "^3.4",
+        "pbmedia/laravel-ffmpeg": "^8.1",
         "usmanhalalit/laracsv": "^2.1"
     },
     "require-dev": {
