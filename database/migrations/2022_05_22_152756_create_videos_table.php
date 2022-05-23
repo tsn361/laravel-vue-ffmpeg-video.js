@@ -19,6 +19,7 @@ return new class extends Migration
             $table->bigInteger('user_id')->nullable(false)->unsigned();
             $table->string('title')->nullable(false);
             $table->string('poster')->nullable(false);
+            $table->string('file_name')->nullable(false);
             $table->string('slug')->unique();
             $table->string('description')->nullable();
             $table->string('playback_url')->nullable(false);
@@ -30,6 +31,7 @@ return new class extends Migration
             $table->integer('upload_duration')->nullable();
             $table->integer('upload_speed')->nullable();
             $table->integer('process_time')->nullable();
+            $table->integer('is_transcoded')->nullable();
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });

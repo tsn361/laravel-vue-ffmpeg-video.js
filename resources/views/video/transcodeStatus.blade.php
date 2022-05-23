@@ -68,10 +68,16 @@ $.ajaxSetup({
 
 $.ajax({
     url: "{{route('video.transcode',['id' => request()->id])}}",
-    method: 'Get',
-    type: 'Get',
-    data: null,
-    contentType: false,
+    method: 'Post',
+    type: 'Post',
+    data: JSON.stringify({
+        id: "{{request()->id}}",
+        userId: "{{$video->user_id}}",
+        fileName: "{{$video->file_name}}",
+        fileNameWithExtension: "{{$video->playback_url}}",
+    }),
+    dataType: 'json',
+    contentType: 'application/json',
     processData: false,
     success: function(result) {
 

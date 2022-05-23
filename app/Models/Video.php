@@ -24,6 +24,9 @@ class Video extends Model
         'upload_duration',
         'upload_speed',
         'process_time',
+        'poster',
+        'file_name',
+        'is_transcoded',
     ];
     
     public function sluggable(): array
