@@ -43,6 +43,10 @@
 @section('script')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script type="text/javascript">
+var myInterval = setInterval(function() {
+    getEncodingProgress()
+}, 1000);
+
 $.ajaxSetup({
     headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -82,9 +86,7 @@ function updateProgress(id, progress) {
     $('#progress-bar-' + id).text(progress + '%');
 }
 
-var myInterval = setInterval(function() {
-    getEncodingProgress()
-}, 1000);
+
 
 function getEncodingProgress() {
     $.ajax({

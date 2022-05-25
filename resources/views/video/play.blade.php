@@ -1,8 +1,14 @@
 @extends('layouts.app')
 
 @section('style')
-<link href="{{ asset('css/video-js.css') }}" rel="stylesheet">
+<link href="{{ asset('css/video-js.min.css') }}" rel="stylesheet">
 <link href="{{ asset('css/quality-selector.css') }}" rel="stylesheet">
+
+<script src="{{ asset('js/video.min.js') }}"></script>
+<script src="{{ asset('js/videojs-contrib-quality-levels.min.js') }}"></script>
+
+<script src="{{ asset('js/videojs-hls-quality-selector.min.js') }}"></script>
+
 @endsection
 
 @section('content')
@@ -14,21 +20,12 @@
         </div>
         <div class="col-md-12 p-2 text-end">
 
-            <video
-                    id="hls-video"
-                    class="video-js"
-                    controls
-                    preload="auto"
-                    height="560"
-                    poster="/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->poster}}"
-                    data-setup="{}"
-                >
+            <video id="hls-video" class="video-js vjs-big-play-centered" controls preload="auto" height="560"
+                poster="/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->poster}}" data-setup="{}">
                 <p class="vjs-no-js">
-                To view this video please enable JavaScript, and consider upgrading to a
-                web browser that
-                <a href="https://videojs.com/html5-video-support/" target="_blank"
-                    >supports HTML5 video</a
-                >
+                    To view this video please enable JavaScript, and consider upgrading to a
+                    web browser that
+                    <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
                 </p>
             </video>
         </div>
@@ -142,53 +139,46 @@
 @endsection
 
 @section('script')
-<script src="{{ asset('js/video.min.js') }}"></script>
-{{-- https://github.com/silvermine/videojs-quality-selector --}}
-<script src="{{ asset('js/silvermine-videojs-quality-selector.min.js') }}"></script>
 <script>
+const options = {
+    controlBar: {
+        children: [
+            'playToggle',
+            'progressControl',
+            'volumePanel',
+            'fullscreenToggle',
+        ],
+    },
 
-    const options = {
-            controlBar: {
-                children: [
-                    'playToggle',
-                    'progressControl',
-                    'volumePanel',
-                    'qualitySelector',
-                    'fullscreenToggle',
-                ],
-            },
-        };
-        
+};
 
-    const player = videojs(document.getElementById('hls-video'), options);
-    // player.src({
-    //     src: '/uploads/{{$video->user_id}}/{{$video->playback_url}}',
-    //     type: 'application/x-mpegURL'
-    // });
 
-    player.src([
-        {
-            src: '/uploads/{{$video->user_id}}/{{$video->playback_url}}',
-            type: 'application/x-mpegURL',
-            label: '720P',
-        },
-        {
-            src: '/uploads/{{$video->user_id}}/{{$video->playback_url}}',
-            type: 'application/x-mpegURL',
-            label: '480P',
-            selected: true,
-        },
-        {
-            src: '/uploads/{{$video->user_id}}/{{$video->playback_url}}',
-            type: 'application/x-mpegURL',
-            label: '360P',
-        },
-    ]);
+const player = videojs(document.getElementById('hls-video'), options);
 
-    player.on('ready', function() {
-        //this.addClass('my-example');
-    });
+player.src({
+    src: '/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->playback_url}}',
+    type: 'application/x-mpegURL'
+});
+player.hlsQualitySelector({
+    displayCurrentQuality: false,
+});
+// player.src([{
+//         src: '/uploads/{{$video->user_id}}/{{$video->file_name}}/master-240.m3u8',
+//         type: 'application/x-mpegURL',
+//         label: '240P',
+//         selected: true,
+//     },
+//     {
+//         src: '/uploads/{{$video->user_id}}/{{$video->file_name}}/master-360.m3u8',
+//         type: 'application/x-mpegURL',
+//         label: '360P',
+//     },
+// ]);
 
-    player.play();
+player.on('ready', function() {
+    //this.addClass('my-example');
+});
+
+player.play();
 </script>
 @endsection
