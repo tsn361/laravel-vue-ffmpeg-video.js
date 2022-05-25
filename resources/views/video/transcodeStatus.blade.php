@@ -24,7 +24,7 @@
                         <div class="col-md-10">
                             <div class="progress" style="height:2rem">
                                 <div id="progress-bar-{{$value}}" class="progress-bar" role="progressbar"
-                                    style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100%
+                                    style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">100%
                                 </div>
                             </div>
                         </div>
@@ -63,7 +63,14 @@ $.ajax({
     contentType: 'application/json',
     processData: false,
     success: function(result) {
-
+        if (result.success == 'true') {
+            clearInterval(myInterval);
+            $('.progress-bar').css('width', '100%');
+            $('.progress-bar').text('100%');
+            setTimeout(() => {
+                window.location.href = "{{route('video.index')}}";
+            }, 2000);
+        }
     },
     error: function(err) {
         // window.location.reload();
@@ -77,25 +84,26 @@ function updateProgress(id, progress) {
 
 var myInterval = setInterval(function() {
     getEncodingProgress()
-}, 4000);
+}, 1000);
 
 function getEncodingProgress() {
     $.ajax({
-        url: "{{route('video.transcode',['id' => request()->id])}}",
+        url: "{{route('video.transcode.progress',['video_id' => request()->id])}}",
         method: 'Get',
         type: 'Get',
         dataType: 'json',
         contentType: 'application/json',
         processData: false,
         success: function(result) {
-            if (result.status == 'success') {
-
-            }
-            if (result.status == 'error') {
+            var progress = JSON.parse(result);
+            if (progress.length > 0) {
+                $.each(progress, function(key, value) {
+                    updateProgress(value.file_format, value.progress);
+                });
+            } else {
                 clearInterval(myInterval);
-            }
-            if (result.status == 'complete') {
-                clearInterval(myInterval);
+                $('progress-bar').css('width', '100%');
+                $('progress-bar').text('100%');
             }
         }
     });

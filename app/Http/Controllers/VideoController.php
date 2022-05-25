@@ -182,24 +182,41 @@ class VideoController extends Controller
                         $playlist("{$name}-1080.m3u8");
                     }
                 })
-                ->onProgress(function ($percentage) use($video) {
-                    echo "percent: {$percentage} %\n";
+                ->onProgress(function ($percentage) use($video,$newArray) {
+                    // echo "percent: {$percentage} %\n";
                     \Log::info("percent: {$percentage} %\n");
                     if ($percentage == 100) {
-                        $this->updateTranscodeStatus($percentage, 1, $video->file_name);
+                        $this->updateTranscodeStatus($percentage, 1, $video->file_name,$newArray);
                     }else{
-                        $this->updateTranscodeStatus($percentage, 0, $video->file_name);
+                        $this->updateTranscodeStatus($percentage, 0, $video->file_name,$newArray);
                     }
                 })->save($masetPath)->cleanupTemporaryFiles();
 
                 $this->updateVideoStatus($video->file_name,1,1);
-                return response()->json(['success'=>'true', 'message'=>$processOutput]);
+                return response()->json(['success'=>'true']);
         }
     }       
 
 
-    public function updateTranscodeStatus($progress, $is_complete, $file_name){
-        $query = TmpTranscodeProgress::where('file_name', $file_name)->update(['progress' => $progress, 'is_complete'=>$is_complete]);
+    public function updateTranscodeStatus($progress, $is_complete, $file_name,$fileFormatArray){
+        foreach($fileFormatArray as $key => $format) {
+            if($format == '240'){
+                $newProgress = ($progress + 5)  >= 99 ? 100 : ($progress + 5);
+                $query = TmpTranscodeProgress::where('file_name', $file_name)->where('file_format', $format)->update(['progress' => $newProgress, 'is_complete'=>$is_complete]);
+            }elseif($format == '360'){
+                $newProgress = ($progress + 4) >= 99 ? 100 : ($progress + 4);
+                $query = TmpTranscodeProgress::where('file_name', $file_name)->where('file_format', $format)->update(['progress' => $newProgress, 'is_complete'=>$is_complete]);
+            }elseif($format == '480'){
+                $newProgress = ($progress + 3) >= 99 ? 100 : ($progress + 3);
+                $query = TmpTranscodeProgress::where('file_name', $file_name)->where('file_format', $format)->update(['progress' => $newProgress, 'is_complete'=>$is_complete]);
+            }elseif($format == '720'){
+                $newProgress = $progress;
+                $query = TmpTranscodeProgress::where('file_name', $file_name)->where('file_format', $format)->update(['progress' => $newProgress, 'is_complete'=>$is_complete]);
+            }elseif($format == '1080'){
+                $newProgress = $progress;
+                $query = TmpTranscodeProgress::where('file_name', $file_name)->where('file_format', $format)->update(['progress' => $newProgress, 'is_complete'=>$is_complete]);
+            }
+        }
     }
     public function createTmpTranscodeEntry($original_resolution, $file_name, $video_id){
         $array = array(0 => '1080', 1 => '720', 2 => '480', 3 => '360', 4 => '240');
@@ -215,13 +232,17 @@ class VideoController extends Controller
                 'progress'     => 0,
             ]);
         }
-        // $flight = new TmpTranscodeProgress;
-        // $flight->progress = 0;
-        // $flight->file_name = $file_name;
-        // $flight->video_id = $video_id;
-        // $flight->save();
     }
     public function updateVideoStatus($file_name,$status,$is_transcoded){
         $query = Video::where('file_name', $file_name)->update(['status' => $status, 'is_transcoded'=> $is_transcoded ]);
+    }
+
+    public function getTranscodeProgress($video_id){
+        $data = TmpTranscodeProgress::where('video_id', $video_id)->where('is_complete', 0)->get();
+        if(count($data) > 0){
+            return response()->json($data);
+        }else{
+            return response()->json([]);
+        }
     }
 }
