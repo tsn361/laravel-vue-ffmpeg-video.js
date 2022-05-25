@@ -9,39 +9,133 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12 p-2 text-end">
-            Breadcrumb
+            {{-- @include('layouts.breadcrumbs') --}}
+            {{ Breadcrumbs::render('video', $video) }}
         </div>
+        <div class="col-md-12 p-2 text-end">
 
-        <video
-                id="hls-video"
-                class="video-js"
-                controls
-                preload="auto"
-                height="560"
-                poster="/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->poster}}"
-                data-setup="{}"
-            >
-            <p class="vjs-no-js">
-              To view this video please enable JavaScript, and consider upgrading to a
-              web browser that
-              <a href="https://videojs.com/html5-video-support/" target="_blank"
-                >supports HTML5 video</a
-              >
-            </p>
-          </video>
-
+            <video
+                    id="hls-video"
+                    class="video-js"
+                    controls
+                    preload="auto"
+                    height="560"
+                    poster="/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->poster}}"
+                    data-setup="{}"
+                >
+                <p class="vjs-no-js">
+                To view this video please enable JavaScript, and consider upgrading to a
+                web browser that
+                <a href="https://videojs.com/html5-video-support/" target="_blank"
+                    >supports HTML5 video</a
+                >
+                </p>
+            </video>
+        </div>
     </div>
-    <div class="row rounded-top shadow-sm">
-        <div class="col-md-12 p-2">
-            video details
-        </div>
-        <div class="col-md-6 p-2">W
-            <div class="mt-2">
-                List of videos
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    {{ $video->title }}
+                </div>
+                <div class="card-body">
+                    <p>{{ $video->description }}</p>
+                    <p>Created at: {{$video->created_at}}</p>
+                </div>
             </div>
         </div>
-        <div class="col-md-6 p-2 text-end ">
-            <button class="btn btn-primary btn-sm"> <i class="fas fa-plus"></i> Create</button>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-3">
+            <div class="d-flex rounded bg-white shadow-sm p-3">
+                <div>
+                    <i class="fa-solid fa-video fa-3x"></i>
+                </div>
+                <div class="px-3">
+                    <p class="mb-2">Video Duration</p>
+                    <span>{{$video->video_duration}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="d-flex rounded bg-white shadow-sm p-3">
+                <div>
+                    <i class="fa-solid fa-video fa-3x"></i>
+                </div>
+                <div class="px-3">
+                    <p class="mb-2">Video Duration</p>
+                    <span>{{$video->video_duration}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="d-flex rounded bg-white shadow-sm p-3">
+                <div>
+                    <i class="fa-solid fa-video fa-3x"></i>
+                </div>
+                <div class="px-3">
+                    <p class="mb-2">Video Duration</p>
+                    <span>{{$video->video_duration}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="d-flex rounded bg-white shadow-sm p-3">
+                <div>
+                    <i class="fa-solid fa-video fa-3x"></i>
+                </div>
+                <div class="px-3">
+                    <p class="mb-2">Video Duration</p>
+                    <span>{{$video->video_duration}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-3">
+            <div class="d-flex rounded bg-white shadow-sm p-3">
+                <div>
+                    <i class="fa-solid fa-video fa-3x"></i>
+                </div>
+                <div class="px-3">
+                    <p class="mb-2">Video Duration</p>
+                    <span>{{$video->video_duration}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="d-flex rounded bg-white shadow-sm p-3">
+                <div>
+                    <i class="fa-solid fa-video fa-3x"></i>
+                </div>
+                <div class="px-3">
+                    <p class="mb-2">Video Duration</p>
+                    <span>{{$video->video_duration}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="d-flex rounded bg-white shadow-sm p-3">
+                <div>
+                    <i class="fa-solid fa-video fa-3x"></i>
+                </div>
+                <div class="px-3">
+                    <p class="mb-2">Video Duration</p>
+                    <span>{{$video->video_duration}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="d-flex rounded bg-white shadow-sm p-3">
+                <div>
+                    <i class="fa-solid fa-video fa-3x"></i>
+                </div>
+                <div class="px-3">
+                    <p class="mb-2">Video Duration</p>
+                    <span>{{$video->video_duration}}</span>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -49,6 +143,7 @@
 
 @section('script')
 <script src="{{ asset('js/video.min.js') }}"></script>
+{{-- https://github.com/silvermine/videojs-quality-selector --}}
 <script src="{{ asset('js/silvermine-videojs-quality-selector.min.js') }}"></script>
 <script>
 
@@ -64,7 +159,6 @@
             },
         };
         
-
 
     const player = videojs(document.getElementById('hls-video'), options);
     // player.src({
