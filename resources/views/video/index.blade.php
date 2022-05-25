@@ -26,7 +26,9 @@
             </button>
         </div>
         <div class="col-md-3 p-3">
-            <img src="/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->poster}}" />
+            <a href="{{ route('video.play',['slug' => $video->slug])}}">
+                <img src="/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->poster}}" />
+            </a>
         </div>
         <div class="col-md-5 p-3 ts-sm">
             <div>

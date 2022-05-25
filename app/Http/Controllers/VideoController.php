@@ -31,6 +31,11 @@ class VideoController extends Controller
         return view('video.upload');
     }
 
+    public function video_play_UI(){
+        $video = Video::where('slug', request()->slug)->first();
+        return view('video.play', compact('video'));
+    }
+
     public function videoTranscodeStatus($id){
         $video = Video::find($id);
         
