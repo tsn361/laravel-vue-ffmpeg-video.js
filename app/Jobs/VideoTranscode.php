@@ -1,6 +1,15 @@
 <?php
+namespace App\Jobs;
+ini_set('memory_limit', '5G');//1 GIGABYTE
+ini_set('max_execution_time', 0);
+set_time_limit(0);
 
-namespace App\Http\Controllers;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
 
 use App\Models\Video;
@@ -20,120 +29,33 @@ use FFMpeg\Format\FormatInterface;
 use ProtoneMedia\LaravelFFMpeg\Exporters\HLSVideoFilters;
 use ProtoneMedia\LaravelFFMpeg\Exporters\HLSExporter;
 
-use App\Jobs\VideoTranscode;
-
-
-class VideoController extends Controller
+class VideoTranscode implements ShouldQueue
 {
-    
-    public function index(){
-        $videos = Video::where('user_id', Auth::user()->id)->get();
-        return view('video.index', compact('videos'));
-    }
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function upload_UI(){
-        return view('video.upload');
-    }
+    public $timeout = 1000000;
+    public $tries = 1;
+    public $maxExceptions = 1;
 
-    public function video_play_UI(){
-        $video = Video::where('slug', request()->slug)->first();
-        return view('video.play', compact('video'));
-    }
-
-    public function videoTranscodeStatus($id){
-        $video = Video::where('id',$id)->where('is_transcoded',0)->first();
-        
-        if($video){
-            $array = array(0 => '1080', 1 => '720', 2 => '480', 3 => '360', 4 => '240');
-            $key = array_search($video->original_resolution, $array);
-            $newArray = array_slice($array, $key);
-            sort($newArray);
-            
-            return view('video.transcodeStatus')->with('video', $video)->with('newArray', $newArray);
-        }else{
-            return redirect()->route('video.index');
-        }
-        
-    }
-
-    public function fileUploadPost(Request $request)
+    /**
+     * Create a new job instance.
+     *
+     * @return void
+     */
+    private $video_id;
+    public function __construct($video_id)
     {
-        //dd($request->file('file'));
-        \Log::info("fileUploadPost => ". $request->file('file'));
-
-        $request->validate([
-        'file' => 'required|mimes:mp4,ogx,oga,ogv,ogg,webm'
-        ]);
-
-        $file = $request->file('file');
-        if($request->file()) {
-
-            //\Log::info("fileUploadPost =>yes ". request()->file->getClientOriginalExtension());
-
-            $fileName = time();
-            $filePath = $fileName.'.'.request()->file->getClientOriginalExtension();
-            $save_path = Auth::user()->id.'/'.$fileName;
-
-            // $request->file('file')->storeAs($save_path, $fileName,'uploads');
-            request()->file->move(public_path('uploads/'.$save_path), $filePath);
-    
-            return response()->json(['success'=>'true', 'fileName'=>$fileName, 'filePath'=>$filePath]);
-        
-        }
+        $this->video_id = $video_id;
     }
 
-    public function saveVideoInfo(Request $request){
-        $request->validate([
-            'title' => 'required'
-        ]);
-
-        $path = Auth::user()->id.'/'.$request->fileName.'/'.$request->fileNameWithExt;
-        $media = FFMpeg::fromDisk('uploads')->open($path);
-        $durationInSeconds = $media->getDurationInSeconds(); // returns an integer
-        $bitrate = $media->getVideoStream()->get('bit_rate'); // returns an integer
-        $codec = $media->getVideoStream()->get('codec_name'); // returns a string
-        $original_filesize = $size = Storage::disk('uploads')->size($path);
-        $original_resolution = $media->getVideoStream()->get('height'); // returns an array
-
-        $media->getFrameFromSeconds(10)
-        ->export()
-        ->save(Auth::user()->id.'/'.$request->fileName.'/'.'poster.png');
-
-
-
-
-        $video = new Video();
-        $video->title = $request->title;
-        $video->slug = SlugService::createSlug(Video::class, 'slug', $request->title);
-        $video->description = $request->description;
-        $video->poster = 'poster.png';
-        $video->origianl_file_url =  $request->fileNameWithExt;
-        $video->playback_url =  'master.m3u8';
-        $video->user_id = Auth::user()->id;
-        $video->video_duration = $durationInSeconds;
-        $video->original_filesize = $original_filesize;
-        $video->original_resolution = $original_resolution;
-        $video->original_bitrate = $bitrate;
-        $video->original_video_codec = $codec;
-        $video->file_name = $request->fileName;
-        $video->is_transcoded = 0;
-        
-       
-        if($video->save()){
-            $this->createTmpTranscodeEntry($original_resolution, $request->fileName, $video->id);
-            return response()->json(['success'=>'true', 'lastInsertedId'=>$video->id]);
-        }else{
-            return response()->json(['success'=>'false', 'message'=>'Error saving video']);
-        }
-        
-    }
-
-    public function transcode(Request $request){
-        dispatch(new VideoTranscode($request->id));
-
-        return response()->json(['success'=>'true']);
-
-        $video = Video::where('id',$request->id)->where('is_transcoded',0)->first();
+    /**
+     * Execute the job.
+     *
+     * @return void
+     */
+    public function handle()
+    {
+        $video = Video::where('id',$this->video_id)->where('is_transcoded',0)->first();
         
         if($video){
             $array = array(0 => '1080', 1 => '720', 2 => '480', 3 => '360', 4 => '240');
@@ -154,7 +76,7 @@ class VideoController extends Controller
 
             $processOutput =  FFMpeg::fromDisk('uploads')->open($path)
                         ->exportForHLS()
-                        ->setSegmentLength(20) // optional
+                        ->setSegmentLength(10) // optional
                         ->withRotatingEncryptionKey(function ($filename, $contents) use($Keypath){
                             Storage::disk('uploads')->put("{$Keypath}/$filename", $contents);
                         });
@@ -212,13 +134,17 @@ class VideoController extends Controller
                 })->save($masetPath)->cleanupTemporaryFiles();
 
                 $this->updateVideoStatus($video->file_name,1,1);
-                return response()->json(['success'=>'true']);
         }else{
+            $this->fail();
             $this->deleteTranscodeStatus($video->file_name);
-            return response()->json(['success'=>'false', 'message'=>'Video already transcoded']);
         }
-    }       
+    }
 
+    public function failed(Exception $exception) 
+    {
+        $this->fail();
+        $this->updateVideoStatus($video->file_name,2,2);
+    }
 
     public function updateTranscodeStatus($progress, $is_complete, $file_name,$fileFormatArray){
         $lastFormat = last($fileFormatArray);
@@ -257,22 +183,6 @@ class VideoController extends Controller
             }
         }
     }
-    public function createTmpTranscodeEntry($original_resolution, $file_name, $video_id){
-        $array = array(0 => '1080', 1 => '720', 2 => '480', 3 => '360', 4 => '240');
-        $key = array_search($original_resolution, $array);
-        $newArray = array_slice($array, $key);
-        sort($newArray);
-        foreach($newArray as $key => $format){
-            $newUser = TmpTranscodeProgress::updateOrCreate([
-                'file_name'   => $file_name,
-                'video_id'    => $video_id,
-                'file_format' => $format
-            ],[
-                'progress'     => 0,
-            ]);
-        }
-    }
-
     public function updateVideoStatus($file_name,$status,$is_transcoded){
         $query = Video::where('file_name', $file_name)->update(['status' => $status, 'is_transcoded'=> $is_transcoded ]);
         if ($query) {
@@ -284,22 +194,5 @@ class VideoController extends Controller
         
         $query = TmpTranscodeProgress::where('file_name', $file_name)->delete();
        
-    }
-
-    public function getTranscodeProgress($video_id){
-        $data = TmpTranscodeProgress::where('video_id', $video_id)->where('is_complete', 0)->get();
-        if(count($data) > 0){
-            return response()->json($data);
-        }else{
-            return response()->json([]);
-        }
-    }
-
-
-    public function setcookie2(){
-        $anotherArray = array(0 => '1080', 1 => '720', 2 => '480', 3 => '360', 4 => '240');
-        sort($anotherArray);
-        $lastElement = last($anotherArray);
-        return response()->json($lastElement);
     }
 }

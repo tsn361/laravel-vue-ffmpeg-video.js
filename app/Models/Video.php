@@ -15,6 +15,7 @@ class Video extends Model
         'title',
         'slug',
         'description',
+        'origianl_file_url',
         'playback_url',
         'video_duration',
         'original_filesize',

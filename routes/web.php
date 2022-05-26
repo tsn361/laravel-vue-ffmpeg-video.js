@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use ProtoneMedia\LaravelFFMpeg\Http\DynamicHLSPlaylist;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,5 +41,42 @@ Route::prefix('video')->group(function () {
         Route::get('/{id}/status', [App\Http\Controllers\VideoController::class, 'videoTranscodeStatus'])->name('video.transcode.status');
         Route::post('/transcode/{id}', [App\Http\Controllers\VideoController::class, 'transcode'])->name('video.transcode');
         Route::get('/transcode-progress/{video_id}', [App\Http\Controllers\VideoController::class, 'getTranscodeProgress'])->name('video.transcode.progress');
+    
+        Route::get('/video/secret/{key}', function ($key) {
+            return Storage::disk('uploads')->download($key);
+        })->name('video.key');
+
+        Route::get('/playback/{playlist}', function ($playlist) {
+            return FFMpeg::dynamicHLSPlaylist()
+                ->fromDisk('uploads')
+                ->open("3/1653517596/master.m3u8")
+                ->setKeyUrlResolver(function ($key) {
+                    \Log::info("key: {$key} %\n");
+                    return route('video.key', ['key' => $key]);
+                })
+                ->setMediaUrlResolver(function ($mediaFilename) {
+                    \Log::info("mediaFilename: {$mediaFilename} %\n");
+                    return Storage::disk('uploads')->url("3/1653517596/master.m3u8");
+                })
+                ->setPlaylistUrlResolver(function ($playlistFilename)  {
+                    \Log::info("playlistFilename: {$playlistFilename} %\n");
+                    return route('video.playback', ['playlist' => $playlistFilename]);
+                });
+            // return FFMpeg::dynamicHLSPlaylist()
+            //     ->fromDisk('uploads')
+            //     ->open("{$id}/{$file_name}/{$playlist}")
+            //     ->setKeyUrlResolver(function ($key) {
+            //         return route('video.key', ['key' => $key]);
+            //     })
+            //     ->setMediaUrlResolver(function ($mediaFilename) use ($id,$file_name) {
+            //         return Storage::disk('uploads')->url("{$id}/{$file_name}/{$mediaFilename}");
+            //     })
+            //     ->setPlaylistUrlResolver(function ($playlistFilename) use ($id,$file_name) {
+            //         return route('video.playback', ['playlist' => $playlistFilename]);
+            //     });
+        })->name('video.playback');
     }); 
 });
+
+
+Route::get('/set',[App\Http\Controllers\VideoController::class,'setcookie2']);

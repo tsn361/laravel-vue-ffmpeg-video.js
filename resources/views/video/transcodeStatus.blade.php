@@ -24,12 +24,12 @@
                         <div class="col-md-10">
                             <div class="progress" style="height:2rem">
                                 <div id="progress-bar-{{$value}}" class="progress-bar" role="progressbar"
-                                    style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">100%
+                                    style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-1 float-end">
-                            <button class="btn btn-dark btn-sm">100%</button>
+                            <button id="progress-btn-{{$value}}" class="btn btn-dark btn-sm">0%</button>
                         </div>
                     </div>
                     @endforeach
@@ -43,9 +43,10 @@
 @section('script')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script type="text/javascript">
+var fileName = "{{$video->file_name}}"
 var myInterval = setInterval(function() {
     getEncodingProgress()
-}, 1000);
+}, 2000);
 
 $.ajaxSetup({
     headers: {
@@ -57,6 +58,7 @@ $.ajax({
     url: "{{route('video.transcode',['id' => request()->id])}}",
     method: 'Post',
     type: 'Post',
+    async: true,
     data: JSON.stringify({
         id: "{{request()->id}}",
         userId: "{{$video->user_id}}",
@@ -68,22 +70,22 @@ $.ajax({
     processData: false,
     success: function(result) {
         if (result.success == 'true') {
-            clearInterval(myInterval);
-            $('.progress-bar').css('width', '100%');
-            $('.progress-bar').text('100%');
-            setTimeout(() => {
-                window.location.href = "{{route('video.index')}}";
-            }, 2000);
+            getEncodingProgress()
         }
     },
     error: function(err) {
-        // window.location.reload();
+        clearInterval(myInterval);
+        setTimeout(() => {
+            window.location.href = "{{route('video.index')}}";
+        }, 2000);
     }
 });
 
 function updateProgress(id, progress) {
+    // console.log('#progress-bar-' + id);
     $('#progress-bar-' + id).css('width', progress + '%');
     $('#progress-bar-' + id).text(progress + '%');
+    $('#progress-btn-' + id).text(progress + '%');
 }
 
 
@@ -96,8 +98,9 @@ function getEncodingProgress() {
         dataType: 'json',
         contentType: 'application/json',
         processData: false,
+        async: true,
         success: function(result) {
-            var progress = JSON.parse(result);
+            var progress = result;
             if (progress.length > 0) {
                 $.each(progress, function(key, value) {
                     updateProgress(value.file_format, value.progress);
@@ -106,6 +109,10 @@ function getEncodingProgress() {
                 clearInterval(myInterval);
                 $('progress-bar').css('width', '100%');
                 $('progress-bar').text('100%');
+                $('#progress-btn').text('100%');
+                setTimeout(() => {
+                    window.location.href = "{{route('video.index')}}";
+                }, 1000);
             }
         }
     });

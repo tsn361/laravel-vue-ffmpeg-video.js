@@ -22,6 +22,8 @@
 
             <video id="hls-video" class="video-js vjs-big-play-centered" controls preload="auto" height="560"
                 poster="/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->poster}}" data-setup="{}">
+                <!-- <source src="{{ route('video.playback', ['playlist'=> $video->playback_url ])}}"
+                    type="application/x-mpegURL"> -->
                 <p class="vjs-no-js">
                     To view this video please enable JavaScript, and consider upgrading to a
                     web browser that
@@ -134,6 +136,7 @@
                 </div>
             </div>
         </div>
+        {{Cookie::get('getVideoTranscodeStatus')}} sd
     </div>
 </div>
 @endsection
@@ -156,24 +159,12 @@ const options = {
 const player = videojs(document.getElementById('hls-video'), options);
 
 player.src({
-    src: '/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->playback_url}}',
+    src: '/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->playback_url}}', // woring with hls and key
     type: 'application/x-mpegURL'
 });
 player.hlsQualitySelector({
     displayCurrentQuality: false,
 });
-// player.src([{
-//         src: '/uploads/{{$video->user_id}}/{{$video->file_name}}/master-240.m3u8',
-//         type: 'application/x-mpegURL',
-//         label: '240P',
-//         selected: true,
-//     },
-//     {
-//         src: '/uploads/{{$video->user_id}}/{{$video->file_name}}/master-360.m3u8',
-//         type: 'application/x-mpegURL',
-//         label: '360P',
-//     },
-// ]);
 
 player.on('ready', function() {
     //this.addClass('my-example');

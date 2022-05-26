@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('file_name')->nullable(false);
             $table->string('slug')->unique();
             $table->string('description')->nullable();
+            $table->string('origianl_file_url')->nullable(false);
             $table->string('playback_url')->nullable(false);
             $table->integer('video_duration')->nullable();
             $table->integer('original_filesize')->nullable();
