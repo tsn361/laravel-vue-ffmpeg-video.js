@@ -109,7 +109,7 @@ $.ajaxSetup({
 
 $('#videoFile').change(function() {
     event.preventDefault();
-
+    var startTime = new Date().getTime();
     console.log("File selected");
 
     var file = $("#videoFile")[0].files[0];
@@ -138,7 +138,10 @@ $('#videoFile').change(function() {
                 showVideoDetailsForm();
                 $('#fileName').val(result.fileName);
                 $('#fileNameWithExt').val(result.filePath);
-                $('#uploadDuration').val(result.duration);
+
+                var endTime = new Date().getTime();
+                var timeTaken = (endTime - startTime) / 1000;
+                $('#uploadDuration').val(timeTaken);
             } else {
                 console.log(res.message);
                 //window.location.reload();

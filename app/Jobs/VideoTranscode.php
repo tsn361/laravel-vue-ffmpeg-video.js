@@ -178,7 +178,6 @@ class VideoTranscode implements ShouldQueue
                 }
                 $query = TmpTranscodeProgress::where('file_name', $file_name)->where('file_format', $format)->update(['progress' => $newProgress, 'is_complete'=>$is_complete]);
             }elseif($format == '1080'){
-                $newProgress = $progress;
                 $query = TmpTranscodeProgress::where('file_name', $file_name)->where('file_format', $format)->update(['progress' => $newProgress, 'is_complete'=>$is_complete]);
             }
         }

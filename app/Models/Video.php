@@ -46,13 +46,20 @@ class Video extends Model
     protected function uploadDuration(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => gmdate("h:i:s", $value). ' Seconds',
+            get: fn ($value) => $value >0 && $value !=null ? gmdate("H:i:s", $value). ' Seconds' : '00:00:00 Seconds',
         );
     }
     protected function videoDuration(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => gmdate("h:i:s", $value). ' Seconds',
+            get: fn ($value) => $value >0 && $value !=null ? gmdate("H:i:s", $value). ' Seconds' : '00:00:00 Seconds',
+        );
+    }
+
+    protected function 	processTime(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => $value >0 && $value !=null ? gmdate("H:i:s", $value). ' Seconds' : '00:00:00 Seconds',
         );
     }
 
@@ -60,12 +67,21 @@ class Video extends Model
     {
         return User::find($this->user_id)->name;
     }
-    
 
-    // {
-    //     $user = User::where('id',3)->first(['first_name', 'last_name']);
-    //     return $user->first_name . ' ' . $user->last_name;
-    // }
+    protected function originalFilesize(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => round($value / 1024 / 1024, 2) . ' MB',
+        );
+    }
+
+    protected function originalBitrate(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => round($value / 1024 / 1024, 2) * 0.125 . ' Mbps',
+        );
+    }
+
 
 
 }

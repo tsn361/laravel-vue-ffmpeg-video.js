@@ -63,8 +63,8 @@
                     <i class="fa-solid fa-video fa-3x"></i>
                 </div>
                 <div class="px-3">
-                    <p class="mb-2">Video Duration</p>
-                    <span>{{$video->video_duration}}</span>
+                    <p class="mb-2">Video Filesize</p>
+                    <span>{{$video->original_filesize}}</span>
                 </div>
             </div>
         </div>
@@ -74,8 +74,8 @@
                     <i class="fa-solid fa-video fa-3x"></i>
                 </div>
                 <div class="px-3">
-                    <p class="mb-2">Video Duration</p>
-                    <span>{{$video->video_duration}}</span>
+                    <p class="mb-2">Processing Time</p>
+                    <span>{{$video->process_time}}</span>
                 </div>
             </div>
         </div>
@@ -85,8 +85,8 @@
                     <i class="fa-solid fa-video fa-3x"></i>
                 </div>
                 <div class="px-3">
-                    <p class="mb-2">Video Duration</p>
-                    <span>{{$video->video_duration}}</span>
+                    <p class="mb-2">Video Resulation</p>
+                    <span>{{$video->original_resolution}}</span>
                 </div>
             </div>
         </div>
@@ -98,7 +98,18 @@
                     <i class="fa-solid fa-video fa-3x"></i>
                 </div>
                 <div class="px-3">
-                    <p class="mb-2">Video Duration</p>
+                    <p class="mb-2">Upload Duration</p>
+                    <span>{{$video->upload_duration}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="d-flex rounded bg-white shadow-sm p-3">
+                <div>
+                    <i class="fa-solid fa-video fa-3x"></i>
+                </div>
+                <div class="px-3">
+                    <p class="mb-2">Video Speed</p>
                     <span>{{$video->video_duration}}</span>
                 </div>
             </div>
@@ -109,8 +120,8 @@
                     <i class="fa-solid fa-video fa-3x"></i>
                 </div>
                 <div class="px-3">
-                    <p class="mb-2">Video Duration</p>
-                    <span>{{$video->video_duration}}</span>
+                    <p class="mb-2">Original Codec</p>
+                    <span>{{$video->original_video_codec}}</span>
                 </div>
             </div>
         </div>
@@ -120,23 +131,11 @@
                     <i class="fa-solid fa-video fa-3x"></i>
                 </div>
                 <div class="px-3">
-                    <p class="mb-2">Video Duration</p>
-                    <span>{{$video->video_duration}}</span>
+                    <p class="mb-2">Original Bitrate</p>
+                    <span>{{$video->original_bitrate}}</span>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="d-flex rounded bg-white shadow-sm p-3">
-                <div>
-                    <i class="fa-solid fa-video fa-3x"></i>
-                </div>
-                <div class="px-3">
-                    <p class="mb-2">Video Duration</p>
-                    <span>{{$video->video_duration}}</span>
-                </div>
-            </div>
-        </div>
-        {{Cookie::get('getVideoTranscodeStatus')}} sd
     </div>
 </div>
 @endsection

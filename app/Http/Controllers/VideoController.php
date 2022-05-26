@@ -25,15 +25,7 @@ use App\Jobs\VideoTranscode;
 
 class VideoController extends Controller
 {
-    public function getExecutionTimeInSecond($starttime = 0, $endtime = 0)
-    {
-        $duration = $endtime-$starttime;
-        $hours = (int)($duration/60/60);
-        $minutes = (int)($duration/60)-$hours*60;
-        $seconds = (int)$duration-$hours*60*60-$minutes*60;
-        return $seconds;
-    }
-    
+
     public function index(){
         $videos = Video::where('user_id', Auth::user()->id)->get();
         return view('video.index', compact('videos'));
@@ -73,7 +65,6 @@ class VideoController extends Controller
         
         $file = $request->file('file');
         if($request->file()) {
-            $time_start = microtime(true); 
 
             //\Log::info("fileUploadPost =>yes ". request()->file->getClientOriginalExtension());
 
@@ -83,11 +74,8 @@ class VideoController extends Controller
 
             // $request->file('file')->storeAs($save_path, $fileName,'uploads');
             request()->file->move(public_path('uploads/'.$save_path), $filePath);
-
-            $time_end = microtime(true);
-            $execution_time = $this->getExecutionTimeInSecond($time_start,$time_end);
     
-            return response()->json(['success'=>'true', 'fileName'=>$fileName, 'filePath'=>$filePath, 'upload_duration'=>$execution_time]);
+            return response()->json(['success'=>'true', 'fileName'=>$fileName, 'filePath'=>$filePath]);
         
         }
     }
@@ -263,7 +251,6 @@ class VideoController extends Controller
                 }
                 $query = TmpTranscodeProgress::where('file_name', $file_name)->where('file_format', $format)->update(['progress' => $newProgress, 'is_complete'=>$is_complete]);
             }elseif($format == '1080'){
-                $newProgress = $progress;
                 $query = TmpTranscodeProgress::where('file_name', $file_name)->where('file_format', $format)->update(['progress' => $newProgress, 'is_complete'=>$is_complete]);
             }
         }
