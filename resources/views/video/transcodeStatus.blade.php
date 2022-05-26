@@ -11,7 +11,8 @@
                             <h4>Encoding in progress</h4>
                         </div>
                         <div class="col-md-6 text-end">
-                            <button id="uploadProgressBtn" class="btn btn-primary btn-sm">Transcoding...</button>
+                            <button id="uploadProgressBtn" class="btn btn-primary btn-sm"><i
+                                    class="fa-solid fa-gear fa-spin me-1"></i>Transcoding...</button>
                         </div>
                     </div>
                 </div>

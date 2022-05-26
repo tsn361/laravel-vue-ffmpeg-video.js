@@ -9,7 +9,7 @@
             </div>
         </div>
         <div class="col-md-6 p-2 text-end ">
-            <button class="btn btn-primary btn-sm"> <i class="fas fa-plus"></i> Create</button>
+            <a class="btn btn-primary btn-sm" href="{{ route('video.upload') }}"> <i class="fas fa-plus"></i> Create</a>
         </div>
     </div>
     <div class="row border-bottom">
@@ -34,10 +34,10 @@
             <div>
                 <strong>{{$video->title}}</strong>
             </div>
-            <div class="mt-2">Created by: {{$video->createdBy}}</div>
+            <div class="mt-2">Created by: {{$video->created_by}}</div>
             <div class="mt-1">Date: <strong>{{$video->created_at}}</strong></div>
-            <div class="mt-1">Duration: <strong>{{$video->video_duration}}</strong></div>
-            <div class="mt-1">Proccesed in: <strong>{{$video->process_time}}</strong></div>
+            <div class="mt-1">Video Duration: <strong>{{$video->video_duration}}</strong></div>
+            <div class="mt-1">Upload duration: <strong>{{$video->upload_duration}}</strong></div>
         </div>
         <div class="col-md-3 text-end p-3">
             <button class="btn btn-info btn-sm text-white">

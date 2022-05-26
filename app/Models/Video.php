@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
+
+use App\Models\User;
 
 class Video extends Model
 {
@@ -40,9 +43,29 @@ class Video extends Model
         ];
     }
 
-    public function createdBy(){
-        return $this->belongsTo(User::class);
+    protected function uploadDuration(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => gmdate("h:i:s", $value). ' Seconds',
+        );
     }
+    protected function videoDuration(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => gmdate("h:i:s", $value). ' Seconds',
+        );
+    }
+
+    protected function getCreatedByAttribute($value)
+    {
+        return User::find($this->user_id)->name;
+    }
+    
+
+    // {
+    //     $user = User::where('id',3)->first(['first_name', 'last_name']);
+    //     return $user->first_name . ' ' . $user->last_name;
+    // }
 
 
 }

@@ -37,6 +37,7 @@
                         <form method="POST">
                             <input type="hidden" name="fileName" id="fileName" value="">
                             <input type="hidden" name="fileNameWithExt" id="fileNameWithExt" value="">
+                            <input type="hidden" name="uploadDuration" id="uploadDuration" value="">
                             <div class="mb-3 row">
                                 <label for="staticEmail" class="col-sm-2 col-form-label">Video</label>
                                 <div class="col-sm-10">
@@ -137,6 +138,7 @@ $('#videoFile').change(function() {
                 showVideoDetailsForm();
                 $('#fileName').val(result.fileName);
                 $('#fileNameWithExt').val(result.filePath);
+                $('#uploadDuration').val(result.duration);
             } else {
                 console.log(res.message);
                 //window.location.reload();
@@ -154,8 +156,10 @@ function saveVideoInfo() {
     var formData = new FormData();
     formData.append("fileName", $('#fileName').val());
     formData.append("fileNameWithExt", $('#fileNameWithExt').val());
+    formData.append("uploadDuration", $('#uploadDuration').val());
     formData.append("title", $('#VideoTitle').val());
     formData.append("description", $('#VideoDescription').val());
+
 
     $.ajax({
         url: "{{route('video.save.info')}}",

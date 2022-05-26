@@ -25,6 +25,14 @@ use App\Jobs\VideoTranscode;
 
 class VideoController extends Controller
 {
+    public function getExecutionTimeInSecond($starttime = 0, $endtime = 0)
+    {
+        $duration = $endtime-$starttime;
+        $hours = (int)($duration/60/60);
+        $minutes = (int)($duration/60)-$hours*60;
+        $seconds = (int)$duration-$hours*60*60-$minutes*60;
+        return $seconds;
+    }
     
     public function index(){
         $videos = Video::where('user_id', Auth::user()->id)->get();
@@ -58,15 +66,14 @@ class VideoController extends Controller
 
     public function fileUploadPost(Request $request)
     {
-        //dd($request->file('file'));
-        \Log::info("fileUploadPost => ". $request->file('file'));
 
         $request->validate([
         'file' => 'required|mimes:mp4,ogx,oga,ogv,ogg,webm'
         ]);
-
+        
         $file = $request->file('file');
         if($request->file()) {
+            $time_start = microtime(true); 
 
             //\Log::info("fileUploadPost =>yes ". request()->file->getClientOriginalExtension());
 
@@ -76,8 +83,11 @@ class VideoController extends Controller
 
             // $request->file('file')->storeAs($save_path, $fileName,'uploads');
             request()->file->move(public_path('uploads/'.$save_path), $filePath);
+
+            $time_end = microtime(true);
+            $execution_time = $this->getExecutionTimeInSecond($time_start,$time_end);
     
-            return response()->json(['success'=>'true', 'fileName'=>$fileName, 'filePath'=>$filePath]);
+            return response()->json(['success'=>'true', 'fileName'=>$fileName, 'filePath'=>$filePath, 'upload_duration'=>$execution_time]);
         
         }
     }
@@ -117,6 +127,7 @@ class VideoController extends Controller
         $video->original_video_codec = $codec;
         $video->file_name = $request->fileName;
         $video->is_transcoded = 0;
+        $video->upload_duration = $request->uploadDuration;
         
        
         if($video->save()){
