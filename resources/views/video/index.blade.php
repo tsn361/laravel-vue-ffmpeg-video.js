@@ -44,9 +44,18 @@
                 <strong><i class="fas fa-info"></i></strong>
             </button>
             <button class="btn btn-primary btn-sm"><i class="fas fa-pencil"></i></button>
-            <button class="btn btn-danger btn-sm"><i class="fas fa-trash-can"></i></button>
+            <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i
+                    class="fas fa-trash-can"></i></button>
         </div>
     </div>
     @endforeach
+
+    <!-- Vertically centered modal -->
+    <div class="modal-dialog modal-dialog-centered" id="staticBackdrop" data-bs-backdrop="static"
+        data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div>
+            <p>Are sure about deleting this video?</p>
+        </div>
+    </div>
 </div>
 @endsection

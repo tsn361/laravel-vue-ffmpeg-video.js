@@ -294,6 +294,15 @@ class VideoController extends Controller
     }
 
 
+    public function videoDelete($slug){
+        $video = Video::where('slug', $slug)->first();
+        if ($video->delete()) {
+            unlink(public_path('videos/'.$video->user_id.'/'.$video->file_name));
+        }
+        return response()->json(['success'=>'true']);
+    }
+
+
     public function setcookie2(){
         $anotherArray = array(0 => '1080', 1 => '720', 2 => '480', 3 => '360', 4 => '240');
         sort($anotherArray);
