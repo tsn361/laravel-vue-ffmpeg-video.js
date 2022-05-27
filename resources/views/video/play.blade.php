@@ -46,10 +46,10 @@
         </div>
     </div>
     <div class="row mt-4">
-        <div class="col-md-3">
+        <div class="col-md-4">
             <div class="d-flex rounded bg-white shadow-sm p-3">
-                <div>
-                    <i class="fa-solid fa-video fa-3x"></i>
+                <div class="bg-success rounded p-2" style="width: 55px;height: 48px; text-align: center;">
+                    <i class="fas fa-hourglass-half fa-2x text-light"></i>
                 </div>
                 <div class="px-3">
                     <p class="mb-2">Video Duration</p>
@@ -57,10 +57,10 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
             <div class="d-flex rounded bg-white shadow-sm p-3">
-                <div>
-                    <i class="fa-solid fa-video fa-3x"></i>
+                <div class="bg-danger rounded p-2" style="width: 55px;height: 48px; text-align: center;">
+                    <i class="fas fa-database fa-2x text-light"></i>
                 </div>
                 <div class="px-3">
                     <p class="mb-2">Video Filesize</p>
@@ -68,10 +68,10 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
             <div class="d-flex rounded bg-white shadow-sm p-3">
-                <div>
-                    <i class="fa-solid fa-video fa-3x"></i>
+                <div class="bg-warning rounded p-2" style="width: 55px;height: 48px; text-align: center;">
+                    <i class="fas fa-stopwatch fa-2x text-light"></i>
                 </div>
                 <div class="px-3">
                     <p class="mb-2">Processing Time</p>
@@ -79,10 +79,12 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-4">
             <div class="d-flex rounded bg-white shadow-sm p-3">
-                <div>
-                    <i class="fa-solid fa-video fa-3x"></i>
+                <div class="bg-info rounded p-2" style="width: 55px;height: 48px; text-align: center;">
+                    <i class="fa-solid fa-video fa-2x text-light"></i>
                 </div>
                 <div class="px-3">
                     <p class="mb-2">Video Resulation</p>
@@ -90,12 +92,10 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row mt-4">
-        <div class="col-md-3">
+        <div class="col-md-4">
             <div class="d-flex rounded bg-white shadow-sm p-3">
-                <div>
-                    <i class="fa-solid fa-video fa-3x"></i>
+                <div class="bg-info rounded p-2" style="width: 55px;height: 48px; text-align: center;">
+                    <i class="fas fa-hourglass-half fa-2x text-light"></i>
                 </div>
                 <div class="px-3">
                     <p class="mb-2">Upload Duration</p>
@@ -103,10 +103,10 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
             <div class="d-flex rounded bg-white shadow-sm p-3">
-                <div>
-                    <i class="fa-solid fa-video fa-3x"></i>
+                <div class="bg-warning rounded p-2" style="width: 55px;height: 48px; text-align: center;">
+                    <i class="fa-solid fa-video fa-2x text-light"></i>
                 </div>
                 <div class="px-3">
                     <p class="mb-2">Video Speed</p>
@@ -114,10 +114,12 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-4">
             <div class="d-flex rounded bg-white shadow-sm p-3">
-                <div>
-                    <i class="fa-solid fa-video fa-3x"></i>
+                <div class="bg-danger rounded p-2" style="width: 55px;height: 48px; text-align: center;">
+                    <i class="fa-solid fa-video fa-2x text-light"></i>
                 </div>
                 <div class="px-3">
                     <p class="mb-2">Original Codec</p>
@@ -125,10 +127,10 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
             <div class="d-flex rounded bg-white shadow-sm p-3">
-                <div>
-                    <i class="fa-solid fa-video fa-3x"></i>
+                <div class="bg-success rounded p-2" style="width: 55px;height: 48px; text-align: center;">
+                    <i class="fa-solid fa-video fa-2x text-light"></i>
                 </div>
                 <div class="px-3">
                     <p class="mb-2">Original Bitrate</p>
