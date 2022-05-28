@@ -51,11 +51,11 @@
     @endforeach
 
     <!-- Vertically centered modal -->
-    <div class="modal-dialog modal-dialog-centered" id="staticBackdrop" data-bs-backdrop="static"
+    {{-- <div class="modal-dialog modal-dialog-centered" id="staticBackdrop" data-bs-backdrop="static"
         data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div>
             <p>Are sure about deleting this video?</p>
         </div>
-    </div>
+    </div> --}}
 </div>
 @endsection

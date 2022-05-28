@@ -143,12 +143,12 @@ $('#videoFile').change(function() {
                 var timeTaken = (endTime - startTime) / 1000;
                 $('#uploadDuration').val(timeTaken);
             } else {
-                console.log(res.message);
+                console.log(result.message);
                 //window.location.reload();
             }
         },
         error: function(err) {
-            console.log(res.message);
+            console.log(err);
             //window.location.reload();
         }
     });
