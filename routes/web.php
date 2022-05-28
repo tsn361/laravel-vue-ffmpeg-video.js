@@ -19,7 +19,6 @@ Route::get('/', function () {
 });
 
 Route::get('/admin', 'AdminController@index');
-//Route::get('/superadmin', 'SuperAdminController@index');
 Auth::routes();
 
 
@@ -43,41 +42,29 @@ Route::prefix('video')->group(function () {
         Route::post('/transcode/{id}', [App\Http\Controllers\VideoController::class, 'transcode'])->name('video.transcode');
         Route::get('/transcode-progress/{video_id}', [App\Http\Controllers\VideoController::class, 'getTranscodeProgress'])->name('video.transcode.progress');
     
-        Route::get('/video/secret/{key}', function ($key) {
-            return Storage::disk('uploads')->download($key);
-        })->name('video.key');
-
-        Route::get('/playback/{playlist}', function ($playlist) {
+        
+        Route::get('/playback/{userid}/{filename}/{playlist}', function ($userid,$filename,$playlist) {
             return FFMpeg::dynamicHLSPlaylist()
                 ->fromDisk('uploads')
-                ->open("3/1653517596/master.m3u8")
-                ->setKeyUrlResolver(function ($key) {
-                    \Log::info("key: {$key} %\n");
-                    return route('video.key', ['key' => $key]);
+                ->open("{$userid}/{$filename}/{$playlist}")
+                ->setKeyUrlResolver(function ($key) use($userid,$filename) {
+                    // \Log::info("setKeyUrlResolver key: {$key} %\n");
+                    return route('video.key', ['userid' => $userid,'filename'=>$filename,'key' => $key]);
                 })
-                ->setMediaUrlResolver(function ($mediaFilename) {
-                    \Log::info("mediaFilename: {$mediaFilename} %\n");
-                    return Storage::disk('uploads')->url("3/1653517596/master.m3u8");
+                ->setPlaylistUrlResolver(function ($playlistFilename) use ($userid,$filename,$playlist) {
+                    // \Log::info("playlistFilename: {$playlistFilename} %\n");
+                    return route('video.playback', ['userid' => $userid,'filename'=>$filename,'playlist' => $playlistFilename]);
                 })
-                ->setPlaylistUrlResolver(function ($playlistFilename)  {
-                    \Log::info("playlistFilename: {$playlistFilename} %\n");
-                    return route('video.playback', ['playlist' => $playlistFilename]);
+                ->setMediaUrlResolver(function ($mediaFilename) use ($userid,$filename){
+                    // \Log::info("mediaFilename: {$mediaFilename} %\n");
+                    // return route('video.playback', ['userid' => $userid,'filename'=>$filename,'playlist' => $mediaFilename]);
+                    return url("uploads/{$userid}/{$filename}/{$mediaFilename}");
                 });
-            // return FFMpeg::dynamicHLSPlaylist()
-            //     ->fromDisk('uploads')
-            //     ->open("{$id}/{$file_name}/{$playlist}")
-            //     ->setKeyUrlResolver(function ($key) {
-            //         return route('video.key', ['key' => $key]);
-            //     })
-            //     ->setMediaUrlResolver(function ($mediaFilename) use ($id,$file_name) {
-            //         return Storage::disk('uploads')->url("{$id}/{$file_name}/{$mediaFilename}");
-            //     })
-            //     ->setPlaylistUrlResolver(function ($playlistFilename) use ($id,$file_name) {
-            //         return route('video.playback', ['playlist' => $playlistFilename]);
-            //     });
         })->name('video.playback');
+
+        Route::get('/secret/{userid}/{filename}/{key}', function ($userid,$filename,$key) {
+            $Keypath = $userid.'/'.$filename.'/';
+            return Storage::disk('uploads')->download($Keypath.$key);
+        })->name('video.key');
     }); 
 });
-
-
-Route::get('/set',[App\Http\Controllers\VideoController::class,'setcookie2']);

@@ -22,13 +22,9 @@
 
             <video id="hls-video" class="video-js vjs-big-play-centered" controls preload="auto" height="560"
                 poster="/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->poster}}" data-setup="{}">
-                <!-- <source src="{{ route('video.playback', ['playlist'=> $video->playback_url ])}}"
+                <!-- <source
+                    src="{{ route('video.playback', ['userid' =>$video->user_id, 'filename'=> $video->file_name,'playlist' => $video->playback_url ])}}"
                     type="application/x-mpegURL"> -->
-                <p class="vjs-no-js">
-                    To view this video please enable JavaScript, and consider upgrading to a
-                    web browser that
-                    <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-                </p>
             </video>
         </div>
     </div>
@@ -143,6 +139,7 @@
 @endsection
 
 @section('script')
+<script src="https://unpkg.com/@videojs/http-streaming/dist/videojs-http-streaming.js"></script>
 <script>
 const options = {
     controlBar: {
@@ -159,10 +156,16 @@ const options = {
 
 const player = videojs(document.getElementById('hls-video'), options);
 
+// player.src({
+//     src: '/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->playback_url}}', // woring with hls and key
+//     type: 'application/x-mpegURL'
+// });
+
 player.src({
-    src: '/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->playback_url}}', // woring with hls and key
+    src: "{{ route('video.playback', ['userid' =>$video->user_id, 'filename'=> $video->file_name,'playlist' => $video->playback_url ])}}", // woring with hls and key
     type: 'application/x-mpegURL'
 });
+
 player.hlsQualitySelector({
     displayCurrentQuality: false,
 });

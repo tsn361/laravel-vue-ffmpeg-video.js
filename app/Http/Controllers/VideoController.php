@@ -302,11 +302,4 @@ class VideoController extends Controller
         return response()->json(['success'=>'true']);
     }
 
-
-    public function setcookie2(){
-        $anotherArray = array(0 => '1080', 1 => '720', 2 => '480', 3 => '360', 4 => '240');
-        sort($anotherArray);
-        $lastElement = last($anotherArray);
-        return response()->json($lastElement);
-    }
 }
