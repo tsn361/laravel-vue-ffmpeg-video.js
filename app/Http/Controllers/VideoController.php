@@ -75,6 +75,7 @@ class VideoController extends Controller
 
             // $request->file('file')->storeAs($save_path, $fileName,'uploads');
             request()->file->move(public_path('uploads/'.$save_path), $filePath);
+            //Storage::disk('uploads')->putFileAs($save_path, $file, $filePath);
     
             return response()->json(['success'=>'true', 'fileName'=>$fileName, 'filePath'=>$filePath]);
         

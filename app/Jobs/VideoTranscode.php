@@ -140,8 +140,9 @@ class VideoTranscode implements ShouldQueue
         }
     }
 
-    public function failed(Exception $exception) 
+    public function failed() 
     {
+        \Log::info("VideoTranscode=> e ");
         $this->fail();
         $this->updateVideoStatus($this->video_id,2,2);
     }
@@ -178,7 +179,7 @@ class VideoTranscode implements ShouldQueue
                 }
                 $query = TmpTranscodeProgress::where('file_name', $file_name)->where('file_format', $format)->update(['progress' => $newProgress, 'is_complete'=>$is_complete]);
             }elseif($format == '1080'){
-                $query = TmpTranscodeProgress::where('file_name', $file_name)->where('file_format', $format)->update(['progress' => $newProgress, 'is_complete'=>$is_complete]);
+                $query = TmpTranscodeProgress::where('file_name', $file_name)->where('file_format', $format)->update(['progress' => $progress, 'is_complete'=>$is_complete]);
             }
         }
     }
