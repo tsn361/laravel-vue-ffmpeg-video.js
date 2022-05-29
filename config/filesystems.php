@@ -49,11 +49,6 @@ return [
             'root' => storage_path('uploads'),
             'throw' => false,
         ],
-        'secrets' => [
-            'driver' => 'local',
-            'root' => storage_path('secrets'),
-            'throw' => false,
-        ],
 
         's3' => [
             'driver' => 's3',

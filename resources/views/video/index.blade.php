@@ -48,14 +48,50 @@
                     class="fas fa-trash-can"></i></button>
         </div>
     </div>
-    @endforeach
-
     <!-- Vertically centered modal -->
-    {{-- <div class="modal-dialog modal-dialog-centered" id="staticBackdrop" data-bs-backdrop="static"
-        data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div>
-            <p>Are sure about deleting this video?</p>
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete Video</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this '{{$video->title}}' video?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-danger"
+                        onclick="deleteVideo('{{$video->slug}}')">Delete</button>
+                </div>
+            </div>
         </div>
-    </div> --}}
+    </div>
+    @endforeach
 </div>
+@endsection
+
+@section('script')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script>
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+
+function deleteVideo(slug) {
+    $.ajax({
+        url: '/video/delete/' + slug,
+        type: 'Post',
+        success: function(result) {
+            if (result.success == 'true') {
+                window.location.href = "{{route('video.index')}}";
+            }
+
+        }
+    })
+}
+</script>
 @endsection

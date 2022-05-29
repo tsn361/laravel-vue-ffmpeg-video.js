@@ -143,7 +143,7 @@ class VideoTranscode implements ShouldQueue
     public function failed(Exception $exception) 
     {
         $this->fail();
-        $this->updateVideoStatus($video->file_name,2,2);
+        $this->updateVideoStatus($this->video_id,2,2);
     }
 
     public function updateTranscodeStatus($progress, $is_complete, $file_name,$fileFormatArray){
