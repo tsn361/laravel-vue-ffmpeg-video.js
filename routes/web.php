@@ -41,5 +41,30 @@ Route::prefix('video')->group(function () {
         Route::get('/{id}/status', [App\Http\Controllers\VideoController::class, 'videoTranscodeStatus'])->name('video.transcode.status');
         Route::post('/transcode/{id}', [App\Http\Controllers\VideoController::class, 'transcode'])->name('video.transcode');
         Route::get('/transcode-progress/{video_id}', [App\Http\Controllers\VideoController::class, 'getTranscodeProgress'])->name('video.transcode.progress');
+        
+        Route::get('/playback/{userid}/{filename}/{playlist}', function ($userid,$filename,$playlist) {
+            return FFMpeg::dynamicHLSPlaylist()
+                ->fromDisk('uploads')
+                ->open("{$userid}/{$filename}/{$playlist}")
+                ->setKeyUrlResolver(function ($key) use($userid,$filename) {
+                    // \Log::info("setKeyUrlResolver key: {$key} %\n");
+                    return route('video.key', ['userid' => $userid,'filename'=>$filename,'key' => $key]);
+                })
+                ->setPlaylistUrlResolver(function ($playlistFilename) use ($userid,$filename,$playlist) {
+                    // \Log::info("playlistFilename: {$playlistFilename} %\n");
+                    return route('video.playback', ['userid' => $userid,'filename'=>$filename,'playlist' => $playlistFilename]);
+                })
+                ->setMediaUrlResolver(function ($mediaFilename) use ($userid,$filename){
+                    // \Log::info("mediaFilename: {$mediaFilename} %\n");
+                    // return route('video.playback', ['userid' => $userid,'filename'=>$filename,'playlist' => $mediaFilename]);
+                    return url("uploads/{$userid}/{$filename}/{$mediaFilename}");
+                });
+        })->name('video.playback');
+
+        Route::get('/secret/{userid}/{filename}/{key}', function ($userid,$filename,$key) {
+            abort(500, 'Something went wrong');
+            $Keypath = $userid.'/'.$filename.'/';
+            return Storage::disk('uploads')->download($Keypath.$key);
+        })->name('video.key');
     }); 
 });

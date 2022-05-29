@@ -76,7 +76,10 @@ class VideoTranscode implements ShouldQueue
 
             $processOutput =  FFMpeg::fromDisk('uploads')->open($path)
                         ->exportForHLS()
-                        ->setSegmentLength(10);
+                        ->setSegmentLength(10)
+                        ->withRotatingEncryptionKey(function ($filename, $contents) use($Keypath){
+                            Storage::disk('uploads')->put("{$Keypath}/$filename", $contents);
+                        });
                         
                 foreach($newArray as $key => $value){
                     
