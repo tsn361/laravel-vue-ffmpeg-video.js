@@ -35,8 +35,14 @@
                     {{ $video->title }}
                 </div>
                 <div class="card-body">
-                    <p>{{ $video->description }}</p>
-                    <p>Created at: {{$video->created_at}}</p>
+                    <p class="py-1">{{ $video->description }}</p>
+                    <p class="py-1">Created at: {{$video->created_at}}</p>
+                    <p class="py-1">Playback URL:
+                        <a class="badge bg-dark text-start"
+                            href="{{ config('app.playback_url')}}/video/playback/{{$video->user_id}}/{{$video->file_name}}/master.m3u8">
+                            {{ config('app.playback_url')}}/video/playback/{{$video->user_id}}/{{$video->file_name}}/master.m3u8
+                        </a>
+                    </p>
                 </div>
             </div>
         </div>
