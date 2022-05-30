@@ -59,17 +59,14 @@ Route::prefix('video')->group(function () {
                     // return route('video.playback', ['userid' => $userid,'filename'=>$filename,'playlist' => $mediaFilename]);
                     return url("uploads/{$userid}/{$filename}/{$mediaFilename}");
                 });
-        })->name('video.playback')
-        ->middleware(['host']);
+        })->name('video.playback');
+        // ->middleware(['host']);
 
         Route::get('/secret/{userid}/{filename}/{key}', function ($userid,$filename,$key) {
             $Keypath = $userid.'/'.$filename.'/';
             return Storage::disk('uploads')->download($Keypath.$key);
-        })->name('video.key')
-        ->middleware(['host']);
+        })->name('video.key');
+        // ->middleware(['host']);
+
     });
 });
-
-Route::get('/file/{filename}', function (){
-    return "works";
-})->middleware(['host']);

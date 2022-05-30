@@ -29,6 +29,8 @@ use FFMpeg\Format\FormatInterface;
 use ProtoneMedia\LaravelFFMpeg\Exporters\HLSVideoFilters;
 use ProtoneMedia\LaravelFFMpeg\Exporters\HLSExporter;
 
+use ProtoneMedia\LaravelFFMpeg\Filters\TileFactory;
+
 class VideoTranscode implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -67,6 +69,7 @@ class VideoTranscode implements ShouldQueue
             $path = $video->user_id.'/'.$video->file_name.'/'.$video->origianl_file_url;
             $Keypath = $video->user_id.'/'.$video->file_name;
             $masetPath = $video->user_id.'/'.$video->file_name.'/master.m3u8';
+            $vttPath = $video->user_id.'/'.$video->file_name.'/';
 
             $p240 = (new X264)->setKiloBitrate(350);
             $p360 = (new X264)->setKiloBitrate(800);
@@ -77,9 +80,6 @@ class VideoTranscode implements ShouldQueue
             $processOutput =  FFMpeg::fromDisk('uploads')->open($path)
                         ->exportForHLS()
                         ->setSegmentLength(10);
-                        // ->withRotatingEncryptionKey(function ($filename, $contents) use($Keypath){
-                        //     Storage::disk('uploads')->put("{$Keypath}/$filename", $contents);
-                        // });
                         
                 foreach($newArray as $key => $value){
                     
@@ -131,20 +131,27 @@ class VideoTranscode implements ShouldQueue
                     }else{
                         $this->updateTranscodeStatus($percentage, 0, $video->file_name,$newArray);
                     }
-                })->save($masetPath)->cleanupTemporaryFiles();
+                })->save($masetPath)
+                ->exportTile(function (TileFactory $factory) use($vttPath) {
+                        $factory->interval(5)
+                            ->scale(320, 180)
+                            ->grid(5, 5)
+                            ->generateVTT($vttPath.'master.vtt');
+                    })->save($vttPath.'tile_%05d.jpg')
+                ->cleanupTemporaryFiles();
 
-                $this->updateVideoStatus($video->file_name,1,1);
+                $this->updateVideoStatus($video->id,1,1);
         }else{
+            $this->updateVideoStatus($this->video_id,2,2);
             $this->fail();
-            $this->deleteTranscodeStatus($video->file_name);
         }
     }
 
     public function failed() 
     {
-        \Log::info("VideoTranscode=> e ");
-        $this->fail();
+        \Log::info("VideoTranscode=> e ".$this->video_id);
         $this->updateVideoStatus($this->video_id,2,2);
+        $this->fail();
     }
 
     public function updateTranscodeStatus($progress, $is_complete, $file_name,$fileFormatArray){
@@ -183,16 +190,28 @@ class VideoTranscode implements ShouldQueue
             }
         }
     }
-    public function updateVideoStatus($file_name,$status,$is_transcoded){
-        $query = Video::where('file_name', $file_name)->update(['status' => $status, 'is_transcoded'=> $is_transcoded ]);
+    public function updateVideoStatus($video_id,$status,$is_transcoded){
+        $query = Video::where('id', $video_id)->update(['status' => $status, 'is_transcoded'=> $is_transcoded ]);
         if ($query) {
-            $this->deleteTranscodeStatus($file_name);
+            $this->deleteTranscodeStatus($video_id);
         }
     }
 
-    public function deleteTranscodeStatus($file_name){
+    public function deleteTranscodeStatus($video_id){
         
-        $query = TmpTranscodeProgress::where('file_name', $file_name)->delete();
+        $query = TmpTranscodeProgress::where('video_id', $video_id)->delete();
        
+    }
+
+    public function GenerateVtt(){
+        $vttPath = $video->user_id.'/'.$video->file_name.'/vtt/';
+                FFMpeg::fromDisk('uploads')->open($path)
+                    ->exportTile(function (TileFactory $factory) use($vttPath) {
+                        $factory->interval(5)
+                        ->scale(160, 90)
+                        ->grid(3, 5)
+                        ->generateVTT($vttPath.'master.vtt');
+                    })
+                    ->save($vttPath.'tile_%05d.jpg');
     }
 }

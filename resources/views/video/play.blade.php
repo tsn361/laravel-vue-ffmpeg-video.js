@@ -8,6 +8,7 @@
 <script src="{{ asset('js/videojs-contrib-quality-levels.min.js') }}"></script>
 
 <script src="{{ asset('js/videojs-hls-quality-selector.min.js') }}"></script>
+<script src="{{ asset('js/videojs-http-streaming.js') }}"></script>
 
 @endsection
 
@@ -145,7 +146,7 @@
 @endsection
 
 @section('script')
-<script src="https://unpkg.com/@videojs/http-streaming/dist/videojs-http-streaming.js"></script>
+
 <script>
 const options = {
     controlBar: {
@@ -159,13 +160,12 @@ const options = {
 
 };
 
-
 const player = videojs(document.getElementById('hls-video'), options);
-
 // player.src({
 //     src: '/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->playback_url}}', // woring with hls and key
 //     type: 'application/x-mpegURL'
 // });
+
 
 player.hlsQualitySelector({
     displayCurrentQuality: false,
