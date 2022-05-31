@@ -113,7 +113,6 @@ class VideoController extends Controller
         $video->is_transcoded = 0;
         $video->upload_duration = $request->uploadDuration;
         
-       
         if($video->save()){
             $this->createTmpTranscodeEntry($original_resolution, $request->fileName, $video->id);
             return response()->json(['success'=>'true', 'lastInsertedId'=>$video->id]);
@@ -169,18 +168,13 @@ class VideoController extends Controller
 
 
     public function videoDelete($slug){
-
-        \Log::info("videoDelete=> ".$slug);
         $video = Video::where('slug', $slug)->first();
-        \Log::info("user_id=>1 ".$video->user_id);
-        \Log::info("file_name=>1 ".$video->file_name);
 
         if ($video->delete()) {
-            \Log::info("user_id=>2 ".$video->user_id);
-            \Log::info("file_name=>2 ".$video->file_name);
-
+            //\Log::info("user_id=>2 ".$video->user_id);
             File::deleteDirectory(public_path('uploads/'.$video->user_id.'/'.$video->file_name));
         }
+
         return response()->json(['success'=>'true']);
     }
 
