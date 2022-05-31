@@ -75,27 +75,28 @@ Route::prefix('video')->group(function () {
 
 
  Route::get('/playback/{userid}/{filename}/{playlist}', function ($userid,$filename,$playlist) {
-            return FFMpeg::dynamicHLSPlaylist()
-                ->fromDisk('uploads')
-                ->open("{$userid}/{$filename}/{$playlist}")
-                ->setKeyUrlResolver(function ($key) use($userid,$filename) {
-                    // \Log::info("setKeyUrlResolver key: {$key} %\n");
-                    return route('video.key', ['userid' => $userid,'filename'=>$filename,'key' => $key]);
-                })
-                ->setPlaylistUrlResolver(function ($playlistFilename) use ($userid,$filename,$playlist) {
-                    // \Log::info("playlistFilename: {$playlistFilename} %\n");
-                    return route('video.playback', ['userid' => $userid,'filename'=>$filename,'playlist' => $playlistFilename]);
-                })
-                ->setMediaUrlResolver(function ($mediaFilename) use ($userid,$filename){
-                    // \Log::info("mediaFilename: {$mediaFilename} %\n");
-                    // return route('video.playback', ['userid' => $userid,'filename'=>$filename,'playlist' => $mediaFilename]);
-                    return url("uploads/{$userid}/{$filename}/{$mediaFilename}");
-                });
-        })->name('video.playback');
-        // ->middleware(['host']);
+    return FFMpeg::dynamicHLSPlaylist()
+        ->fromDisk('uploads')
+        ->open("{$userid}/{$filename}/{$playlist}")
+        ->setKeyUrlResolver(function ($key) use($userid,$filename) {
+            // \Log::info("setKeyUrlResolver key: {$key} %\n");
+            return route('video.key', ['userid' => $userid,'filename'=>$filename,'key' => $key]);
+        })
+        ->setPlaylistUrlResolver(function ($playlistFilename) use ($userid,$filename,$playlist) {
+            // \Log::info("playlistFilename: {$playlistFilename} %\n");
+            return route('video.playback', ['userid' => $userid,'filename'=>$filename,'playlist' => $playlistFilename]);
+        })
+        ->setMediaUrlResolver(function ($mediaFilename) use ($userid,$filename){
+            // \Log::info("mediaFilename: {$mediaFilename} %\n");
+            // return route('video.playback', ['userid' => $userid,'filename'=>$filename,'playlist' => $mediaFilename]);
+            return url("uploads/{$userid}/{$filename}/{$mediaFilename}");
+        });
+})->name('video.playback');
+// ->middleware(['host']);
 
-        Route::get('/secret/{userid}/{filename}/{key}', function ($userid,$filename,$key) {
-            $Keypath = $userid.'/'.$filename.'/';
-            return Storage::disk('uploads')->download($Keypath.$key);
-        })->name('video.key');
-Route::get('/embed/{slug}/width/height', [App\Http\Controllers\EmbedPlayerController::class, 'getEmbedPlayer'])->name('video.player.embed');
+Route::get('/secret/{userid}/{filename}/{key}', function ($userid,$filename,$key) {
+    $Keypath = $userid.'/'.$filename.'/';
+    return Storage::disk('uploads')->download($Keypath.$key);
+})->name('video.key');
+
+Route::get('/embed/{slug}/{width}/{height}', [App\Http\Controllers\EmbedPlayerController::class, 'getEmbedPlayer'])->name('video.player.embed');

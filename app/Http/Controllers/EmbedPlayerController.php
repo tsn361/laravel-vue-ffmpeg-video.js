@@ -8,8 +8,10 @@ use Illuminate\Http\Request;
 
 class EmbedPlayerController extends Controller
 {
-    public function getEmbedPlayer(Request $request){
+    public function getEmbedPlayer($slug,$playerwidth,$playerheight){
         $video = Video::where('slug', $request->slug)->first();
-        return view('video.embedPlayer', compact('video'));
+        $playerWidth = isset($playerwidth) ? $playerwidth : '560';
+        $playerHeight = isset($playerheight) ? $playerheight : '315';
+        return view('video.embedPlayer', compact('video','playerWidth','playerHeight'));
     }
 }

@@ -16,19 +16,15 @@
 </head>
 
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12 p-2 text-end">
 
-                <video id="hls-video" class="video-js vjs-big-play-centered" controls preload="auto" height="auto"
-                    poster="/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->poster}}" data-setup="{}">
-                    <source
-                        src="{{ route('video.playback', ['userid' =>$video->user_id, 'filename'=> $video->file_name,'playlist' => $video->playback_url ])}}"
-                        type="application/x-mpegURL">
-                </video>
-            </div>
-        </div>
-    </div>
+    <video id="hls-video" class="video-js vjs-big-play-centered" controls preload="auto" data-setup="{}"
+        style="width:{{$playerWidth}}px; height:{{$playerHeight}}px">
+        poster="/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->poster}}" data-setup="{}">
+        <source
+            src="{{ route('video.playback', ['userid' =>$video->user_id, 'filename'=> $video->file_name,'playlist' => $video->playback_url ])}}"
+            type="application/x-mpegURL">
+    </video>
+
 
 
     <script>
