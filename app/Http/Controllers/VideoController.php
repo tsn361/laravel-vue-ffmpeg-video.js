@@ -60,25 +60,21 @@ class VideoController extends Controller
     public function fileUploadPost(Request $request)
     {
 
-        $request->validate([
-        'file' => 'required|mimes:mp4,ogx,oga,ogv,ogg,webm'
-        ]);
-        
+        $allowed_file_types = ['mp4', 'webm', 'mkv', 'wmv', 'avi', 'avchd','flv', 'ts', 'mov'];
         $file = $request->file('file');
-        if($request->file()) {
+        $isValid = in_array(request()->file->getClientOriginalExtension(), $allowed_file_types);
 
-            //\Log::info("fileUploadPost =>yes ". request()->file->getClientOriginalExtension());
+        if($request->file() && $isValid) {
 
             $fileName = time();
             $filePath = $fileName.'.'.request()->file->getClientOriginalExtension();
             $save_path = Auth::user()->id.'/'.$fileName;
 
-            // $request->file('file')->storeAs($save_path, $fileName,'uploads');
+            //--old $request->file('file')->storeAs($save_path, $fileName,'uploads');
             request()->file->move(public_path('uploads/'.$save_path), $filePath);
-            //Storage::disk('uploads')->putFileAs($save_path, $file, $filePath);
-    
             return response()->json(['success'=>'true', 'fileName'=>$fileName, 'filePath'=>$filePath]);
-        
+        }else{
+            return response()->json(['success'=>'false', 'Fail upload failed']);
         }
     }
 
@@ -98,8 +94,6 @@ class VideoController extends Controller
         $media->getFrameFromSeconds(10)
         ->export()
         ->save(Auth::user()->id.'/'.$request->fileName.'/'.'poster.png');
-
-
 
 
         $video = new Video();
@@ -175,8 +169,16 @@ class VideoController extends Controller
 
 
     public function videoDelete($slug){
+
+        \Log::info("videoDelete=> ".$slug);
         $video = Video::where('slug', $slug)->first();
+        \Log::info("user_id=>1 ".$video->user_id);
+        \Log::info("file_name=>1 ".$video->file_name);
+
         if ($video->delete()) {
+            \Log::info("user_id=>2 ".$video->user_id);
+            \Log::info("file_name=>2 ".$video->file_name);
+
             File::deleteDirectory(public_path('uploads/'.$video->user_id.'/'.$video->file_name));
         }
         return response()->json(['success'=>'true']);

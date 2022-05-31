@@ -70,13 +70,18 @@
 
 @section('script')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script type="text/javascript">
+
 function resetUploadForm() {
+    $("#videoFile").show();
     $("#videoFile").val('');
     $('#progress-bar').width(0 + '%');
     $('#progress-bar').html('');
     $('#uploadProgressBtn').hide();
     $('#uploadProgressBtn').html('');
+    $('.UploadFormProgress').hide();
 }
 
 function showVideoDetailsForm() {
@@ -91,8 +96,7 @@ function uploadProgressHandler(event) {
         var max = event.total;
         var current = event.loaded;
         var Percentage = Math.round((current * 100) / max);
-        console.log(Percentage);
-
+        //console.log("Percentage=> ",Percentage);
         $('.UploadFormProgress').show();
         $('#progress-bar').width(Percentage + '%');
         $('#progress-bar').html(Percentage + '%');
@@ -107,51 +111,97 @@ $.ajaxSetup({
     }
 });
 
+
+function validFile(filename, filetype){
+
+    filename.toLowerCase();
+    const ext = ['.mp4', '.webm', '.mkv', '.wmv', '.avi', '.avchd','.flv', '.ts', '.mov'];
+    const mimes = ['video/x-flv', 'video/webm', 'video/ogg', 'video/mp4', 'application/x-mpegURL', 'ideo/3gpp', 'video/quicktime', 'video/x-msvideo','video/x-ms-wmv'];
+
+    const filenameIsValid = ext.some(el => filename.endsWith(el));
+    const filetypeIsValid = mimes.indexOf(filetype);
+
+    //console.log("filetypeIsValid=> ", filetypeIsValid, filetype);
+
+    if(filenameIsValid && filetypeIsValid !== -1){
+        return true;
+    }else{
+        return false;
+    }
+    
+}
+
 $('#videoFile').change(function() {
     event.preventDefault();
-    var startTime = new Date().getTime();
-    console.log("File selected");
 
     var file = $("#videoFile")[0].files[0];
-    var formData = new FormData();
-    formData.append("file", file);
+    
+    if(validFile(file.name, file.type)){
 
-    $.ajax({
-        url: "{{route('video.fileupload')}}",
-        method: 'POST',
-        type: 'POST',
-        data: formData,
-        contentType: false,
-        processData: false,
-        xhr: function() {
-            console.log('xhr');
-            var xhr = new window.XMLHttpRequest();
-            xhr.upload.addEventListener("progress",
-                uploadProgressHandler,
-                false
-            );
-            return xhr;
-        },
-        success: function(result) {
-            resetUploadForm()
-            if (result.success == 'true') {
-                showVideoDetailsForm();
-                $('#fileName').val(result.fileName);
-                $('#fileNameWithExt').val(result.filePath);
+        var startTime = new Date().getTime();
+        var formData = new FormData();
+        formData.append("file", file);
 
-                var endTime = new Date().getTime();
-                var timeTaken = (endTime - startTime) / 1000;
-                $('#uploadDuration').val(timeTaken);
-            } else {
-                console.log(result.message);
+        $.ajax({
+            url: "{{route('video.fileupload')}}",
+            method: 'POST',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            xhr: function() {
+                console.log('xhr');
+                var xhr = new window.XMLHttpRequest();
+                xhr.upload.addEventListener("progress",
+                    uploadProgressHandler,
+                    false
+                );
+                return xhr;
+            },
+            success: function(result) {
+                resetUploadForm()
+                if (result.success == 'true') {
+                    showVideoDetailsForm();
+                    $('#fileName').val(result.fileName);
+                    $('#fileNameWithExt').val(result.filePath);
+
+                    var endTime = new Date().getTime();
+                    var timeTaken = (endTime - startTime) / 1000;
+                    $('#uploadDuration').val(timeTaken);
+                } else {
+                    console.log(result.message);
+                    //window.location.reload();
+                    Swal.fire({
+                        title: 'Error',
+                        text: result.message,
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    })
+                    resetUploadForm()
+                }
+            },
+            error: function(err) {
+                //console.log(err);
                 //window.location.reload();
+                
+                Swal.fire({
+                    title: 'Error: Wrong filetype!',
+                    text: err.responseJSON.message,
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                })
+
+                resetUploadForm()
             }
-        },
-        error: function(err) {
-            console.log(err);
-            //window.location.reload();
-        }
-    });
+        });
+    }else{
+        Swal.fire({
+            title: 'Error: Wrong filetype!',
+            text: "Select a valid video file",
+            icon: 'error',
+            confirmButtonText: 'OK'
+        })
+    }
 });
 
 
@@ -162,7 +212,6 @@ function saveVideoInfo() {
     formData.append("uploadDuration", $('#uploadDuration').val());
     formData.append("title", $('#VideoTitle').val());
     formData.append("description", $('#VideoDescription').val());
-
 
     $.ajax({
         url: "{{route('video.save.info')}}",

@@ -63,7 +63,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
                     <button type="button" class="btn btn-danger"
-                        onclick="deleteVideo('{{$video->slug}}')">Delete</button>
+                        onclick="deleteVideo('{{ $video->slug }}')">Delete</button>
                 </div>
             </div>
         </div>
