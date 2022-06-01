@@ -3,12 +3,7 @@
 @section('style')
 <link href="{{ asset('css/video-js.min.css') }}" rel="stylesheet">
 <link href="{{ asset('css/quality-selector.css') }}" rel="stylesheet">
-
-<script src="{{ asset('js/video.min.js') }}"></script>
-<script src="{{ asset('js/videojs-contrib-quality-levels.min.js') }}"></script>
-
-<script src="{{ asset('js/videojs-hls-quality-selector.min.js') }}"></script>
-<script src="{{ asset('js/videojs-http-streaming.js') }}"></script>
+{{-- <link href="{{ asset('js/videojs-vtt-thumbnails/dist/videojs-vtt-thumbnails.css') }}" rel="stylesheet"> --}}
 <style>
 .offscreen {
     position: absolute;
@@ -158,6 +153,13 @@
 @endsection
 
 @section('script')
+<script src="{{ asset('js/video.min.js') }}"></script>
+<script src="{{ asset('js/videojs-contrib-quality-levels.min.js') }}"></script>
+
+<script src="{{ asset('js/videojs-hls-quality-selector.min.js') }}"></script>
+<script src="{{ asset('js/videojs-http-streaming.js') }}"></script>
+<script src="{{ asset('js/videojs-sprite-thumbnails/dist/videojs-sprite-thumbnails.min.js') }}"></script>
+{{-- <script src="https://cdn.jsdelivr.net/npm/videojs-vtt-thumbnails@0.0.13/dist/videojs-vtt-thumbnails.cjs.min"></script> --}}
 
 <script>
 const options = {
@@ -184,12 +186,21 @@ player.hlsQualitySelector({
 });
 
 player.on('ready', function() {
-    //this.addClass('my-example');
+    console.log("Player is ready to play")
 });
 
+// player.vttThumbnails({
+//     src: '/uploads/{{$video->user_id}}/{{$video->file_name}}/master.vtt'
+// });
+player.spriteThumbnails({
+    url: 'http://localhost:8000/uploads/{{$video->user_id}}/{{$video->file_name}}/tile_00001.jpg',
+    width: 320,
+    height: 180,
+ });
+
+ player.spriteThumbnails().log.level('debug');
+
 player.play();
-
-
 
 function copyEmbedCode() {
     var copyText = document.getElementById("embedCode");

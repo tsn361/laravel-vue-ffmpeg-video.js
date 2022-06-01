@@ -41,6 +41,11 @@ class VideoController extends Controller
         return view('video.play', compact('video'));
     }
 
+    public function edit_ui(){
+        $video = Video::where('slug', request()->slug)->first();
+        return view('video.edit', compact('video'));
+    }
+
     public function videoTranscodeStatus($id){
         $video = Video::where('id',$id)->where('is_transcoded',0)->first();
         
@@ -75,6 +80,20 @@ class VideoController extends Controller
             return response()->json(['success'=>'true', 'fileName'=>$fileName, 'filePath'=>$filePath]);
         }else{
             return response()->json(['success'=>'false', 'Fail upload failed']);
+        }
+    }
+
+    public function updateVideoInfo(Request $request){
+        $video = Video::where('slug', request()->slug)->first();
+
+        $video->title = $request->title;
+        $video->description = $request->description;
+        $video->allow_hosts = $request->allow_host;
+        
+        if($video->save()){
+            return response()->json(['success'=>'true', 'videoId'=>$video->id]);
+        }else{
+            return response()->json(['success'=>'false', 'message'=>'Error saving video']);
         }
     }
 

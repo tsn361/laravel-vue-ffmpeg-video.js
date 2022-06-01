@@ -43,7 +43,9 @@
             <button class="btn btn-info btn-sm text-white">
                 <strong><i class="fas fa-info"></i></strong>
             </button>
-            <button class="btn btn-primary btn-sm"><i class="fas fa-pencil"></i></button>
+            <a href="/video/edit/{{$video->slug}}">
+                <button class="btn btn-primary btn-sm" ><i class="fas fa-pencil"></i></button>
+            </a>
             <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{$video->id}}"><i class="fas fa-trash-can"></i></button>
         </div>
     </div>

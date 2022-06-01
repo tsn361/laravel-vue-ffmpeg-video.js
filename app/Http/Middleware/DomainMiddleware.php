@@ -21,7 +21,7 @@ class DomainMiddleware
         \Log::info('DomainMiddleware');
         $fileName = $request->route('filename');
         $host = $request->getHost(); // returns dev.site.com
-        // $hostWithSchema = $request->getSchemeAndHttpHost(); // returns https://dev.site.com
+        //$hostWithSchema = $request->getSchemeAndHttpHost(); // returns https://dev.site.com
         $getHost = Video::where("file_name", $fileName)->where('allow_hosts', 'like', '%' . $host. '%')->first();
             
         if ($getHost == null) {

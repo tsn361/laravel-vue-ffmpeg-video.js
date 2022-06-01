@@ -38,6 +38,7 @@ Route::prefix('video')->group(function () {
         Route::post('/delete/{slug}', [App\Http\Controllers\VideoController::class, 'videoDelete'])->name('video.delete');
         Route::post('/file-upload', [App\Http\Controllers\VideoController::class, 'fileUploadPost'])->name('video.fileupload');
         Route::post('/save-video-info', [App\Http\Controllers\VideoController::class, 'saveVideoInfo'])->name('video.save.info');
+        Route::post('/edit-video', [App\Http\Controllers\VideoController::class, 'updateVideoInfo'])->name('video.edit');
         Route::get('/{id}/status', [App\Http\Controllers\VideoController::class, 'videoTranscodeStatus'])->name('video.transcode.status');
         Route::post('/transcode/{id}', [App\Http\Controllers\VideoController::class, 'transcode'])->name('video.transcode');
         Route::get('/transcode-progress/{video_id}', [App\Http\Controllers\VideoController::class, 'getTranscodeProgress'])->name('video.transcode.progress');
