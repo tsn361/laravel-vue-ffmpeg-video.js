@@ -70,10 +70,9 @@
 
 @section('script')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 <script type="text/javascript">
-
 function resetUploadForm() {
     $("#videoFile").show();
     $("#videoFile").val('');
@@ -112,31 +111,33 @@ $.ajaxSetup({
 });
 
 
-function validFile(filename, filetype){
+function validFile(filename, filetype) {
 
     filename.toLowerCase();
-    const ext = ['.mp4', '.webm', '.mkv', '.wmv', '.avi', '.avchd','.flv', '.ts', '.mov'];
-    const mimes = ['video/x-flv', 'video/webm', 'video/ogg', 'video/mp4', 'application/x-mpegURL', 'ideo/3gpp', 'video/quicktime', 'video/x-msvideo','video/x-ms-wmv'];
+    const ext = ['.mp4', '.webm', '.mkv', '.wmv', '.avi', '.avchd', '.flv', '.ts', '.mov'];
+    const mimes = ['video/x-flv', 'video/webm', 'video/ogg', 'video/mp4', 'application/x-mpegURL', 'ideo/3gpp',
+        'video/quicktime', 'video/x-msvideo', 'video/x-ms-wmv'
+    ];
 
     const filenameIsValid = ext.some(el => filename.endsWith(el));
     const filetypeIsValid = mimes.indexOf(filetype);
 
     //console.log("filetypeIsValid=> ", filetypeIsValid, filetype);
 
-    if(filenameIsValid && filetypeIsValid !== -1){
+    if (filenameIsValid && filetypeIsValid !== -1) {
         return true;
-    }else{
+    } else {
         return false;
     }
-    
+
 }
 
 $('#videoFile').change(function() {
     event.preventDefault();
 
     var file = $("#videoFile")[0].files[0];
-    
-    if(validFile(file.name, file.type)){
+
+    if (validFile(file.name, file.type)) {
 
         var startTime = new Date().getTime();
         var formData = new FormData();
@@ -183,7 +184,7 @@ $('#videoFile').change(function() {
             error: function(err) {
                 //console.log(err);
                 //window.location.reload();
-                
+
                 Swal.fire({
                     title: 'Error: Wrong filetype!',
                     text: err.responseJSON.message,
@@ -194,7 +195,7 @@ $('#videoFile').change(function() {
                 resetUploadForm()
             }
         });
-    }else{
+    } else {
         Swal.fire({
             title: 'Error: Wrong filetype!',
             text: "Select a valid video file",

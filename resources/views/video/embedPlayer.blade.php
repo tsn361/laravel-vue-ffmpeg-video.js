@@ -24,9 +24,6 @@
             src="{{ route('video.playback', ['userid' =>$video->user_id, 'filename'=> $video->file_name,'playlist' => $video->playback_url ])}}"
             type="application/x-mpegURL">
     </video>
-
-
-
     <script>
     const options = {
         controlBar: {

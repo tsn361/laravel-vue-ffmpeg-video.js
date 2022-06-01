@@ -9,7 +9,12 @@
 
 <script src="{{ asset('js/videojs-hls-quality-selector.min.js') }}"></script>
 <script src="{{ asset('js/videojs-http-streaming.js') }}"></script>
-
+<style>
+.offscreen {
+    position: absolute;
+    left: -999em;
+}
+</style>
 @endsection
 
 @section('content')
@@ -43,6 +48,13 @@
                             href="{{ config('app.playback_url')}}/video/playback/{{$video->user_id}}/{{$video->file_name}}/master.m3u8">
                             {{ config('app.playback_url')}}/video/playback/{{$video->user_id}}/{{$video->file_name}}/master.m3u8
                         </a>
+                    </p>
+                    <p class="py-1" onclick="copyEmbedCode()">Embed Code:
+                        <a class="badge bg-danger text-start text-light" href="javascript:void(0)">Click to Copy </a>
+                        <textarea id="embedCode" class="offscreen"><iframe width="565" height="320"
+                                src="{{ config('app.url')}}/embed/{{$video->slug}}/540/300" frameborder="0"
+                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen></iframe></textarea>
                     </p>
                 </div>
             </div>
@@ -176,5 +188,19 @@ player.on('ready', function() {
 });
 
 player.play();
+
+
+
+function copyEmbedCode() {
+    var copyText = document.getElementById("embedCode");
+    copyText.select();
+    document.execCommand("copy");
+    Swal.fire({
+        title: 'Player Embed Code Copied',
+        text: 'Copy the code and paste it in your website',
+        icon: 'success',
+        confirmButtonText: 'OK'
+    })
+}
 </script>
 @endsection
