@@ -135,7 +135,7 @@ class VideoTranscode implements ShouldQueue
                         $factory->interval(2)
                             ->scale(160, 90)
                             ->grid(15, 350);
-                    })->save($vttPath.'tile_%05d.jpg')
+                    })->save($vttPath.'preview_%02d.jpg')
                 ->cleanupTemporaryFiles();
 
                 $this->updateVideoStatus($video->id,1,1);

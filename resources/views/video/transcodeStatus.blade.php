@@ -25,7 +25,7 @@
                         <div class="col-md-10">
                             <div class="progress" style="height:2rem">
                                 <div id="progress-bar-{{$value}}" class="progress-bar" role="progressbar"
-                                    style="width: 1%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%
+                                    style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%
                                 </div>
                             </div>
                         </div>
