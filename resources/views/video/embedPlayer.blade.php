@@ -13,7 +13,7 @@
 
     <script src="{{ asset('js/videojs-hls-quality-selector.min.js') }}"></script>
     <script src="{{ asset('js/videojs-http-streaming.js') }}"></script>
-</head>
+    <script src="{{ asset('js/videojs-sprite-thumbnails.min.js') }}"></script>
 
 <body>
 
@@ -59,6 +59,13 @@
     });
 
     player.play();
+    player.play();
+    player.spriteThumbnails({
+        interval: 2,
+        url: "{{ config('app.url')}}/uploads/{{$video->user_id}}/{{$video->file_name}}/preview_01.jpg",
+        width: 160,
+        height: 90
+    });
     </script>
 </body>
 

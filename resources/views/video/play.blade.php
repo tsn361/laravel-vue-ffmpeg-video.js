@@ -196,7 +196,7 @@ player.on('ready', function() {
 player.play();
 player.spriteThumbnails({
     interval: 2,
-    url: 'http://localhost:8000/uploads/{{$video->user_id}}/{{$video->file_name}}/preview_01.jpg',
+    url: "{{ config('app.url')}}/uploads/{{$video->user_id}}/{{$video->file_name}}/preview_01.jpg",
     width: 160,
     height: 90
 });
