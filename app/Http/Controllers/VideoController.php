@@ -190,7 +190,6 @@ class VideoController extends Controller
         $video = Video::where('slug', $slug)->first();
 
         if ($video->delete()) {
-            //\Log::info("user_id=>2 ".$video->user_id);
             File::deleteDirectory(public_path('uploads/'.$video->user_id.'/'.$video->file_name));
         }
 

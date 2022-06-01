@@ -17,7 +17,6 @@ use App\Models\TmpTranscodeProgress;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Auth;
-use Cviebrock\EloquentSluggable\Services\SlugService;
 
 use FFMpeg\FFProbe;
 use FFMpeg;
@@ -133,10 +132,9 @@ class VideoTranscode implements ShouldQueue
                     }
                 })->save($masetPath)
                 ->exportTile(function (TileFactory $factory) use($vttPath) {
-                        $factory->interval(5)
-                            ->scale(320, 180)
-                            ->grid(5, 5)
-                            ->generateVTT($vttPath.'master.vtt');
+                        $factory->interval(2)
+                            ->scale(160, 90)
+                            ->grid(15, 350);
                     })->save($vttPath.'tile_%05d.jpg')
                 ->cleanupTemporaryFiles();
 
@@ -203,15 +201,14 @@ class VideoTranscode implements ShouldQueue
        
     }
 
-    public function GenerateVtt(){
-        $vttPath = $video->user_id.'/'.$video->file_name.'/vtt/';
-                FFMpeg::fromDisk('uploads')->open($path)
-                    ->exportTile(function (TileFactory $factory) use($vttPath) {
-                        $factory->interval(5)
-                        ->scale(160, 90)
-                        ->grid(3, 5)
-                        ->generateVTT($vttPath.'master.vtt');
-                    })
-                    ->save($vttPath.'tile_%05d.jpg');
-    }
+    // public function GenerateVtt(){
+    //     $vttPath = $video->user_id.'/'.$video->file_name.'/vtt/';
+    //             FFMpeg::fromDisk('uploads')->open($path)
+    //                 ->exportTile(function (TileFactory $factory) use($vttPath) {
+    //                     $factory->interval(1)
+    //                     ->scale(160, 90)
+    //                     ->generateVTT($vttPath.'master.vtt');
+    //                 })
+    //                 ->save($vttPath.'tile_%05d.jpg');
+    // }
 }

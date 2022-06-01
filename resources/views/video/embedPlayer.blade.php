@@ -32,7 +32,13 @@
                 'progressControl',
                 'volumePanel',
                 'fullscreenToggle',
+                'qualitySelector',
             ],
+        },
+        html5: {
+            hls: {
+                overrideNative: true, // add this line
+            }
         },
 
     };
