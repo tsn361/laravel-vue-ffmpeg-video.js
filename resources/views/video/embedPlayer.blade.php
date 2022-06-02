@@ -19,8 +19,7 @@
 
 <body>
 
-    <video id="hls-video" class="video-js vjs-big-play-centered" controls preload="auto" data-setup="{}"
-        style="width:{{$playerWidth}}px; height:{{$playerHeight}}px">
+    <video id="hls-video" class="video-js vjs-big-play-centered" controls preload="auto" data-setup="{}">
         poster="/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->poster}}" data-setup="{}">
         <source
             src="{{ route('video.playback', ['userid' =>$video->user_id, 'filename'=> $video->file_name,'playlist' => $video->playback_url ])}}"

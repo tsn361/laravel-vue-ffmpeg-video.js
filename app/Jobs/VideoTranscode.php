@@ -77,6 +77,11 @@ class VideoTranscode implements ShouldQueue
             $p1080 = (new X264)->setKiloBitrate(4000);
 
             $processOutput =  FFMpeg::fromDisk('uploads')->open($path)
+                        ->exportTile(function (TileFactory $factory) use($vttPath) {
+                            $factory->interval(2)
+                                ->scale(160, 90)
+                                ->grid(15, 350);
+                        })->save($vttPath.'preview_%02d.jpg')
                         ->exportForHLS()
                         ->setSegmentLength(10);
                         
@@ -131,11 +136,6 @@ class VideoTranscode implements ShouldQueue
                         $this->updateTranscodeStatus($percentage, 0, $video->file_name,$newArray);
                     }
                 })->save($masetPath)
-                ->exportTile(function (TileFactory $factory) use($vttPath) {
-                        $factory->interval(2)
-                            ->scale(160, 90)
-                            ->grid(15, 350);
-                    })->save($vttPath.'preview_%02d.jpg')
                 ->cleanupTemporaryFiles();
 
                 $this->updateVideoStatus($video->id,1,1);

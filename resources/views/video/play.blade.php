@@ -58,7 +58,7 @@
                     </div>
                     <div class="mt-3">
                         <textarea id="embedCode" class="offscreen" rows="5"
-                            cols="40"><iframe width="565" height="320" src="{{ config('app.url')}}/embed/{{$video->slug}}/540/300" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></textarea>
+                            cols="40"><iframe src="{{ config('app.url')}}/embed/{{$video->slug}}" frameborder="0"  allow="accelerometer; autoplay; encrypted-media;" allowfullscreen></iframe></textarea>
                     </div>
                     </p>
                 </div>

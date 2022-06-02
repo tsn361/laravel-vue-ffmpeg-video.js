@@ -100,4 +100,4 @@ Route::get('/secret/{userid}/{filename}/{key}', function ($userid,$filename,$key
     return Storage::disk('uploads')->download($Keypath.$key);
 })->name('video.key');
 
-Route::get('/embed/{slug}/{width}/{height}', [App\Http\Controllers\EmbedPlayerController::class, 'getEmbedPlayer'])->name('video.player.embed');
+Route::get('/embed/{slug}', [App\Http\Controllers\EmbedPlayerController::class, 'getEmbedPlayer'])->name('video.player.embed');
