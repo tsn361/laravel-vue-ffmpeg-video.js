@@ -3,6 +3,14 @@
 @section('style')
 <link href="{{ asset('css/video-js.min.css') }}" rel="stylesheet">
 <link href="{{ asset('css/quality-selector.css') }}" rel="stylesheet">
+
+<script src="{{ asset('js/video.min.js') }}"></script>
+<script src="{{ asset('js/videojs-hls-quality-selector.min.js') }}"></script>
+<script src="{{ asset('js/videojs-contrib-quality-levels.min.js') }}"></script>
+
+
+<script src="{{ asset('js/videojs-http-streaming.js') }}"></script>
+<script src="{{ asset('js/videojs-sprite-thumbnails.min.js') }}"></script>
 <style>
 .offscreen {
     position: absolute;
@@ -152,13 +160,6 @@
 @endsection
 
 @section('script')
-<script src="{{ asset('js/video.min.js') }}"></script>
-<script src="{{ asset('js/videojs-contrib-quality-levels.min.js') }}"></script>
-
-<script src="{{ asset('js/videojs-hls-quality-selector.min.js') }}"></script>
-<script src="{{ asset('js/videojs-http-streaming.js') }}"></script>
-<script src="{{ asset('js/videojs-sprite-thumbnails.min.js') }}"></script>
-
 <script>
 const options = {
     controlBar: {

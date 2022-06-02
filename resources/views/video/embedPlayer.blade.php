@@ -6,12 +6,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="{{ asset('css/video-js.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/quality-selector.css') }}" rel="stylesheet">
+    <!-- <link href="{{ asset('css/quality-selector.css') }}" rel="stylesheet"> -->
+    <link href="{{ asset('css/extra/videojs-hls-quality-selector.css') }}" rel="stylesheet">
 
     <script src="{{ asset('js/video.min.js') }}"></script>
-    <script src="{{ asset('js/videojs-contrib-quality-levels.min.js') }}"></script>
+    <!-- <script src="{{ asset('js/videojs-hls-quality-selector.min.js') }}"></script>
+    <script src="{{ asset('js/videojs-contrib-quality-levels.min.js') }}"></script> -->
 
-    <script src="{{ asset('js/videojs-hls-quality-selector.min.js') }}"></script>
+    <script src="{{ asset('js/extra/videojs-hls-quality-selector.min.js') }}"></script>
+    <script src="{{ asset('js/extra/videojs-contrib-quality-levels.min.js') }}"></script>
+
     <script src="{{ asset('js/videojs-http-streaming.js') }}"></script>
     <script src="{{ asset('js/videojs-sprite-thumbnails.min.js') }}"></script>
 

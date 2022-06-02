@@ -1,0 +1,25 @@
+/**
+ * videojs-hls-quality-selector
+ * @version 1.0.5
+ * @copyright 2019 Chris Boustead (chris@forgemotion.com)
+ * @license MIT
+ */
+.video-js.vjs-hls-quality-selector{display:block}
+span.vjs-menu-item-text sup {
+    text-transform: uppercase;
+    color: #e20f00;
+    font-size: 10px;
+    margin-left: 3px;
+    font-weight: 600;
+    position:absolute
+}
+span.vjs-menu-item-text {
+    font-size: 14px;
+    position: relative;
+}
+.vjs-hls-quality-selector .vjs-menu li.vjs-menu-title{
+    font-size: 0.9em;
+}
+.vjs-hls-quality-selector .vjs-menu li.vjs-menu-item {
+    text-align: center;
+}
