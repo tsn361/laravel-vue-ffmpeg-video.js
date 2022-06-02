@@ -2,7 +2,7 @@
 
 @section('style')
 <link href="{{ asset('css/video-js.min.css') }}" rel="stylesheet">
-<link href="{{ asset('css/quality-selector.css') }}" rel="stylesheet">
+<link href="{{ asset('css/videojs-hls-quality-selector.css') }}" rel="stylesheet">
 
 <script src="{{ asset('js/video.min.js') }}"></script>
 <script src="{{ asset('js/videojs-hls-quality-selector.min.js') }}"></script>
@@ -30,9 +30,9 @@
 
             <video id="hls-video" class="video-js vjs-big-play-centered" controls preload="auto" height="560"
                 poster="/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->poster}}" data-setup="{}">
-                <source
+                <!-- <source
                     src="{{ route('video.playback', ['userid' =>$video->user_id, 'filename'=> $video->file_name,'playlist' => $video->playback_url ])}}"
-                    type="application/x-mpegURL">
+                    type="application/x-mpegURL"> -->
             </video>
         </div>
     </div>
@@ -164,6 +164,7 @@
 
 @section('script')
 <script>
+var overrideNative = false;
 const options = {
     controlBar: {
         children: [
@@ -176,17 +177,20 @@ const options = {
     },
     html5: {
         hls: {
-            overrideNative: true, // add this line
-        }
-    },
+            overrideNative: overrideNative
+        },
+        nativeVideoTracks: !overrideNative,
+        nativeAudioTracks: !overrideNative,
+        nativeTextTracks: !overrideNative
+    }
 
 };
 
 const player = videojs(document.getElementById('hls-video'), options);
-// player.src({
-//     src: '/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->playback_url}}', // woring with hls and key
-//     type: 'application/x-mpegURL'
-// });
+player.src({
+    src: "{{ route('video.playback', ['userid' =>$video->user_id, 'filename'=> $video->file_name,'playlist' => $video->playback_url ])}}", // woring with hls and key
+    type: 'application/x-mpegURL'
+});
 
 
 player.on('ready', function() {
@@ -201,9 +205,7 @@ player.spriteThumbnails({
     height: 90
 });
 
-player.hlsQualitySelector({
-    displayCurrentQuality: false,
-});
+player.hlsQualitySelector();
 
 function copyEmbedCode() {
     var copyText = document.getElementById("embedCode");
