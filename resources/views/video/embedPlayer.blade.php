@@ -53,11 +53,6 @@
     //     type: 'application/x-mpegURL'
     // });
 
-
-    player.hlsQualitySelector({
-        displayCurrentQuality: false,
-    });
-
     player.on('ready', function() {
         //this.addClass('my-example');
     });
@@ -68,6 +63,9 @@
         url: "{{ config('app.url')}}/uploads/{{$video->user_id}}/{{$video->file_name}}/preview_01.jpg",
         width: 160,
         height: 90
+    });
+    player.hlsQualitySelector({
+        displayCurrentQuality: false,
     });
     </script>
 </body>

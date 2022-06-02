@@ -51,13 +51,15 @@
                             {{ config('app.playback_url')}}/video/playback/{{$video->user_id}}/{{$video->file_name}}/master.m3u8
                         </a>
                     </p>
-                    <p class="py-1" >
-                        <div>
-                            Embed Code: <a class="badge bg-danger text-start text-light" href="javascript:void(0)" onclick="copyEmbedCode()">Click to Copy </a>
-                        </div>
-                        <div class="mt-3">
-                            <textarea id="embedCode" class="offscreen" rows="5" cols="40"><iframe width="565" height="320" src="{{ config('app.url')}}/embed/{{$video->slug}}/540/300" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></textarea>
-                        </div>
+                    <p class="py-1">
+                    <div>
+                        Embed Code: <a class="badge bg-danger text-start text-light" href="javascript:void(0)"
+                            onclick="copyEmbedCode()">Click to Copy </a>
+                    </div>
+                    <div class="mt-3">
+                        <textarea id="embedCode" class="offscreen" rows="5"
+                            cols="40"><iframe width="565" height="320" src="{{ config('app.url')}}/embed/{{$video->slug}}/540/300" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></textarea>
+                    </div>
                     </p>
                 </div>
             </div>
@@ -187,10 +189,6 @@ const player = videojs(document.getElementById('hls-video'), options);
 // });
 
 
-player.hlsQualitySelector({
-    displayCurrentQuality: false,
-});
-
 player.on('ready', function() {
     console.log("Player is ready to play")
 });
@@ -201,6 +199,10 @@ player.spriteThumbnails({
     url: "{{ config('app.url')}}/uploads/{{$video->user_id}}/{{$video->file_name}}/preview_01.jpg",
     width: 160,
     height: 90
+});
+
+player.hlsQualitySelector({
+    displayCurrentQuality: false,
 });
 
 function copyEmbedCode() {
