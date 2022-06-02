@@ -63,7 +63,6 @@
     });
 
     player.play();
-    player.play();
     player.spriteThumbnails({
         interval: 2,
         url: "{{ config('app.url')}}/uploads/{{$video->user_id}}/{{$video->file_name}}/preview_01.jpg",
