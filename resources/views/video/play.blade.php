@@ -13,8 +13,8 @@
 <script src="{{ asset('js/videojs-sprite-thumbnails.min.js') }}"></script>
 <style>
 .offscreen {
-    position: absolute;
-    left: -999em;
+    /* position: absolute;
+    left: -999em; */
 }
 </style>
 @endsection
@@ -51,12 +51,13 @@
                             {{ config('app.playback_url')}}/video/playback/{{$video->user_id}}/{{$video->file_name}}/master.m3u8
                         </a>
                     </p>
-                    <p class="py-1" onclick="copyEmbedCode()">Embed Code:
-                        <a class="badge bg-danger text-start text-light" href="javascript:void(0)">Click to Copy </a>
-                        <textarea id="embedCode" class="offscreen"><iframe width="565" height="320"
-                                src="{{ config('app.url')}}/embed/{{$video->slug}}/540/300" frameborder="0"
-                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                                allowfullscreen></iframe></textarea>
+                    <p class="py-1" >
+                        <div>
+                            Embed Code: <a class="badge bg-danger text-start text-light" href="javascript:void(0)" onclick="copyEmbedCode()">Click to Copy </a>
+                        </div>
+                        <div class="mt-3">
+                            <textarea id="embedCode" class="offscreen" rows="5" cols="40"><iframe width="565" height="320" src="{{ config('app.url')}}/embed/{{$video->slug}}/540/300" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></textarea>
+                        </div>
                     </p>
                 </div>
             </div>
