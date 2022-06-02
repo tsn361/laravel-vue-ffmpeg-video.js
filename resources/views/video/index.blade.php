@@ -40,9 +40,11 @@
             <div class="mt-1">Upload duration: <strong>{{$video->upload_duration}}</strong></div>
         </div>
         <div class="col-md-3 text-end p-3">
-            <button class="btn btn-info btn-sm text-white">
-                <strong><i class="fas fa-info"></i></strong>
-            </button>
+            <a href="{{ route('video.play',['slug' => $video->slug])}}">
+                <button class="btn btn-info btn-sm text-white">
+                    <strong><i class="fas fa-info"></i></strong>
+                </button>
+            </a>
             <a href="/video/edit/{{$video->slug}}">
                 <button class="btn btn-primary btn-sm" ><i class="fas fa-pencil"></i></button>
             </a>
