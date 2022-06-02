@@ -116,8 +116,9 @@ function validFile(filename, filetype) {
     filename.toLowerCase();
     const ext = ['.mp4', '.webm', '.mkv', '.wmv', '.avi', '.avchd', '.flv', '.ts', '.mov'];
     const mimes = ['video/x-flv', 'video/webm', 'video/ogg', 'video/mp4', 'application/x-mpegURL', 'ideo/3gpp',
-        'video/quicktime', 'video/x-msvideo', 'video/x-ms-wmv'
+        'video/quicktime', 'video/x-msvideo', 'video/x-ms-wmv', 'video/x-matroska', 'video/x-msvideo'
     ];
+
 
     const filenameIsValid = ext.some(el => filename.endsWith(el));
     const filetypeIsValid = mimes.indexOf(filetype);

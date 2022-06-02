@@ -164,7 +164,6 @@
 
 @section('script')
 <script>
-var overrideNative = false;
 const options = {
     controlBar: {
         children: [
@@ -175,21 +174,13 @@ const options = {
             'qualitySelector',
         ],
     },
-    html5: {
-        hls: {
-            overrideNative: overrideNative
-        },
-        nativeVideoTracks: !overrideNative,
-        nativeAudioTracks: !overrideNative,
-        nativeTextTracks: !overrideNative
-    }
-
 };
 
 const player = videojs(document.getElementById('hls-video'), options);
 player.src({
     src: "{{ route('video.playback', ['userid' =>$video->user_id, 'filename'=> $video->file_name,'playlist' => $video->playback_url ])}}", // woring with hls and key
-    type: 'application/x-mpegURL'
+    type: 'application/x-mpegURL',
+    withCredentials: true,
 });
 
 
