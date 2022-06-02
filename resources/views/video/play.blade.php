@@ -9,13 +9,9 @@
 <script src="{{ asset('js/videojs-contrib-quality-levels.min.js') }}"></script>
 
 
-<script src="{{ asset('js/videojs-http-streaming.js') }}"></script>
+<!-- <script src="{{ asset('js/videojs-http-streaming.js') }}"></script> -->
 <script src="{{ asset('js/videojs-sprite-thumbnails.min.js') }}"></script>
 <style>
-.offscreen {
-    /* position: absolute;
-    left: -999em; */
-}
 </style>
 @endsection
 
@@ -29,7 +25,8 @@
         <div class="col-md-12 p-2 text-end">
 
             <video id="hls-video" class="video-js vjs-big-play-centered" controls preload="auto" height="560"
-                poster="/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->poster}}" data-setup="{}">
+                width="995" poster="/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->poster}}"
+                data-setup="{}">
                 <!-- <source
                     src="{{ route('video.playback', ['userid' =>$video->user_id, 'filename'=> $video->file_name,'playlist' => $video->playback_url ])}}"
                     type="application/x-mpegURL"> -->
