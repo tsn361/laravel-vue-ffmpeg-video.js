@@ -182,12 +182,12 @@ $('#videoFile').change(function() {
                     resetUploadForm()
                 }
             },
-            error: function(err) {
-                //console.log(err);
+            error: function(err) {      
+                console.log(err);
                 //window.location.reload();
 
                 Swal.fire({
-                    title: 'Error: Wrong filetype!',
+                    title: 'Error',
                     text: err.responseJSON.message,
                     icon: 'error',
                     confirmButtonText: 'OK'
@@ -198,11 +198,11 @@ $('#videoFile').change(function() {
         });
     } else {
         Swal.fire({
-            title: 'Error: Wrong filetype!',
+            title: 'Error!',
             text: "Select a valid video file",
             icon: 'error',
             confirmButtonText: 'OK'
-        })
+        }) 
     }
 });
 

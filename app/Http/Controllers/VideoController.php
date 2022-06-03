@@ -28,7 +28,10 @@ class VideoController extends Controller
 {
 
     public function index(){
-        $videos = Video::where('user_id', Auth::user()->id)->get();
+        $videos = Video::where('user_id', Auth::user()->id)
+                    ->where('is_transcoded', 1)
+                    ->orderBy('id', 'DESC')
+                    ->get();
         return view('video.index', compact('videos'));
     }
 
@@ -37,7 +40,15 @@ class VideoController extends Controller
     }
 
     public function video_play_UI(){
-        $video = Video::where('slug', request()->slug)->first();
+        $video = Video::where('slug', request()->slug)
+        ->where('status', 1)
+        ->first();
+
+        //empty check and redirect to 404 page
+        if(!$video){
+            return view('video.404');
+        }
+
         return view('video.play', compact('video'));
     }
 
@@ -62,8 +73,7 @@ class VideoController extends Controller
         
     }
 
-    public function fileUploadPost(Request $request)
-    {
+    public function fileUploadPost(Request $request){
 
         $allowed_file_types = ['mp4', 'webm', 'mkv', 'wmv', 'avi', 'avchd','flv', 'ts', 'mov'];
         $file = $request->file('file');

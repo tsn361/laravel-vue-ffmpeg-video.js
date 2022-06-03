@@ -56,7 +56,7 @@ class VideoTranscode implements ShouldQueue
      */
     public function handle()
     {
-        $video = Video::where('id',$this->video_id)->where('is_transcoded',0)->first();
+        $video = Video::where('id',$this->video_id)->where('is_transcoded', 0)->first();
         
         if($video){
             $array = array(0 => '1080', 1 => '720', 2 => '480', 3 => '360', 4 => '240');
@@ -109,6 +109,7 @@ class VideoTranscode implements ShouldQueue
                         });
                     }
                  }
+
                 $processOutput->useSegmentFilenameGenerator(function ($name, $format, $key, callable $segments, callable $playlist) {
                     if($format->getKiloBitrate() == 350){
                         $segments("{$name}-240-%03d.ts");
@@ -130,10 +131,11 @@ class VideoTranscode implements ShouldQueue
                 ->onProgress(function ($percentage) use($video,$newArray) {
                     // echo "percent: {$percentage} %\n";
                     \Log::info("percent: {$percentage} %\n");
+
                     if ($percentage == 100) {
-                        $this->updateTranscodeStatus($percentage, 1, $video->file_name,$newArray);
+                        $this->updateTranscodeStatus($percentage, 1, $video->file_name, $newArray);
                     }else{
-                        $this->updateTranscodeStatus($percentage, 0, $video->file_name,$newArray);
+                        $this->updateTranscodeStatus($percentage, 0, $video->file_name, $newArray);
                     }
                 })->save($masetPath)
                 ->cleanupTemporaryFiles();
@@ -148,12 +150,16 @@ class VideoTranscode implements ShouldQueue
     public function failed() 
     {
         \Log::info("VideoTranscode=> e ".$this->video_id);
-        $this->updateVideoStatus($this->video_id,2,2);
+        $this->updateVideoStatus($this->video_id, 2, 2);
         $this->fail();
     }
 
     public function updateTranscodeStatus($progress, $is_complete, $file_name,$fileFormatArray){
         $lastFormat = last($fileFormatArray);
+
+        //iniatially set the progress to 1%
+        $progress = $progress == 0 ? 1 : $progress;
+
         foreach($fileFormatArray as $key => $format) {
             if($format == '240'){
                 if($lastFormat == '240'){
@@ -188,7 +194,7 @@ class VideoTranscode implements ShouldQueue
             }
         }
     }
-    public function updateVideoStatus($video_id,$status,$is_transcoded){
+    public function updateVideoStatus($video_id, $status, $is_transcoded){
         $query = Video::where('id', $video_id)->update(['status' => $status, 'is_transcoded'=> $is_transcoded ]);
         if ($query) {
             $this->deleteTranscodeStatus($video_id);
