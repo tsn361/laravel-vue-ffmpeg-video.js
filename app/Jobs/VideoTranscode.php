@@ -59,8 +59,19 @@ class VideoTranscode implements ShouldQueue
      */
     public function handle()
     {
+<<<<<<< HEAD
         try {
             $video = Video::where('id',$this->video_id)->where('is_transcoded',0)->first();
+=======
+        $video = Video::where('id',$this->video_id)->where('is_transcoded', 0)->first();
+        
+        if($video){
+            $array = array(0 => '1080', 1 => '720', 2 => '480', 3 => '360', 4 => '240');
+            $key = array_search($video->original_resolution, $array);
+            $newArray = array_slice($array, $key);
+            sort($newArray);
+
+>>>>>>> a20746f77cba071703fa7af6a77243b774f9c267
             
             if($video){
                 $array = array(0 => '1080', 1 => '720', 2 => '480', 3 => '360', 4 => '240');
@@ -92,6 +103,7 @@ class VideoTranscode implements ShouldQueue
                             
                     foreach($newArray as $key => $value){
                         
+<<<<<<< HEAD
                         if($value == '240'){
                             $processOutput->addFormat($p240, function($media) {
                                 $media->scale(426, 240);
@@ -114,6 +126,62 @@ class VideoTranscode implements ShouldQueue
                             });
                         }
                     }
+=======
+                foreach($newArray as $key => $value){
+                    
+                    if($value == '240'){
+                        $processOutput->addFormat($p240, function($media) {
+                            $media->scale(426, 240);
+                        });
+                    }else if($value == '360'){
+                        $processOutput->addFormat($p360, function($media) {
+                            $media->scale(640, 360);
+                        });
+                    }else if($value == '480'){
+                        $processOutput->addFormat($p480, function($media) {
+                            $media->scale(854, 480);
+                        });
+                    }else if($value == '720'){
+                        $processOutput->addFormat($p720, function($media) {
+                            $media->scale(1280, 720);
+                        });
+                    }else if($value == '1080'){
+                        $processOutput->addFormat($p1080, function($media) {
+                            $media->scale(1920, 1080);
+                        });
+                    }
+                 }
+
+                $processOutput->useSegmentFilenameGenerator(function ($name, $format, $key, callable $segments, callable $playlist) {
+                    if($format->getKiloBitrate() == 350){
+                        $segments("{$name}-240-%03d.ts");
+                        $playlist("{$name}-240.m3u8");
+                    }else if($format->getKiloBitrate() == 800){
+                        $segments("{$name}-360-%03d.ts");
+                        $playlist("{$name}-360.m3u8");
+                    }else if($format->getKiloBitrate() == 1200){
+                        $segments("{$name}-480-%03d.ts");
+                        $playlist("{$name}-480.m3u8");
+                    }else if($format->getKiloBitrate() == 1900){
+                        $segments("{$name}-720-%03d.ts");
+                        $playlist("{$name}-720.m3u8");
+                    }else if($format->getKiloBitrate() == 4000){
+                        $segments("{$name}-720-%03d.ts");
+                        $playlist("{$name}-1080.m3u8");
+                    }
+                })
+                ->onProgress(function ($percentage) use($video,$newArray) {
+                    // echo "percent: {$percentage} %\n";
+                    \Log::info("percent: {$percentage} %\n");
+
+                    if ($percentage == 100) {
+                        $this->updateTranscodeStatus($percentage, 1, $video->file_name, $newArray);
+                    }else{
+                        $this->updateTranscodeStatus($percentage, 0, $video->file_name, $newArray);
+                    }
+                })->save($masetPath)
+                ->cleanupTemporaryFiles();
+>>>>>>> a20746f77cba071703fa7af6a77243b774f9c267
 
                     $processOutput->useSegmentFilenameGenerator(function ($name, $format, $key, callable $segments, callable $playlist) {
                         if($format->getKiloBitrate() == 250){
@@ -153,12 +221,16 @@ class VideoTranscode implements ShouldQueue
     public function failed() 
     {
         \Log::info("VideoTranscode=> e ".$this->video_id);
-        $this->updateVideoStatus($this->video_id,2,2);
+        $this->updateVideoStatus($this->video_id, 2, 2);
         $this->fail();
     }
 
     public function updateTranscodeStatus($progress, $is_complete, $file_name,$fileFormatArray){
         $lastFormat = last($fileFormatArray);
+
+        //iniatially set the progress to 1%
+        $progress = $progress == 0 ? 1 : $progress;
+
         foreach($fileFormatArray as $key => $format) {
             if($format == '240'){
                 if($lastFormat == '240'){
@@ -193,7 +265,7 @@ class VideoTranscode implements ShouldQueue
             }
         }
     }
-    public function updateVideoStatus($video_id,$status,$is_transcoded){
+    public function updateVideoStatus($video_id, $status, $is_transcoded){
         $query = Video::where('id', $video_id)->update(['status' => $status, 'is_transcoded'=> $is_transcoded ]);
         if ($query) {
             $this->deleteTranscodeStatus($video_id);
