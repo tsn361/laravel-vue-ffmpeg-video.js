@@ -171,7 +171,13 @@ const options = {
             'qualitySelector',
         ],
     },
-};
+    html5: {
+        hls: {
+            overrideNative: !videojs.browser.IS_SAFARI
+        },
+
+    }
+}
 
 const player = videojs(document.getElementById('hls-video'), options);
 player.src({

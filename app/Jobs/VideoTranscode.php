@@ -29,6 +29,9 @@ use ProtoneMedia\LaravelFFMpeg\Exporters\HLSVideoFilters;
 use ProtoneMedia\LaravelFFMpeg\Exporters\HLSExporter;
 
 use ProtoneMedia\LaravelFFMpeg\Filters\TileFactory;
+use FFMpeg\Filters\Video\VideoFilters;
+use FFMpeg\Media\AdvancedMedia;
+use ProtoneMedia\LaravelFFMpeg\FFMpeg\VideoMedia;
 
 class VideoTranscode implements ShouldQueue
 {
@@ -56,91 +59,93 @@ class VideoTranscode implements ShouldQueue
      */
     public function handle()
     {
-        $video = Video::where('id',$this->video_id)->where('is_transcoded',0)->first();
-        
-        if($video){
-            $array = array(0 => '1080', 1 => '720', 2 => '480', 3 => '360', 4 => '240');
-            $key = array_search($video->original_resolution, $array);
-            $newArray = array_slice($array, $key);
-            sort($newArray);
-
+        try {
+            $video = Video::where('id',$this->video_id)->where('is_transcoded',0)->first();
             
-            $path = $video->user_id.'/'.$video->file_name.'/'.$video->origianl_file_url;
-            $Keypath = $video->user_id.'/'.$video->file_name;
-            $masetPath = $video->user_id.'/'.$video->file_name.'/master.m3u8';
-            $vttPath = $video->user_id.'/'.$video->file_name.'/';
+            if($video){
+                $array = array(0 => '1080', 1 => '720', 2 => '480', 3 => '360', 4 => '240');
+                $key = array_search($video->original_resolution, $array);
+                $newArray = array_slice($array, $key);
+                sort($newArray);
 
-            $p240 = (new X264)->setKiloBitrate(350);
-            $p360 = (new X264)->setKiloBitrate(800);
-            $p480 = (new X264)->setKiloBitrate(1200);
-            $p720 = (new X264)->setKiloBitrate(1900);
-            $p1080 = (new X264)->setKiloBitrate(4000);
+                
+                $path = $video->user_id.'/'.$video->file_name.'/'.$video->origianl_file_url;
+                $Keypath = $video->user_id.'/'.$video->file_name;
+                $masetPath = $video->user_id.'/'.$video->file_name.'/master.m3u8';
+                $vttPath = $video->user_id.'/'.$video->file_name.'/';
 
-            $processOutput =  FFMpeg::fromDisk('uploads')->open($path)
-                        ->exportTile(function (TileFactory $factory) use($vttPath) {
-                            $factory->interval(2)
-                                ->scale(160, 90)
-                                ->grid(15, 350);
-                        })->save($vttPath.'preview_%02d.jpg')
-                        ->exportForHLS()
-                        ->setSegmentLength(10);
+                $p240 = (new X264)->setKiloBitrate(250);
+                $p360 = (new X264)->setKiloBitrate(500);
+                $p480 = (new X264)->setKiloBitrate(800);
+                $p720 = (new X264)->setKiloBitrate(1000);
+                $p1080 = (new X264)->setKiloBitrate(1500);
+
+                $processOutput =  FFMpeg::fromDisk('uploads')->open($path)
+                            // ->addFilter(['-c:v', 'h264', '-flags', '+cgop', '-g', '30'])
+                            ->exportTile(function (TileFactory $factory) use($vttPath) {
+                                $factory->interval(2)
+                                    ->scale(160, 90)
+                                    ->grid(15, 350);
+                            })->save($vttPath.'preview_%02d.jpg')
+                            ->exportForHLS()
+                            ->setSegmentLength(10);
+                            
+                    foreach($newArray as $key => $value){
                         
-                foreach($newArray as $key => $value){
-                    
-                    if($value == '240'){
-                        $processOutput->addFormat($p240, function($media) {
-                            $media->scale(426, 240);
-                        });
-                    }else if($value == '360'){
-                        $processOutput->addFormat($p360, function($media) {
-                            $media->scale(640, 360);
-                        });
-                    }else if($value == '480'){
-                        $processOutput->addFormat($p480, function($media) {
-                            $media->scale(854, 480);
-                        });
-                    }else if($value == '720'){
-                        $processOutput->addFormat($p720, function($media) {
-                            $media->scale(1280, 720);
-                        });
-                    }else if($value == '1080'){
-                        $processOutput->addFormat($p1080, function($media) {
-                            $media->scale(1920, 1080);
-                        });
+                        if($value == '240'){
+                            $processOutput->addFormat($p240, function($media) {
+                                $media->scale(426, 240);
+                            });
+                        }else if($value == '360'){
+                            $processOutput->addFormat($p360, function($media) {
+                                $media->scale(640, 360);
+                            });
+                        }else if($value == '480'){
+                            $processOutput->addFormat($p480, function($media) {
+                                $media->scale(854, 480);
+                            });
+                        }else if($value == '720'){
+                            $processOutput->addFormat($p720, function($media) {
+                                $media->scale(1280, 720);
+                            });
+                        }else if($value == '1080'){
+                            $processOutput->addFormat($p1080, function($media) {
+                                $media->scale(1920, 1080);
+                            });
+                        }
                     }
-                 }
-                $processOutput->useSegmentFilenameGenerator(function ($name, $format, $key, callable $segments, callable $playlist) {
-                    if($format->getKiloBitrate() == 350){
-                        $segments("{$name}-240-%03d.ts");
-                        $playlist("{$name}-240.m3u8");
-                    }else if($format->getKiloBitrate() == 800){
-                        $segments("{$name}-360-%03d.ts");
-                        $playlist("{$name}-360.m3u8");
-                    }else if($format->getKiloBitrate() == 1200){
-                        $segments("{$name}-480-%03d.ts");
-                        $playlist("{$name}-480.m3u8");
-                    }else if($format->getKiloBitrate() == 1900){
-                        $segments("{$name}-720-%03d.ts");
-                        $playlist("{$name}-720.m3u8");
-                    }else if($format->getKiloBitrate() == 4000){
-                        $segments("{$name}-720-%03d.ts");
-                        $playlist("{$name}-1080.m3u8");
-                    }
-                })
-                ->onProgress(function ($percentage) use($video,$newArray) {
-                    // echo "percent: {$percentage} %\n";
-                    \Log::info("percent: {$percentage} %\n");
-                    if ($percentage == 100) {
-                        $this->updateTranscodeStatus($percentage, 1, $video->file_name,$newArray);
-                    }else{
-                        $this->updateTranscodeStatus($percentage, 0, $video->file_name,$newArray);
-                    }
-                })->save($masetPath)
-                ->cleanupTemporaryFiles();
 
-                $this->updateVideoStatus($video->id,1,1);
-        }else{
-            $this->updateVideoStatus($this->video_id,2,2);
+                    $processOutput->useSegmentFilenameGenerator(function ($name, $format, $key, callable $segments, callable $playlist) {
+                        if($format->getKiloBitrate() == 250){
+                            $segments("{$name}-240-%03d.ts");
+                            $playlist("{$name}-240.m3u8");
+                        }else if($format->getKiloBitrate() == 500){
+                            $segments("{$name}-360-%03d.ts");
+                            $playlist("{$name}-360.m3u8");
+                        }else if($format->getKiloBitrate() == 800){
+                            $segments("{$name}-480-%03d.ts");
+                            $playlist("{$name}-480.m3u8");
+                        }else if($format->getKiloBitrate() == 1000){
+                            $segments("{$name}-720-%03d.ts");
+                            $playlist("{$name}-720.m3u8");
+                        }else if($format->getKiloBitrate() == 1500){
+                            $segments("{$name}-720-%03d.ts");
+                            $playlist("{$name}-1080.m3u8");
+                        }
+                    })
+                    ->onProgress(function ($percentage) use($video,$newArray) {
+                        \Log::info("percent: {$percentage} %\n");
+                        if ($percentage == 100) {
+                            $this->updateTranscodeStatus($percentage, 1, $video->file_name,$newArray);
+                        }else{
+                            $this->updateTranscodeStatus($percentage, 0, $video->file_name,$newArray);
+                        }
+                    })->save($masetPath);
+                    $this->updateVideoStatus($video->id,1,1);
+            }else{
+                $this->fail();
+            }
+        }catch (Exception  $e) {
             $this->fail();
         }
     }

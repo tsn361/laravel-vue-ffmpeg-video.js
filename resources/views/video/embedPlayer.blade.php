@@ -19,7 +19,7 @@
 
 <body>
 
-    <video id="hls-video" class="video-js vjs-big-play-centered" controls preload="auto" data-setup="{}">
+    <video id="hls-video" class="video-js vjs-big-play-centered" controls preload="auto"
         poster="/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->poster}}" data-setup="{}">
     </video>
     <script>
