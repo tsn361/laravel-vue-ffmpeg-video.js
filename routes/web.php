@@ -64,8 +64,8 @@ Route::prefix('video')->group(function () {
         // ->middleware(['host']);
 
         Route::get('/secret/{userid}/{filename}/{key}', function ($userid,$filename,$key) {
-            $Keypath = $userid.'/'.$filename.'/';
-            return Storage::disk('uploads')->download($Keypath.$key);
+            $Keypath = $userid.'/'.$filename.'/'.$key;
+            return Storage::disk('uploads')->download($Keypath);
         })->name('video.key');
         // ->middleware(['host']);
 
@@ -96,8 +96,8 @@ Route::prefix('video')->group(function () {
 // ->middleware(['host']);
 
 Route::get('/secret/{userid}/{filename}/{key}', function ($userid,$filename,$key) {
-    $Keypath = $userid.'/'.$filename.'/';
-    return Storage::disk('uploads')->download($Keypath.$key);
+    $Keypath = $userid.'/'.$filename.'/'.$key;
+    return Storage::disk('uploads')->download($Keypath);
 })->name('video.key');
 
 Route::get('/embed/{slug}', [App\Http\Controllers\EmbedPlayerController::class, 'getEmbedPlayer'])->name('video.player.embed');

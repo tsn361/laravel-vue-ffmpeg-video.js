@@ -8,8 +8,6 @@
 <script src="{{ asset('js/videojs-hls-quality-selector.min.js') }}"></script>
 <script src="{{ asset('js/videojs-contrib-quality-levels.min.js') }}"></script>
 
-
-<script src="{{ asset('js/videojs-http-streaming.js') }}"></script>
 <script src="{{ asset('js/videojs-sprite-thumbnails.min.js') }}"></script>
 <style>
 </style>

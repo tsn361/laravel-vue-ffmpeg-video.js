@@ -74,15 +74,16 @@ class VideoTranscode implements ShouldQueue
                 $masetPath = $video->user_id.'/'.$video->file_name.'/master.m3u8';
                 $vttPath = $video->user_id.'/'.$video->file_name.'/';
 
-                $p240 = (new X264)->setKiloBitrate(150)->setAdditionalParameters(['-c:v', 'h264', '-flags', '+cgop', '-preset', 'ultrafast', '-qp', '0', '-r', '30', '-g', '60', '-pix_fmt', 'yuv420p']);
-                $p360 = (new X264)->setKiloBitrate(276)->setAdditionalParameters(['-c:v', 'h264', '-flags', '+cgop', '-preset', 'ultrafast', '-qp', '0', '-r', '30', '-g', '60', '-pix_fmt', 'yuv420p']);
-                $p480 = (new X264)->setKiloBitrate(750)->setAdditionalParameters(['-c:v', 'h264', '-flags', '+cgop', '-preset', 'ultrafast', '-qp', '0', '-r', '30', '-g', '60', '-pix_fmt', 'yuv420p']);
-                $p720 = (new X264)->setKiloBitrate(1000)->setAdditionalParameters(['-c:v', 'h264', '-flags', '+cgop', '-preset', 'ultrafast', '-qp', '0', '-r', '30', '-g', '60', '-pix_fmt', 'yuv420p']);
-                $p1080 = (new X264)->setKiloBitrate(2048)->setAdditionalParameters(['-c:v', 'h264', '-flags', '+cgop', '-preset', 'ultrafast', '-qp', '0', '-r', '30', '-g', '60', '-pix_fmt', 'yuv420p']);
-                // $p1080 = (new X264)->setKiloBitrate(1500)->setAdditionalParameters(['-c:v', 'h264', '-flags', '+cgop', '-g', '30']);
+               
+                $p240 = (new X264)->setKiloBitrate(150)->setAdditionalParameters(['-c:v', 'h264', '-profile:v', 'main', '-pix_fmt', 'yuv420p', '-movflags', '+faststart']);
+                $p360 = (new X264)->setKiloBitrate(276)->setAdditionalParameters(['-c:v', 'h264', '-profile:v', 'main', '-pix_fmt', 'yuv420p', '-movflags', '+faststart']);
+                $p480 = (new X264)->setKiloBitrate(750)->setAdditionalParameters(['-c:v', 'h264', '-profile:v', 'main', '-pix_fmt', 'yuv420p', '-movflags', '+faststart']);
+                $p720 = (new X264)->setKiloBitrate(1000)->setAdditionalParameters(['-c:v', 'h264', '-profile:v', 'main', '-pix_fmt', 'yuv420p', '-movflags', '+faststart']);
+                $p1080 = (new X264)->setKiloBitrate(2048)->setAdditionalParameters(['-c:v', 'h264', '-profile:v', 'main', '-pix_fmt', 'yuv420p', '-movflags', '+faststart']);
+                // $p1080 = (new X264)->setKiloBitrate(1500)->->setAdditionalParameters(['-c:v', 'h264', '-preset', 'ultrafast', '-qp', '0', '-r', '30', '-g', '60', '-pix_fmt', 'yuv420p']);
 
                 $processOutput =  FFMpeg::fromDisk('uploads')->open($path)
-                            // ->addFilter(['-c:v', 'h264', '-preset', 'ultrafast', '-qp', '0', '-r', '30', '-g', '60', '-pix_fmt', 'yuv420p'])
+                            // ->addFilter(['-c:v', 'h264', '-profile:v', 'main', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', '-f', 'hls'])
                             // ->export()
                             ->exportTile(function (TileFactory $factory) use($vttPath) {
                                 $factory->interval(2)
