@@ -177,7 +177,6 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        Aws\Laravel\AwsServiceProvider::class,
         ProtoneMedia\LaravelFFMpeg\Support\ServiceProvider::class,
 
     ],
@@ -195,7 +194,6 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // ...
-        'AWS' => Aws\Laravel\AwsFacade::class,
         'FFMpeg' => ProtoneMedia\LaravelFFMpeg\Support\FFMpeg::class
     ])->toArray(),
 

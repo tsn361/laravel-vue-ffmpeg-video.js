@@ -9,7 +9,7 @@
 <script src="{{ asset('js/videojs-contrib-quality-levels.min.js') }}"></script>
 
 
-<!-- <script src="{{ asset('js/videojs-http-streaming.js') }}"></script> -->
+<script src="{{ asset('js/videojs-http-streaming.js') }}"></script>
 <script src="{{ asset('js/videojs-sprite-thumbnails.min.js') }}"></script>
 <style>
 </style>
@@ -24,7 +24,7 @@
         </div>
         <div class="col-md-12 p-2 text-end">
 
-            <video id="hls-video" class="video-js vjs-big-play-centered" controls preload="auto" height="560"
+            <video id="hls-video" class="video-js vjs-big-play-centered" preload="none" controls height="560"
                 width="995" poster="/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->poster}}"
                 data-setup="{}">
                 <!-- <source
@@ -180,26 +180,22 @@ const options = {
 }
 
 const player = videojs(document.getElementById('hls-video'), options);
-player.src({
-    src: "{{ route('video.playback', ['userid' =>$video->user_id, 'filename'=> $video->file_name,'playlist' => $video->playback_url ])}}", // woring with hls and key
-    type: 'application/x-mpegURL',
-    withCredentials: true,
+player.reset();
+player.ready(function() {
+    player.src({
+        src: "{{ route('video.playback', ['userid' =>$video->user_id, 'filename'=> $video->file_name,'playlist' => $video->playback_url ])}}", // woring with hls and key
+        type: 'application/x-mpegURL'
+    });
+    player.hlsQualitySelector();
+    player.spriteThumbnails({
+        interval: 2,
+        url: "{{ config('app.url')}}/uploads/{{$video->user_id}}/{{$video->file_name}}/preview_01.jpg",
+        width: 160,
+        height: 90
+    });
+    player.play();
 });
 
-
-player.on('ready', function() {
-    console.log("Player is ready to play")
-});
-
-player.play();
-player.spriteThumbnails({
-    interval: 2,
-    url: "{{ config('app.url')}}/uploads/{{$video->user_id}}/{{$video->file_name}}/preview_01.jpg",
-    width: 160,
-    height: 90
-});
-
-player.hlsQualitySelector();
 
 function copyEmbedCode() {
     var copyText = document.getElementById("embedCode");
