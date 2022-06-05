@@ -195,6 +195,25 @@ class VideoController extends Controller
         }
     }
 
+    public function getAESKey(Request $request, $userid,$filename,$key){
+        $Keypath = $userid.'/'.$filename.'/'.$key;
+        //\Log::info("request => { $request->headers() } \n");
+        \Log::info("secret => {$Keypath} \n");
+
+        if (Storage::disk('uploads')->exists($Keypath)) {
+            
+            \Log::info("File exit \n");
+            $contents = Storage::disk('uploads')->get($Keypath);
+            \Log::info("File content: $contents \n");
+
+            return $contents;
+        }
+
+
+        //return Storage::disk('uploads')->download($Keypath);
+        return null;
+    }
+
 
     public function videoDelete($slug){
         $video = Video::where('slug', $slug)->first();
