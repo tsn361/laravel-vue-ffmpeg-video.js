@@ -19,9 +19,9 @@ class FraudChecking
         \Log::info('FraudChecking');
 
         // request from terminal
-        if (!defined("STDIN")) {
-            abort(503, 'Hey cheating, I caught you');
-        }
+        // if (!defined("STDIN")) {
+        //     abort(503, 'Hey cheating, I caught you');
+        // }
         $proxy_headers = array(
             'HTTP_VIA',
             'HTTP_X_FORWARDED_FOR',
