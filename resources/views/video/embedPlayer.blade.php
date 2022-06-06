@@ -10,18 +10,17 @@
     <link href="{{ asset('css/videojs-hls-quality-selector.css') }}" rel="stylesheet">
 
     <script src="{{ asset('js/video.min.js') }}"></script>
+
+<body>
+
+    <video id="hls-video" class="video-js vjs-big-play-centered vjs-fluid vjs-fill" controls preload="auto"
+        poster="/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->poster}}" data-setup="{}">
+    </video>
     <script src="{{ asset('js/videojs-hls-quality-selector.min.js') }}"></script>
     <script src="{{ asset('js/videojs-contrib-quality-levels.min.js') }}"></script>
 
 
-    <script src="{{ asset('js/videojs-http-streaming.js') }}"></script>
     <script src="{{ asset('js/videojs-sprite-thumbnails.min.js') }}"></script>
-
-<body>
-
-    <video id="hls-video" class="video-js vjs-big-play-centered" controls preload="auto"
-        poster="/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->poster}}" data-setup="{}">
-    </video>
     <script>
     const options = {
         controlBar: {

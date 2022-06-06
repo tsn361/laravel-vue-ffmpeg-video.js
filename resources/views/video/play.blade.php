@@ -49,7 +49,7 @@
                     </div>
                     <div class="mt-3">
                         <textarea id="embedCode" class="offscreen" rows="5"
-                            cols="40"><iframe src="{{ config('app.url')}}/embed/{{$video->slug}}" frameborder="0"  allow="accelerometer; autoplay; encrypted-media;" allowfullscreen></iframe></textarea>
+                            cols="40"><iframe src="{{ config('app.url')}}/embed/{{$video->slug}}" frameborder="0"  allow="accelerometer; autoplay; encrypted-media;" allowfullscreen style="position:fixed; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;"></iframe></textarea>
                     </div>
                     </p>
                 </div>

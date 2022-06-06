@@ -86,7 +86,7 @@ Route::prefix('video')->group(function () {
         })
         ->setPlaylistUrlResolver(function ($playlistFilename) use ($userid,$filename,$playlist) {
             // \Log::info("playlistFilename: {$playlistFilename} %\n");
-            return route('video.playback', ['userid' => $userid,'filename'=>$filename,'playlist' => $playlistFilename]);
+            return route('embed.video.playback', ['userid' => $userid,'filename'=>$filename,'playlist' => $playlistFilename]);
         })
         ->setMediaUrlResolver(function ($mediaFilename) use ($userid,$filename){
             // \Log::info("mediaFilename: {$mediaFilename} %\n");

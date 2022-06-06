@@ -41,7 +41,7 @@ class FraudChecking
         );
         foreach($proxy_headers as $x){
             if (isset($_SERVER[$x])) {
-                \Log::info('FraudChecking: Hey cheating, I caught you');
+                // \Log::info('FraudChecking: Hey cheating, I caught you');
                 abort(503, 'Hey cheating, I caught you');
             }
         }
