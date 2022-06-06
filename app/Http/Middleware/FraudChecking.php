@@ -45,7 +45,28 @@ class FraudChecking
                 abort(503, 'Hey cheating, I caught you');
             }
         }
-    
-        return $next($request);
+        
+
+        if(strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== FALSE){
+            // echo "Internet Explorer";
+            return $next($request);
+        }elseif(strpos($_SERVER['HTTP_USER_AGENT'], 'Firefox') !== FALSE){
+            // echo "Firefox";
+            return $next($request);
+        }elseif(strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome') !== FALSE){
+            // echo "Google Chrome";
+            return $next($request);
+        }elseif(strpos($_SERVER['HTTP_USER_AGENT'], 'Safari') !== FALSE){
+            // echo "Safari";
+            return $next($request);
+        }elseif(strpos($_SERVER['HTTP_USER_AGENT'], 'Opera') !== FALSE){
+            // echo "Opera";
+            return $next($request);
+        }elseif(strpos($_SERVER['HTTP_USER_AGENT'], 'UCBrowser') !== FALSE){
+            // echo "UCBrowser";
+            return $next($request);
+        }else{
+           abort(503, 'Hey cheating, I caught you');
+        }
     }
 }
