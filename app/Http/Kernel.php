@@ -48,6 +48,10 @@ class Kernel extends HttpKernel
             'web',
             \App\Http\Middleware\DomainMiddleware::class,
         ],
+        'FraudChecking' => [
+            'web',
+            \App\Http\Middleware\FraudChecking::class,
+        ],
     ];
 
     /**

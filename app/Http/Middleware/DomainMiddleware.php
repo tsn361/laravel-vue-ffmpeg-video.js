@@ -19,14 +19,16 @@ class DomainMiddleware
     public function handle(Request $request, Closure $next)
     {
         \Log::info('DomainMiddleware');
+        
         $fileName = $request->route('filename');
         $host = $request->getHost(); // returns dev.site.com
         //$hostWithSchema = $request->getSchemeAndHttpHost(); // returns https://dev.site.com
-        $getHost = Video::where("file_name", $fileName)->where('allow_hosts', 'like', '%' . $host. '%')->first();
-            
-        if ($getHost == null) {
-            abort(503, 'Host not allowed');
-        }else if ($getHost->allow_hosts != '') {
+        $getHost = Video::select('allow_hosts')->where("file_name", $fileName)->first();
+        // \Log::info("getHost: {$getHost} %\n");
+        $allowHosts = explode(',',$getHost->allow_hosts);
+        if ($getHost->allow_hosts == null || $getHost->allow_hosts == '') {
+            return $next($request);
+        }else if (in_array($host, $allowHosts)) {
             return $next($request);
         }else{
             abort(503, 'authorization failed');

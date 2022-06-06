@@ -91,7 +91,7 @@ class VideoTranscode implements ShouldQueue
                                     ->grid(15, 350);
                             })->save($vttPath.'preview_%02d.jpg')
                             ->exportForHLS()
-                            ->setSegmentLength(10)
+                            ->setSegmentLength(4)
                             ->withRotatingEncryptionKey(function ($filename, $contents) use($Keypath){
                                 Storage::disk('uploads')->put("{$Keypath}/$filename", $contents);
                             },10);

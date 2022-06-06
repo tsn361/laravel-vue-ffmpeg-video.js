@@ -44,6 +44,7 @@ Route::prefix('video')->group(function () {
         Route::get('/transcode-progress/{video_id}', [App\Http\Controllers\VideoController::class, 'getTranscodeProgress'])->name('video.transcode.progress');
         
         Route::get('/playback/{userid}/{filename}/{playlist}', function ($userid,$filename,$playlist) {
+            
             return FFMpeg::dynamicHLSPlaylist()
                 ->fromDisk('uploads')
                 ->open("{$userid}/{$filename}/{$playlist}")
@@ -60,14 +61,14 @@ Route::prefix('video')->group(function () {
                     // return route('video.playback', ['userid' => $userid,'filename'=>$filename,'playlist' => $mediaFilename]);
                     return url("uploads/{$userid}/{$filename}/{$mediaFilename}");
                 });
-        })->name('video.playback');
-        // ->middleware(['host']);
+        })->name('video.playback')
+        ->middleware(['host','FraudChecking']);
 
         Route::get('/secret/{userid}/{filename}/{key}', function ($userid,$filename,$key) {
             $Keypath = $userid.'/'.$filename.'/'.$key;
             return Storage::disk('uploads')->download($Keypath);
-        })->name('video.key');
-        // ->middleware(['host']);
+        })->name('video.key')
+        ->middleware(['host','FraudChecking']);
 
     });
 
@@ -92,8 +93,8 @@ Route::prefix('video')->group(function () {
             // return route('video.playback', ['userid' => $userid,'filename'=>$filename,'playlist' => $mediaFilename]);
             return url("uploads/{$userid}/{$filename}/{$mediaFilename}");
         });
-})->name('embed.video.playback');
-// ->middleware(['host']);
+})->name('embed.video.playback')
+->middleware(['host','FraudChecking']);
 
-Route::get('/secret/{userid}/{filename}/{key}',  [App\Http\Controllers\VideoController::class, 'getAESKey'])->name('embed.key');
+Route::get('/secret/{userid}/{filename}/{key}',  [App\Http\Controllers\VideoController::class, 'getAESKey'])->name('embed.key')->middleware(['host','FraudChecking']);
 Route::get('/embed/{slug}', [App\Http\Controllers\EmbedPlayerController::class, 'getEmbedPlayer'])->name('video.player.embed');
