@@ -78,8 +78,8 @@ class VideoTranscode implements ShouldQueue
                 $p240 = (new X264)->setKiloBitrate(150)->setAdditionalParameters(['-c:v', 'h264', '-profile:v', 'main', '-pix_fmt', 'yuv420p', '-movflags', '+faststart']);
                 $p360 = (new X264)->setKiloBitrate(276)->setAdditionalParameters(['-c:v', 'h264', '-profile:v', 'main', '-pix_fmt', 'yuv420p', '-movflags', '+faststart']);
                 $p480 = (new X264)->setKiloBitrate(750)->setAdditionalParameters(['-c:v', 'h264', '-profile:v', 'main', '-pix_fmt', 'yuv420p', '-movflags', '+faststart']);
-                $p720 = (new X264)->setKiloBitrate(1000)->setAdditionalParameters(['-c:v', 'h264', '-profile:v', 'main', '-pix_fmt', 'yuv420p', '-movflags', '+faststart']);
-                $p1080 = (new X264)->setKiloBitrate(2048)->setAdditionalParameters(['-c:v', 'h264', '-profile:v', 'main', '-pix_fmt', 'yuv420p', '-movflags', '+faststart']);
+                $p720 = (new X264)->setKiloBitrate(2048)->setAdditionalParameters(['-c:v', 'h264', '-profile:v', 'main', '-pix_fmt', 'yuv420p', '-movflags', '+faststart']);
+                $p1080 = (new X264)->setKiloBitrate(4096)->setAdditionalParameters(['-c:v', 'h264', '-profile:v', 'main', '-pix_fmt', 'yuv420p', '-movflags', '+faststart']);
                 // $p1080 = (new X264)->setKiloBitrate(1500)->->setAdditionalParameters(['-c:v', 'h264', '-preset', 'ultrafast', '-qp', '0', '-r', '30', '-g', '60', '-pix_fmt', 'yuv420p']);
 
                 $processOutput =  FFMpeg::fromDisk('uploads')->open($path)
@@ -91,7 +91,7 @@ class VideoTranscode implements ShouldQueue
                                     ->grid(15, 350);
                             })->save($vttPath.'preview_%02d.jpg')
                             ->exportForHLS()
-                            ->setSegmentLength(5)
+                            ->setSegmentLength(10)
                             ->withRotatingEncryptionKey(function ($filename, $contents) use($Keypath){
                                 Storage::disk('uploads')->put("{$Keypath}/$filename", $contents);
                             },10);
@@ -116,7 +116,10 @@ class VideoTranscode implements ShouldQueue
                             });
                         }else if($value == '1080'){
                             $processOutput->addFormat($p1080, function($media) {
-                                $media->scale(1920, 1080);
+                                // $media->scale(1920, 1080);
+                                $media->addFilter(function ($filters, $in, $out) {
+                                    $filters->custom($in, 'scale=1920:1200', $out); // $in, $parameters, $out
+                                });
                             });
                         }
                     }
@@ -131,10 +134,10 @@ class VideoTranscode implements ShouldQueue
                         }else if($format->getKiloBitrate() == 750){
                             $segments("{$name}-480-%03d.ts");
                             $playlist("{$name}-480.m3u8");
-                        }else if($format->getKiloBitrate() == 1000){
+                        }else if($format->getKiloBitrate() == 2048){
                             $segments("{$name}-720-%03d.ts");
                             $playlist("{$name}-720.m3u8");
-                        }else if($format->getKiloBitrate() == 2048){
+                        }else if($format->getKiloBitrate() == 4096){
                             $segments("{$name}-720-%03d.ts");
                             $playlist("{$name}-1080.m3u8");
                         }

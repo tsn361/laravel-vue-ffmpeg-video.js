@@ -46,14 +46,15 @@
                 </button>
             </a>
             <a href="/video/edit/{{$video->slug}}">
-                <button class="btn btn-primary btn-sm" ><i class="fas fa-pencil"></i></button>
+                <button class="btn btn-primary btn-sm"><i class="fas fa-pencil"></i></button>
             </a>
-            <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{$video->id}}"><i class="fas fa-trash-can"></i></button>
+            <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                data-bs-target="#staticBackdrop-{{$video->id}}"><i class="fas fa-trash-can"></i></button>
         </div>
     </div>
     <!-- Vertically centered modal -->
-    <div class="modal fade" id="staticBackdrop-{{$video->id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="staticBackdrop-{{$video->id}}" data-bs-backdrop="static" data-bs-keyboard="false"
+        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
