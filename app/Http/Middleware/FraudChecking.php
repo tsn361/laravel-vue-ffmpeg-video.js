@@ -21,25 +21,18 @@ class FraudChecking
             \Log::info('HTTP_RANGE');
             $isPass = false;
         }elseif(strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== FALSE){
-            // echo "Internet Explorer";
             $isPass = true;
         }elseif(strpos($_SERVER['HTTP_USER_AGENT'], 'Firefox') !== FALSE){
-            // echo "Firefox";
             $isPass = true;
         }elseif(strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome') !== FALSE){
-            // echo "Google Chrome";
             $isPass = true;
         }elseif(strpos($_SERVER['HTTP_USER_AGENT'], 'Safari') !== FALSE){
-            // echo "Safari";
             $isPass = true;
         }elseif(strpos($_SERVER['HTTP_USER_AGENT'], 'Opera') !== FALSE){
-            // echo "Opera";
             $isPass = true;
         }elseif(strpos($_SERVER['HTTP_USER_AGENT'], 'UCBrowser') !== FALSE){
-            // echo "UCBrowser";
             $isPass = true;
         }elseif (preg_match($mobile_agents, $_SERVER['HTTP_USER_AGENT'])) {
-            // Mobile!
             $isPass = true;
         }else{
             $proxy_headers = array(
