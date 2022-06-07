@@ -225,4 +225,9 @@ class VideoController extends Controller
         return response()->json(['success'=>'true']);
     }
 
+
+    public function test($slug){
+        
+        return response()->json($video);
+    }
 }

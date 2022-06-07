@@ -52,6 +52,10 @@ class Kernel extends HttpKernel
             'web',
             \App\Http\Middleware\FraudChecking::class,
         ],
+        'FraudCheckingEmbed' => [
+            'web',
+            \App\Http\Middleware\FraudCheckingEmbed::class,
+        ],
     ];
 
     /**

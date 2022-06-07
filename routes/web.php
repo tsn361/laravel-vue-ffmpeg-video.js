@@ -49,16 +49,12 @@ Route::prefix('video')->group(function () {
                 ->fromDisk('uploads')
                 ->open("{$userid}/{$filename}/{$playlist}")
                 ->setKeyUrlResolver(function ($key) use($userid,$filename) {
-                    // \Log::info("setKeyUrlResolver key: {$key} %\n");
                     return route('video.key', ['userid' => $userid,'filename'=>$filename,'key' => $key]);
                 })
                 ->setPlaylistUrlResolver(function ($playlistFilename) use ($userid,$filename,$playlist) {
-                    // \Log::info("playlistFilename: {$playlistFilename} %\n");
                     return route('video.playback', ['userid' => $userid,'filename'=>$filename,'playlist' => $playlistFilename]);
                 })
                 ->setMediaUrlResolver(function ($mediaFilename) use ($userid,$filename){
-                    // \Log::info("mediaFilename: {$mediaFilename} %\n");
-                    // return route('video.playback', ['userid' => $userid,'filename'=>$filename,'playlist' => $mediaFilename]);
                     return url("uploads/{$userid}/{$filename}/{$mediaFilename}");
                 });
         })->name('video.playback')
@@ -81,20 +77,19 @@ Route::prefix('video')->group(function () {
         ->fromDisk('uploads')
         ->open("{$userid}/{$filename}/{$playlist}")
         ->setKeyUrlResolver(function ($key) use($userid,$filename) {
-            // \Log::info("setKeyUrlResolver key: {$key} %\n");
             return route('embed.key', ['userid' => $userid,'filename'=>$filename,'key' => $key]);
         })
         ->setPlaylistUrlResolver(function ($playlistFilename) use ($userid,$filename,$playlist) {
-            // \Log::info("playlistFilename: {$playlistFilename} %\n");
             return route('embed.video.playback', ['userid' => $userid,'filename'=>$filename,'playlist' => $playlistFilename]);
         })
         ->setMediaUrlResolver(function ($mediaFilename) use ($userid,$filename){
-            // \Log::info("mediaFilename: {$mediaFilename} %\n");
-            // return route('video.playback', ['userid' => $userid,'filename'=>$filename,'playlist' => $mediaFilename]);
             return url("uploads/{$userid}/{$filename}/{$mediaFilename}");
         });
 })->name('embed.video.playback')
-->middleware(['host','FraudChecking']);
+->middleware(['host','FraudCheckingEmbed']);
 
-Route::get('/secret/{userid}/{filename}/{key}',  [App\Http\Controllers\VideoController::class, 'getAESKey'])->name('embed.key')->middleware(['host','FraudChecking']);
+Route::get('/secret/{userid}/{filename}/{key}',  [App\Http\Controllers\VideoController::class, 'getAESKey'])->name('embed.key')->middleware(['host','FraudCheckingEmbed']);
 Route::get('/embed/{slug}', [App\Http\Controllers\EmbedPlayerController::class, 'getEmbedPlayer'])->name('video.player.embed');
+
+
+Route::get('/test', [App\Http\Controllers\VideoController::class, 'test']);
