@@ -7,21 +7,17 @@ use Illuminate\Http\Request;
 
 class FraudChecking
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
-     */
+
     public function handle(Request $request, Closure $next)
     {
         \Log::info('FraudChecking');
-
-        // request from terminal
-        // if (!defined("STDIN")) {
-        //     abort(503, 'Hey cheating, I caught you');
-        // }
+        \Log::info($_SERVER);
+        if(isset($_SERVER['HTTP_RANGE']) || !isset($_SERVER['HTTP_COOKIE'])) {
+            \Log::info('HTTP_RANGE');
+            abort(503, 'Hey cheating, I caught you');
+        }else{
+            return $next($request);
+        }
         $proxy_headers = array(
             'HTTP_VIA',
             'HTTP_X_FORWARDED_FOR',
@@ -43,10 +39,12 @@ class FraudChecking
             if (isset($_SERVER[$x])) {
                 // \Log::info('FraudChecking: Hey cheating, I caught you');
                 abort(503, 'Hey cheating, I caught you');
+            }else{
+                return $next($request);
             }
         }
         
-
+        $mobile_agents = '!(tablet|pad|mobile|phone|symbian|android|ipod|ios|blackberry|webos)!i';
         if(strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== FALSE){
             // echo "Internet Explorer";
             return $next($request);
@@ -65,8 +63,13 @@ class FraudChecking
         }elseif(strpos($_SERVER['HTTP_USER_AGENT'], 'UCBrowser') !== FALSE){
             // echo "UCBrowser";
             return $next($request);
+        }elseif (preg_match($mobile_agents, $_SERVER['HTTP_USER_AGENT'])) {
+            // Mobile!
+            return $next($request);
         }else{
            abort(503, 'Hey cheating, I caught you');
         }
     }
+
+
 }
