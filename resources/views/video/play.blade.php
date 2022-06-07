@@ -99,7 +99,7 @@
                 </div>
                 <div class="px-3">
                     <p class="mb-2">Video Resulation</p>
-                    <span>{{$video->original_resolution}}</span>
+                    <span>{{$video->original_resolution}}p</span>
                 </div>
             </div>
         </div>
@@ -116,19 +116,6 @@
         </div>
         <div class="col-md-4">
             <div class="d-flex rounded bg-white shadow-sm p-3">
-                <div class="bg-warning rounded p-2" style="width: 55px;height: 48px; text-align: center;">
-                    <i class="fa-solid fa-video fa-2x text-light"></i>
-                </div>
-                <div class="px-3">
-                    <p class="mb-2">Video Speed</p>
-                    <span>{{$video->video_duration}}</span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row mt-4">
-        <div class="col-md-4">
-            <div class="d-flex rounded bg-white shadow-sm p-3">
                 <div class="bg-danger rounded p-2" style="width: 55px;height: 48px; text-align: center;">
                     <i class="fa-solid fa-video fa-2x text-light"></i>
                 </div>
@@ -138,6 +125,8 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="row mt-4">
         <div class="col-md-4">
             <div class="d-flex rounded bg-white shadow-sm p-3">
                 <div class="bg-success rounded p-2" style="width: 55px;height: 48px; text-align: center;">

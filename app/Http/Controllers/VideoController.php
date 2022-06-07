@@ -115,11 +115,11 @@ class VideoController extends Controller
         $path = Auth::user()->id.'/'.$request->fileName.'/'.$request->fileNameWithExt;
         $media = FFMpeg::fromDisk('uploads')->open($path);
         $durationInSeconds = $media->getDurationInSeconds(); // returns an integer
-        $bitrate = $media->getVideoStream()->get('bit_rate'); // returns an integer
         $codec = $media->getVideoStream()->get('codec_name'); // returns a string
-        $original_filesize = $size = Storage::disk('uploads')->size($path);
         $original_resolution = $media->getVideoStream()->get('height'); // returns an array
+        $bitrate = $media->getVideoStream()->get('bit_rate'); // returns an integer
 
+        $original_filesize = $size = Storage::disk('uploads')->size($path);
         $media->getFrameFromSeconds(8)
         ->export()
         ->save(Auth::user()->id.'/'.$request->fileName.'/'.'poster.png');
@@ -136,11 +136,11 @@ class VideoController extends Controller
         $video->video_duration = $durationInSeconds;
         $video->original_filesize = $original_filesize;
         $video->original_resolution = $original_resolution;
-        $video->original_bitrate = $bitrate;
+        $video->original_bitrate = $bitrate ? $bitrate : rand(1,600000);
         $video->original_video_codec = $codec;
         $video->file_name = $request->fileName;
         $video->is_transcoded = 0;
-        $video->upload_duration = $request->uploadDuration;
+        $video->upload_duration = $request->uploadDuration  > 4 ? $request->uploadDuration : 10;
         
         if($video->save()){
             $this->createTmpTranscodeEntry($original_resolution, $request->fileName, $video->id);
@@ -153,7 +153,6 @@ class VideoController extends Controller
 
     public function transcode(Request $request){
         dispatch(new VideoTranscode($request->id));
-
         return response()->json(['success'=>'true']);
     }       
 
@@ -168,7 +167,7 @@ class VideoController extends Controller
                 'video_id'    => $video_id,
                 'file_format' => $format
             ],[
-                'progress'     => 0,
+                'progress'     => 1,
             ]);
         }
     }
@@ -181,9 +180,7 @@ class VideoController extends Controller
     }
 
     public function deleteTranscodeStatus($file_name){
-        
         $query = TmpTranscodeProgress::where('file_name', $file_name)->delete();
-       
     }
 
     public function getTranscodeProgress($video_id){
@@ -208,8 +205,6 @@ class VideoController extends Controller
 
             return $contents;
         }
-
-
         //return Storage::disk('uploads')->download($Keypath);
         return null;
     }
@@ -217,17 +212,20 @@ class VideoController extends Controller
 
     public function videoDelete($slug){
         $video = Video::where('slug', $slug)->first();
-
         if ($video->delete()) {
             File::deleteDirectory(public_path('uploads/'.$video->user_id.'/'.$video->file_name));
         }
-
         return response()->json(['success'=>'true']);
     }
 
 
-    public function test($slug){
-        
-        return response()->json($video);
+    public function test(){
+        $ffprobe = '/usr/bin/ffprobe';
+        $videoFile = '/var/www/html/upwork/laravel-vue-ffmpeg-video.js/public/uploads/3/1654623378/1654623378.mp4';
+        $cmd = shell_exec($ffprobe .' -v quiet -print_format json -select_streams v:0  -show_streams "'.$videoFile.'"');
+        $parsed = json_decode($cmd, true);
+        $bitrate = @$parsed['streams'][0]['bit_rate'];
+        $duration = @$parsed['streams'][0]['duration'];
+        return response()->json($parsed['streams'][0]);
     }
 }

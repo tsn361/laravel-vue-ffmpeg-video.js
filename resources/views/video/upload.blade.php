@@ -37,7 +37,7 @@
                         <form method="POST">
                             <input type="hidden" name="fileName" id="fileName" value="">
                             <input type="hidden" name="fileNameWithExt" id="fileNameWithExt" value="">
-                            <input type="hidden" name="uploadDuration" id="uploadDuration" value="">
+                            <input type="hidden" name="uploadDuration" id="uploadDuration" value="20">
                             <div class="mb-3 row">
                                 <label for="staticEmail" class="col-sm-2 col-form-label">Video</label>
                                 <div class="col-sm-10">
@@ -140,7 +140,7 @@ $('#videoFile').change(function() {
 
     if (validFile(file.name, file.type)) {
 
-        var startTime = new Date().getTime();
+        var startTime, EndTime;
         var formData = new FormData();
         formData.append("file", file);
 
@@ -160,16 +160,16 @@ $('#videoFile').change(function() {
                 );
                 return xhr;
             },
-            success: function(result) {
+            beforeSend: function() {
+                startTime = new Date().getTime();
+            },
+            success: function(result, status, jqXHR) {
+                console.log("jqXHR=> ", jqXHR);
                 resetUploadForm()
                 if (result.success == 'true') {
                     showVideoDetailsForm();
                     $('#fileName').val(result.fileName);
                     $('#fileNameWithExt').val(result.filePath);
-
-                    var endTime = new Date().getTime();
-                    var timeTaken = (endTime - startTime) / 1000;
-                    $('#uploadDuration').val(timeTaken);
                 } else {
                     console.log(result.message);
                     //window.location.reload();
@@ -182,10 +182,8 @@ $('#videoFile').change(function() {
                     resetUploadForm()
                 }
             },
-            error: function(err) {      
+            error: function(err) {
                 console.log(err);
-                //window.location.reload();
-
                 Swal.fire({
                     title: 'Error',
                     text: err.responseJSON.message,
@@ -194,6 +192,11 @@ $('#videoFile').change(function() {
                 })
 
                 resetUploadForm()
+            },
+            complete: function() {
+                endTime = new Date().getTime();
+                var timeTaken = (endTime - startTime) / 1000;
+                $('#uploadDuration').val(timeTaken);
             }
         });
     } else {
@@ -202,7 +205,7 @@ $('#videoFile').change(function() {
             text: "Select a valid video file",
             icon: 'error',
             confirmButtonText: 'OK'
-        }) 
+        })
     }
 });
 
@@ -211,9 +214,9 @@ function saveVideoInfo() {
     var formData = new FormData();
     formData.append("fileName", $('#fileName').val());
     formData.append("fileNameWithExt", $('#fileNameWithExt').val());
-    formData.append("uploadDuration", $('#uploadDuration').val());
     formData.append("title", $('#VideoTitle').val());
     formData.append("description", $('#VideoDescription').val());
+    formData.append("uploadDuration", $('#uploadDuration').val());
 
     $.ajax({
         url: "{{route('video.save.info')}}",

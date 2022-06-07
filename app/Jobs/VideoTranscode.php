@@ -60,6 +60,7 @@ class VideoTranscode implements ShouldQueue
     public function handle()
     {
         try {
+            $curTime = microtime(true);
             $video = Video::where('id',$this->video_id)->where('is_transcoded',0)->first();
             
             if($video){
@@ -152,6 +153,9 @@ class VideoTranscode implements ShouldQueue
                     })
                     ->save($masetPath);
                     $this->updateVideoStatus($video->id,1,1);
+                    // get time difference in milliseconds
+                    $timeConsumed = round(microtime(true) - $curTime,3); 
+                    $this->updateVideoProcessTime($video->id,$timeConsumed);
             }else{
                 $this->fail();
             }
@@ -215,9 +219,11 @@ class VideoTranscode implements ShouldQueue
     }
 
     public function deleteTranscodeStatus($video_id){
-        
         $query = TmpTranscodeProgress::where('video_id', $video_id)->delete();
-       
+    }
+
+    public function updateVideoProcessTime($video_id,$processTime){
+        $query = Video::where('id', $video_id)->update(['process_time' => $processTime]);
     }
 
     // public function GenerateVtt(){

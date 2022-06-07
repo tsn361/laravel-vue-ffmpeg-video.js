@@ -78,10 +78,8 @@ class Video extends Model
     protected function originalBitrate(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => round($value / 1024 / 1024, 2) * 0.125 . ' Mbps',
+            get: fn ($value) => round($value / 1000 / 1000, 2) * 0.125 . ' Mbps',
         );
     }
-
-
 
 }
