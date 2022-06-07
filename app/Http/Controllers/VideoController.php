@@ -120,7 +120,7 @@ class VideoController extends Controller
         $original_filesize = $size = Storage::disk('uploads')->size($path);
         $original_resolution = $media->getVideoStream()->get('height'); // returns an array
 
-        $media->getFrameFromSeconds(10)
+        $media->getFrameFromSeconds(8)
         ->export()
         ->save(Auth::user()->id.'/'.$request->fileName.'/'.'poster.png');
 

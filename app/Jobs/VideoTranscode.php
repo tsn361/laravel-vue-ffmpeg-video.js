@@ -78,8 +78,8 @@ class VideoTranscode implements ShouldQueue
                 $p240 = (new X264)->setKiloBitrate(150)->setAdditionalParameters(['-c:v', 'h264', '-profile:v', 'main', '-pix_fmt', 'yuv420p', '-movflags', '+faststart']);
                 $p360 = (new X264)->setKiloBitrate(276)->setAdditionalParameters(['-c:v', 'h264', '-profile:v', 'main', '-pix_fmt', 'yuv420p', '-movflags', '+faststart']);
                 $p480 = (new X264)->setKiloBitrate(750)->setAdditionalParameters(['-c:v', 'h264', '-profile:v', 'main', '-pix_fmt', 'yuv420p', '-movflags', '+faststart']);
-                $p720 = (new X264)->setKiloBitrate(2048)->setAdditionalParameters(['-c:v', 'h264', '-profile:v', 'main', '-pix_fmt', 'yuv420p', '-movflags', '+faststart']);
-                $p1080 = (new X264)->setKiloBitrate(4096)->setAdditionalParameters(['-c:v', 'h264', '-profile:v', 'main', '-pix_fmt', 'yuv420p', '-movflags', '+faststart']);
+                $p720 = (new X264)->setKiloBitrate(2048)->setAdditionalParameters(['-c:v', 'h264', '-profile:v', 'main', '-pix_fmt', 'yuv420p', '-movflags', '+faststart' , '-g', '60']);
+                $p1080 = (new X264)->setKiloBitrate(4096)->setAdditionalParameters(['-c:v', 'h264', '-profile:v', 'main', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', '-g', '60']);
                 // $p1080 = (new X264)->setKiloBitrate(1500)->->setAdditionalParameters(['-c:v', 'h264', '-preset', 'ultrafast', '-qp', '0', '-r', '30', '-g', '60', '-pix_fmt', 'yuv420p']);
 
                 $processOutput =  FFMpeg::fromDisk('uploads')->open($path)
@@ -118,7 +118,7 @@ class VideoTranscode implements ShouldQueue
                             $processOutput->addFormat($p1080, function($media) {
                                 // $media->scale(1920, 1080);
                                 $media->addFilter(function ($filters, $in, $out) {
-                                    $filters->custom($in, 'scale=1920:1200', $out); // $in, $parameters, $out
+                                    $filters->custom($in, 'scale=1920:1080', $out); // $in, $parameters, $out
                                 });
                             });
                         }
@@ -138,7 +138,7 @@ class VideoTranscode implements ShouldQueue
                             $segments("{$name}-720-%03d.ts");
                             $playlist("{$name}-720.m3u8");
                         }else if($format->getKiloBitrate() == 4096){
-                            $segments("{$name}-720-%03d.ts");
+                            $segments("{$name}-1080-%03d.ts");
                             $playlist("{$name}-1080.m3u8");
                         }
                     })
