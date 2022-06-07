@@ -30,7 +30,7 @@
                 <img src="/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->poster}}" />
             </a>
         </div>
-        <div class="col-md-5 p-3 ts-sm">
+        <div class="col-md-6 p-3 ts-sm">
             <div>
                 <strong>{{$video->title}}</strong>
             </div>
@@ -38,8 +38,19 @@
             <div class="mt-1">Date: <strong>{{$video->created_at}}</strong></div>
             <div class="mt-1">Video Duration: <strong>{{$video->video_duration}}</strong></div>
             <div class="mt-1">Upload duration: <strong>{{$video->upload_duration}}</strong></div>
+            <div class="mt-1">Video Transcode Status: <strong>
+                    @if($video->is_transcoded == 0)
+                    <a href="javascript:void(0)" class="badge bg-warning text-center text-light">Transcoding Not
+                        Attempted</a>
+                    @elseif($video->is_transcoded == 1)
+                    <a href="javascript:void(0)" class="badge bg-success text-center text-light">Transcoded</a>
+                    @elseif($video->is_transcoded == 2)
+                    <a href="javascript:void(0)" class="badge bg-danger text-center text-light">Transcoding Failed</a>
+                    @endif
+
+                </strong></div>
         </div>
-        <div class="col-md-3 text-end p-3">
+        <div class="col-md-2 text-end p-3">
             <a href="{{ route('video.play',['slug' => $video->slug])}}">
                 <button class="btn btn-info btn-sm text-white">
                     <strong><i class="fas fa-info"></i></strong>

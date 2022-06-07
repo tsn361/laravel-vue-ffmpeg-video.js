@@ -29,7 +29,7 @@ class VideoController extends Controller
 
     public function index(){
         $videos = Video::where('user_id', Auth::user()->id)
-                    ->where('is_transcoded', 1)
+                    // ->where('is_transcoded', 1)
                     ->orderBy('id', 'DESC')
                     ->get();
         return view('video.index', compact('videos'));
