@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', "Let's mint") }}</title>
+    <title>{{ config('app.name', "HLS") }}</title>
 
 
     <!-- Scripts -->
@@ -19,10 +19,12 @@
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Styles -->
+    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
+
 
     @yield('style')
 </head>
@@ -100,7 +102,7 @@
             @yield('content')
         </main>
     </div>
-
+    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
     @yield('script')
 </body>
 
