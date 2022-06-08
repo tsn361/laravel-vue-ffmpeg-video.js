@@ -31,7 +31,7 @@ class VideoController extends Controller
         $videos = Video::where('user_id', Auth::user()->id)
                     // ->where('is_transcoded', 1)
                     ->orderBy('id', 'DESC')
-                    ->get();
+                    ->paginate(4);
         return view('video.index', compact('videos'));
     }
 

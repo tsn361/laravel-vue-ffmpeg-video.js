@@ -1,5 +1,16 @@
 @extends('layouts.app')
+@section('style')
+<style>
+.container {
+    padding: 10px
+}
 
+.pagination {
+    float: right;
+    margin-top: 10px;
+}
+</style>
+@endsection
 @section('content')
 <div class="container shadow-sm">
     <div class="row bg-dark rounded-top">
@@ -38,7 +49,7 @@
             <div class="mt-1">Date: <strong>{{$video->created_at}}</strong></div>
             <div class="mt-1">Video Duration: <strong>{{$video->video_duration}}</strong></div>
             <div class="mt-1">Upload duration: <strong>{{$video->upload_duration}}</strong></div>
-            <div class="mt-1">Video Transcode Status: <strong>
+            <div class="mt-1">Status: <strong>
                     @if($video->is_transcoded == 0)
                     <a href="javascript:void(0)" class="badge bg-warning text-center text-light">Transcoding Not
                         Attempted</a>
@@ -85,11 +96,16 @@
     </div>
     @endforeach
 </div>
+<div class="d-flex justify-content-center">
+    {!! $videos->links() !!}
+</div>
 @endsection
 
 @section('script')
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
 <script>
+$('.container').css('height', $(window).height() - 240);
+
 $.ajaxSetup({
     headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
