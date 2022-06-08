@@ -9,18 +9,57 @@
     float: right;
     margin-top: 10px;
 }
+
+.ms-n5 {
+    margin-left: -40px;
+}
+
+input[type=search]::-ms-clear {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+input[type=search]::-ms-reveal {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+/* clears the 'X' from Chrome */
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+    display: none;
+    width: 0;
+    height: 0;
+}
 </style>
 @endsection
 @section('content')
 <div class="container shadow-sm">
     <div class="row bg-dark rounded-top">
-        <div class="col-md-6 p-2 text-white">
+        <div class="col-md-4 p-2 text-white">
             <div class="mt-2">
                 List of videos
             </div>
         </div>
         <div class="col-md-6 p-2 text-end ">
-            <a class="btn btn-primary btn-sm" href="{{ route('video.upload') }}"> <i class="fas fa-plus"></i> Create</a>
+            <div class="input-group">
+                <input class="form-control border-end-0 border rounded-pill" type="search" value="" placeholder="Search"
+                    aria-label="Search" id="search-input">
+                <span class="input-group-append">
+                    <button class="btn btn-outline-secondary bg-white border-bottom-0 border rounded-pill ms-n5"
+                        type="button">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </span>
+            </div>
+        </div>
+        <div class="col-md-2 p-2 text-end">
+            <a class="btn btn-primary btn-sm mt-1" href="{{ route('video.upload') }}"> <i class="fas fa-plus"></i>
+                Create</a>
         </div>
     </div>
     <div class="row border-bottom">
@@ -28,88 +67,105 @@
         <div class="col-md-3">&nbsp;</div>
         <div class="col-md-8 p-3"><strong>Title</strong></div>
     </div>
-
-    @foreach ($videos as $video)
-    <div class="row border-bottom">
-        <div class="col-md-1 p-3">
-            <button class="btn btn-dark btn-sm">
-                <strong>{{$video->id}}</strong>
-            </button>
+    <div id="videosLists">
+        @include('video.videoListSearchData')
+    </div>
+    <div class="text-center py-4" id="searchStart">
+        <div class="spinner-grow text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
         </div>
-        <div class="col-md-3 p-3">
-            <a href="{{ route('video.play',['slug' => $video->slug])}}">
-                <img src="/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->poster}}" />
-            </a>
+        <div class="spinner-grow text-secondary" role="status">
+            <span class="visually-hidden">Loading...</span>
         </div>
-        <div class="col-md-6 p-3 ts-sm">
-            <div>
-                <strong>{{$video->title}}</strong>
-            </div>
-            <div class="mt-2">Created by: {{$video->created_by}}</div>
-            <div class="mt-1">Date: <strong>{{$video->created_at}}</strong></div>
-            <div class="mt-1">Video Duration: <strong>{{$video->video_duration}}</strong></div>
-            <div class="mt-1">Upload duration: <strong>{{$video->upload_duration}}</strong></div>
-            <div class="mt-1">Status: <strong>
-                    @if($video->is_transcoded == 0)
-                    <a href="javascript:void(0)" class="badge bg-warning text-center text-light">Transcoding Not
-                        Attempted</a>
-                    @elseif($video->is_transcoded == 1)
-                    <a href="javascript:void(0)" class="badge bg-success text-center text-light">Transcoded</a>
-                    @elseif($video->is_transcoded == 2)
-                    <a href="javascript:void(0)" class="badge bg-danger text-center text-light">Transcoding Failed</a>
-                    @endif
-
-                </strong></div>
+        <div class="spinner-grow text-success" role="status">
+            <span class="visually-hidden">Loading...</span>
         </div>
-        <div class="col-md-2 text-end p-3">
-            <a href="{{ route('video.play',['slug' => $video->slug])}}">
-                <button class="btn btn-info btn-sm text-white">
-                    <strong><i class="fas fa-info"></i></strong>
-                </button>
-            </a>
-            <a href="/video/edit/{{$video->slug}}">
-                <button class="btn btn-primary btn-sm"><i class="fas fa-pencil"></i></button>
-            </a>
-            <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                data-bs-target="#staticBackdrop-{{$video->id}}"><i class="fas fa-trash-can"></i></button>
+        <div class="spinner-grow text-danger" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="spinner-grow text-warning" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="spinner-grow text-info" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="spinner-grow text-light" role="status">
+            <span class="visually-hidden">Loading...</span>
         </div>
     </div>
-    <!-- Vertically centered modal -->
-    <div class="modal fade" id="staticBackdrop-{{$video->id}}" data-bs-backdrop="static" data-bs-keyboard="false"
-        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Delete Video</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Are you sure you want to delete this '{{$video->title}}' video?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                    <button type="button" class="btn btn-danger"
-                        onclick="deleteVideo('{{ $video->slug }}')">Delete</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    @endforeach
+
 </div>
-<div class="d-flex justify-content-center">
-    {!! $videos->links() !!}
-</div>
+
 @endsection
 
 @section('script')
 
 <script>
-$('.container').css('height', $(window).height() - 240);
-
+$('#searchStart').hide();
 $.ajaxSetup({
     headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
+});
+
+
+$('#search-input').keyup(function() {
+    $('#searchStart').show();
+    $('#videosLists').hide();
+});
+$('#search-input').keyup(debounce(function() {
+    var value = $(this).val();
+    value = value.trim()
+    if (value.length > 0) {
+        getSeachData(value);
+    } else {
+        getSeachData('all');
+    }
+
+}, 1000));
+
+
+function debounce(func, wait, immediate) {
+    var timeout;
+    return function() {
+        var context = this,
+            args = arguments;
+        var later = function() {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+        };
+        var callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) func.apply(context, args);
+    };
+};
+
+function getSeachData(value, page = 1) {
+    $.ajax({
+        url: '/video/get-search?page=' + page + '&search=' + value,
+        type: 'Get',
+        data: null,
+        success: function(data) {
+            $('#videosLists').html(data);
+            setTimeout(() => {
+                $('#searchStart').hide();
+                $('#videosLists').show();
+            }, 500);
+
+        }
+    });
+}
+
+$(function() {
+    $(document).on("click", "#pagination a", function(e) {
+        e.preventDefault();
+        $('#searchStart').show();
+        $('#videosLists').hide();
+        var page = $(this).attr('href').split('page=')[1];
+        var value = $('#search-input').val();
+        getSeachData(value, page);
+    })
 });
 
 function deleteVideo(slug) {

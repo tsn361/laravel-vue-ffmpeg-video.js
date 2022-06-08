@@ -29,10 +29,19 @@ class VideoController extends Controller
 
     public function index(){
         $videos = Video::where('user_id', Auth::user()->id)
-                    // ->where('is_transcoded', 1)
                     ->orderBy('id', 'DESC')
                     ->paginate(4);
         return view('video.index', compact('videos'));
+    }
+
+    public function GetSearchVideoData(Request $request){
+        $videos = Video::where('user_id', Auth::user()->id);
+        if($request->get('search') != 'all' && $request->get('search') != ''){
+            $videos = $videos->where('title', 'like', '%'.$request->get('search').'%');
+        }
+        $videos = $videos->orderBy('id', 'DESC')
+                    ->paginate(4);
+        return view('video.videoListSearchData', compact('videos'));
     }
 
     public function upload_UI(){
