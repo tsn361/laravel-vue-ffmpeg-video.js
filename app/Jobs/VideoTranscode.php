@@ -81,7 +81,6 @@ class VideoTranscode implements ShouldQueue
                 $p480 = (new X264)->setKiloBitrate(750)->setAdditionalParameters(['-c:v', 'h264', '-profile:v', 'main', '-pix_fmt', 'yuv420p', '-movflags', '+faststart']);
                 $p720 = (new X264)->setKiloBitrate(2048)->setAdditionalParameters(['-c:v', 'h264', '-profile:v', 'main', '-pix_fmt', 'yuv420p', '-movflags', '+faststart' , '-g', '60']);
                 $p1080 = (new X264)->setKiloBitrate(4096)->setAdditionalParameters(['-c:v', 'h264', '-profile:v', 'main', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', '-g', '60']);
-                // $p1080 = (new X264)->setKiloBitrate(1500)->->setAdditionalParameters(['-c:v', 'h264', '-preset', 'ultrafast', '-qp', '0', '-r', '30', '-g', '60', '-pix_fmt', 'yuv420p']);
 
                 $processOutput =  FFMpeg::fromDisk('uploads')->open($path)
                             // ->addFilter(['-c:v', 'h264', '-profile:v', 'main', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', '-f', 'hls'])
@@ -225,15 +224,4 @@ class VideoTranscode implements ShouldQueue
     public function updateVideoProcessTime($video_id,$processTime){
         $query = Video::where('id', $video_id)->update(['process_time' => $processTime]);
     }
-
-    // public function GenerateVtt(){
-    //     $vttPath = $video->user_id.'/'.$video->file_name.'/vtt/';
-    //             FFMpeg::fromDisk('uploads')->open($path)
-    //                 ->exportTile(function (TileFactory $factory) use($vttPath) {
-    //                     $factory->interval(1)
-    //                     ->scale(160, 90)
-    //                     ->generateVTT($vttPath.'master.vtt');
-    //                 })
-    //                 ->save($vttPath.'tile_%05d.jpg');
-    // }
 }

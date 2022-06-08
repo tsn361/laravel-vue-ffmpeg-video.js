@@ -11,7 +11,8 @@
                             <h4>Edit Video</h4>
                         </div>
                         <div class="col-md-6 text-end">
-                            <button id="createBtn"  class="btn btn-primary btn-sm" type="submit" onclick="saveVideoInfo()">Save</button>
+                            <button id="createBtn" class="btn btn-primary btn-sm" type="submit"
+                                onclick="saveVideoInfo()">Save</button>
 
                         </div>
                     </div>
@@ -23,20 +24,23 @@
                             <div class="mb-3 row">
                                 <label for="staticEmail" class="col-sm-2 col-form-label">Title* </label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="VideoTitle" value="{{$video->title}}" required>
+                                    <input type="text" class="form-control" id="VideoTitle" value="{{$video->title}}"
+                                        required>
                                 </div>
                             </div>
                             <div class="mb-3 row">
                                 <label for="staticEmail" class="col-sm-2 col-form-label">Description</label>
                                 <div class="col-sm-10">
-                                    <textarea class="form-control" id="VideoDescription" rows="3">{{$video->description}}</textarea>
+                                    <textarea class="form-control" id="VideoDescription"
+                                        rows="3">{{$video->description}}</textarea>
                                 </div>
                             </div>
                             <div class="mb-3 row">
                                 <label for="staticEmail" class="col-sm-2 col-form-label">Allowed remote host</label>
                                 <div class="col-sm-10">
                                     <div>
-                                        <textarea class="form-control" id="allowHost" rows="3"></textarea>
+                                        <textarea class="form-control" id="allowHost"
+                                            rows="3">{{$video->allow_hosts}}</textarea>
                                     </div>
                                     <div class="mt-2">
                                         <small>
@@ -56,7 +60,6 @@
 @endsection
 
 @section('script')
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 
 <script type="text/javascript">
 function resetUploadForm() {
@@ -141,9 +144,9 @@ function saveVideoInfo() {
                     confirmButtonText: 'OK'
                 })
 
-               setTimeout(() => {
-                window.location.href = `/video/index`;
-               }, 2000);
+                setTimeout(() => {
+                    window.location.href = `/video/index`;
+                }, 2000);
                 //console.log(result);
             } else {
                 console.log(res.message);
