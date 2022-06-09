@@ -141,6 +141,17 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-4">
+            <div class="d-flex rounded bg-white shadow-sm p-3">
+                <div class="bg-info rounded p-2" style="width: 55px;height: 48px; text-align: center;">
+                    <i class="fa-solid fa-video fa-2x text-light"></i>
+                </div>
+                <div class="px-3">
+                    <p class="mb-2">Original Video Type</p>
+                    <span>{{$video->video_original_type}}</span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 @endsection

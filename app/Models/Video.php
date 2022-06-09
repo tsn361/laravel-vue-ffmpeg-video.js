@@ -34,7 +34,7 @@ class Video extends Model
         'status',
         'skip_intro_time',
     ];
-    
+    // protected $appends = ['video_original_type'];
     public function sluggable(): array
     {
         return [
@@ -81,6 +81,13 @@ class Video extends Model
         return Attribute::make(
             get: fn ($value) => round($value / 1000 / 1000, 2) * 0.125 . ' Mbps',
         );
+    }
+
+    protected function getVideoOriginalTypeAttribute()
+    {
+        $getVideoType = explode('.', $this->origianl_file_url);
+        $getVideoType = end($getVideoType);
+        return $getVideoType; //or however you want to manipulate it
     }
 
 }
