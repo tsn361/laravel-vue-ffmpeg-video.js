@@ -1,9 +1,9 @@
 @if(count($videos) > 0)
-@foreach ($videos as $video)
+@foreach ($videos as $key => $video)
 <div class="row border-bottom">
     <div class="col-md-1 p-3">
         <button class="btn btn-dark btn-sm">
-            <strong>{{$video->id}}</strong>
+            <strong>{{$key+1}}</strong>
         </button>
     </div>
     <div class="col-md-3 p-3">
