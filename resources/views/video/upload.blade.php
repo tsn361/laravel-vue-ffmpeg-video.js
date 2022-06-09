@@ -59,6 +59,12 @@
                                     <textarea class="form-control" id="VideoDescription" rows="3"></textarea>
                                 </div>
                             </div>
+                            <div class="mb-3 row">
+                                <label for="staticEmail" class="col-sm-2 col-form-label">Poster</label>
+                                <div class="col-sm-10">
+                                    <input name="file" id="posterImage" type="file" vlaue="" class="form-control">
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -211,10 +217,12 @@ $('#videoFile').change(function() {
 
 
 function saveVideoInfo() {
+    var file = $("#posterImage")[0].files[0];
     var formData = new FormData();
     formData.append("fileName", $('#fileName').val());
     formData.append("fileNameWithExt", $('#fileNameWithExt').val());
     formData.append("title", $('#VideoTitle').val());
+    formData.append("poster", file);
     formData.append("description", $('#VideoDescription').val());
     formData.append("uploadDuration", $('#uploadDuration').val());
 

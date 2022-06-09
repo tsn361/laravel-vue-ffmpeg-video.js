@@ -121,6 +121,7 @@ class VideoController extends Controller
         $request->validate([
             'title' => 'required'
         ]);
+        
 
         $path = Auth::user()->id.'/'.$request->fileName.'/'.$request->fileNameWithExt;
         $media = FFMpeg::fromDisk('uploads')->open($path);
@@ -130,16 +131,26 @@ class VideoController extends Controller
         $bitrate = $media->getVideoStream()->get('bit_rate'); // returns an integer
 
         $original_filesize = $size = Storage::disk('uploads')->size($path);
-        $media->getFrameFromSeconds(8)
-        ->export()
-        ->save(Auth::user()->id.'/'.$request->fileName.'/'.'poster.png');
 
+        $posterImage = null;
+        if($request->hasFile('poster')) {
+            // Process the new image
+            $fileName = 'poster.'.request()->file('poster')->getClientOriginalExtension();
+            $save_path = Auth::user()->id.'/'.$request->fileName;
+            request()->file('poster')->move(public_path('uploads/'.$save_path), $fileName);
+            $posterImage = $fileName;
+        }else{
+            $media->getFrameFromSeconds(8)
+            ->export()
+            ->save(Auth::user()->id.'/'.$request->fileName.'/'.'poster.png');
+            $posterImage = 'poster.png';
+        }
 
         $video = new Video();
         $video->title = $request->title;
         $video->slug = SlugService::createSlug(Video::class, 'slug', $request->title);
         $video->description = $request->description;
-        $video->poster = 'poster.png';
+        $video->poster = $posterImage;
         $video->origianl_file_url =  $request->fileNameWithExt;
         $video->playback_url =  'master.m3u8';
         $video->user_id = Auth::user()->id;

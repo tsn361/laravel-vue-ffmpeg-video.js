@@ -87,7 +87,6 @@ class Video extends Model
     {
         $getVideoType = explode('.', $this->origianl_file_url);
         $getVideoType = end($getVideoType);
-        return $getVideoType; //or however you want to manipulate it
     }
 
 }
