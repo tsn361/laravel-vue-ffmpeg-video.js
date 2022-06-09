@@ -231,7 +231,9 @@ player.ready(function() {
         console.log('ended == ');
         player.reset();
 
-        player.poster("{{ config('app.url')}}/uploads/3/1654469607/poster.png");
+        player.poster(
+            "{{ config('app.url')}}/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->poster}}"
+            );
         player.bigPlayButton.show();
         player.src({
             src: "{{ route('video.playback', ['userid' =>$video->user_id, 'filename'=> $video->file_name,'playlist' => $video->playback_url ])}}",
