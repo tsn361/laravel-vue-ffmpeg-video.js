@@ -32,6 +32,7 @@ class Video extends Model
         'file_name',
         'is_transcoded',
         'status',
+        'skip_intro_time',
     ];
     
     public function sluggable(): array

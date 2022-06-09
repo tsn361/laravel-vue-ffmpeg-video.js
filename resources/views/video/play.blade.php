@@ -4,6 +4,9 @@
 <link href="{{ asset('css/video-js.min.css') }}" rel="stylesheet">
 <link href="{{ asset('css/videojs-hls-quality-selector.css') }}" rel="stylesheet">
 <script src="{{ asset('js/video.min.js') }}"></script>
+<link href="{{ asset('css/videojs-skip-intro.css') }}" rel="stylesheet">
+
+
 
 <style>
 </style>
@@ -150,10 +153,11 @@
 <script src="{{ asset('js/videojs-hls-quality-selector.min.js') }}"></script>
 <script src="{{ asset('js/videojs-contrib-quality-levels.min.js') }}"></script>
 
-
-
 <script src="{{ asset('js/videojs-sprite-thumbnails.min.js') }}"></script>
+
+<script src="{{ asset('js/videojs-skip-intro.js') }}"></script>
 <script>
+var playerSkipIntroTime = "{{$video->skip_intro_time}}";
 const options = {
     controlBar: {
         children: [
@@ -195,8 +199,34 @@ player.ready(function() {
         height: 90
     });
 
+    player.on('play', function() {
+        player.muted(true);
+        if (playerSkipIntroTime > 0) {
+            player.skipIntro({
+                label: 'Skip Intro',
+                skipTime: playerSkipIntroTime,
+            });
+        }
+
+    });
+
+
+
     player.tech().on('usage', (e) => {
         console.log(e.name);
+    });
+
+    player.on('ended', function() {
+        console.log('ended == ');
+        player.reset();
+
+        player.poster("{{ config('app.url')}}/uploads/3/1654469607/poster.png");
+        player.bigPlayButton.show();
+        player.src({
+            src: "{{ route('video.playback', ['userid' =>$video->user_id, 'filename'=> $video->file_name,'playlist' => $video->playback_url ])}}",
+            type: 'application/x-mpegURL',
+            withCredentials: true,
+        });
     });
 });
 

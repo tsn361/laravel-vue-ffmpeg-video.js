@@ -108,6 +108,7 @@ class VideoController extends Controller
         $video->title = $request->title;
         $video->description = $request->description;
         $video->allow_hosts = $request->allow_host;
+        $video->skip_intro_time = $request->skip_intro_time;
         
         if($video->save()){
             return response()->json(['success'=>'true', 'videoId'=>$video->id]);

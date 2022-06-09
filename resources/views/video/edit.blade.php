@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-9">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header bg-dark text-white">
                     <div class="row">
@@ -22,30 +22,43 @@
                         <form method="POST">
                             <input type="hidden" name="slug" id="slug" value="{{$video->slug}}">
                             <div class="mb-3 row">
-                                <label for="staticEmail" class="col-sm-2 col-form-label">Title* </label>
-                                <div class="col-sm-10">
+                                <label for="staticEmail" class="col-sm-4 col-form-label">Title* </label>
+                                <div class="col-sm-8">
                                     <input type="text" class="form-control" id="VideoTitle" value="{{$video->title}}"
                                         required>
                                 </div>
                             </div>
                             <div class="mb-3 row">
-                                <label for="staticEmail" class="col-sm-2 col-form-label">Description</label>
-                                <div class="col-sm-10">
+                                <label for="staticEmail" class="col-sm-4 col-form-label">Description</label>
+                                <div class="col-sm-8">
                                     <textarea class="form-control" id="VideoDescription"
                                         rows="3">{{$video->description}}</textarea>
                                 </div>
                             </div>
                             <div class="mb-3 row">
-                                <label for="staticEmail" class="col-sm-2 col-form-label">Allowed remote host</label>
-                                <div class="col-sm-10">
+                                <label for="staticEmail" class="col-sm-4 col-form-label">Player Skip Intro Timer
+                                    (sec)</label>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control" min="5" id="VideoSkipIntroTimer"
+                                        value="{{$video->skip_intro_time}}">
+                                    <div class="mt-2">
+                                        <small>
+                                            <code>* Add minium 5 Second</code>
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="staticEmail" class="col-sm-4 col-form-label">Allowed remote host</label>
+                                <div class="col-sm-8">
                                     <div>
                                         <textarea class="form-control" id="allowHost"
                                             rows="3">{{$video->allow_hosts}}</textarea>
                                     </div>
                                     <div class="mt-2">
                                         <small>
-                                            <p>* Add comma separated values: abc.com,google.com</p>
-                                            <p>* If empty then all hosts are allowed</p>
+                                            <p><code>* Add comma separated values: abc.com,google.com</code></p>
+                                            <p><code>* If empty then all hosts are allowed</code></p>
                                         </small>
                                     </div>
                                 </div>
@@ -126,6 +139,12 @@ function saveVideoInfo() {
     formData.append("title", title);
     formData.append("description", $('#VideoDescription').val());
     formData.append("allow_host", $('#allowHost').val());
+    if ($('#VideoSkipIntroTimer').val() <= 0) {
+        formData.append("skip_intro_time", 0);
+    } else {
+        formData.append("skip_intro_time", $('#VideoSkipIntroTimer').val());
+    }
+
 
     $.ajax({
         url: "{{route('video.edit')}}",

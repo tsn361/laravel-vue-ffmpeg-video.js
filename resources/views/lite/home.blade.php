@@ -96,7 +96,7 @@ a:focus {
 </style>
 @endsection
 @section('content')
-<div id="hero" style="min-height: 100vh;">
+<!-- <div id="hero" style="min-height: 100vh;">
     <div class="header-content">
         <div class="inner">
             <h1 class="cursive">Simple, One Page Design</h1>
@@ -106,6 +106,6 @@ a:focus {
                 class="btn btn-primary btn-xl page-scroll">Get Started</a>
         </div>
     </div>
-</div>
+</div> -->
 
 @endsection
