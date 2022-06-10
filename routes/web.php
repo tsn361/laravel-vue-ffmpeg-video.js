@@ -35,7 +35,7 @@ Route::middleware(['auth'])->group(function () {
 
 Route::prefix('video')->group(function () {
     Route::middleware(['auth'])->group(function () {
-        Route::get('/index', [App\Http\Controllers\VideoController::class, 'index'])->name('video.index');
+        Route::get('/', [App\Http\Controllers\VideoController::class, 'index'])->name('video.index');
          Route::get('/get-search', [App\Http\Controllers\VideoController::class, 'GetSearchVideoData'])->name('video.index.search');
         Route::get('/upload', [App\Http\Controllers\VideoController::class, 'upload_UI'])->name('video.upload');
         Route::get('/{slug}', [App\Http\Controllers\VideoController::class, 'video_play_UI'])->name('video.play');

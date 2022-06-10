@@ -164,7 +164,7 @@ function saveVideoInfo() {
                 })
 
                 setTimeout(() => {
-                    window.location.href = `/video/index`;
+                    window.location.href = `/video`;
                 }, 2000);
                 //console.log(result);
             } else {
