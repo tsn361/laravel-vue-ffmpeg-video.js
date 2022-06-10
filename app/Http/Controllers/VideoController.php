@@ -55,7 +55,7 @@ class VideoController extends Controller
 
         //empty check and redirect to 404 page
         if(!$video){
-            return view('video.404');
+            return redirect()->route('notfound');
         }
 
         return view('video.play', compact('video'));
@@ -63,6 +63,9 @@ class VideoController extends Controller
 
     public function edit_ui(){
         $video = Video::where('slug', request()->slug)->first();
+        if(!$video){
+            return redirect()->route('notfound');
+        }
         return view('video.edit', compact('video'));
     }
 

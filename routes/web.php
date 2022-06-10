@@ -18,6 +18,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/404', function () {
+    return view('video.404');
+})->name('notfound');
+
 Route::get('/admin', 'AdminController@index');
 Auth::routes();
 
