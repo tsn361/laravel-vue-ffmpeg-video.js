@@ -7,7 +7,7 @@
         </button>
     </div>
     <div class="col-md-3 p-3">
-        <a href="{{ route('video.play',['slug' => $video->slug])}}">
+        <a href="{{ route('video.index', ['v' => $video->file_name])}}">
             <img src="/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->poster}}" />
         </a>
     </div>
@@ -32,12 +32,12 @@
             </strong></div>
     </div>
     <div class="col-md-2 text-end p-3">
-        <a href="{{ route('video.play',['slug' => $video->slug])}}">
+        <a href="{{ route('video.index',['v' => $video->file_name])}}">
             <button class="btn btn-info btn-sm text-white">
                 <strong><i class="fas fa-info"></i></strong>
             </button>
         </a>
-        <a href="/video/edit/{{$video->slug}}">
+        <a href="/video/edit/{{$video->file_name}}">
             <button class="btn btn-primary btn-sm"><i class="fas fa-pencil"></i></button>
         </a>
         <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{$video->id}}"><i

@@ -17,5 +17,5 @@ Breadcrumbs::for('video-manage', function (BreadcrumbTrail $trail) {
 Breadcrumbs::for('video', function (BreadcrumbTrail $trail, Video $video) {
     $trail->parent('home');
     $trail->parent('video-manage');
-    $trail->push($video->title, route('video.play', $video->slug));
+    $trail->push($video->title, route('video.index', ['v' => $video->file_name ] ));
 });
