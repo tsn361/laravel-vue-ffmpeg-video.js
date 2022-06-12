@@ -10,13 +10,13 @@ class FraudCheckingEmbed
 
     public function handle(Request $request, Closure $next)
     {
-        \Log::info('FraudChecking Embed');
-        \Log::info($_SERVER);
+        //\Log::info('FraudChecking Embed');
+        //\Log::info($_SERVER);
         $isPass = false;
         
         $mobile_agents = '!(tablet|pad|mobile|phone|symbian|android|ipod|ios|blackberry|webos)!i';
         if(isset($_SERVER['HTTP_RANGE'])) {
-            \Log::info('HTTP_RANGE');
+            //\Log::info('HTTP_RANGE');
             $isPass = false;
         }elseif(strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== FALSE){
             $isPass = true;
@@ -61,7 +61,7 @@ class FraudCheckingEmbed
         }
 
         if(!$isPass){
-            \Log::info('FraudChecking: Hey cheating, I caught you');
+            //\Log::info('FraudChecking: Hey cheating, I caught you');
             abort(503, 'Hey cheating, I caught you');
         }else{
             return $next($request);

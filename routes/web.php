@@ -18,6 +18,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/404', function () {
+    return view('video.404');
+})->name('notfound');
+
 Route::get('/admin', 'AdminController@index');
 Auth::routes();
 
@@ -31,11 +35,11 @@ Route::middleware(['auth'])->group(function () {
 
 Route::prefix('video')->group(function () {
     Route::middleware(['auth'])->group(function () {
-        Route::get('/index', [App\Http\Controllers\VideoController::class, 'index'])->name('video.index');
+        Route::get('/', [App\Http\Controllers\VideoController::class, 'index'])->name('video.index');
          Route::get('/get-search', [App\Http\Controllers\VideoController::class, 'GetSearchVideoData'])->name('video.index.search');
         Route::get('/upload', [App\Http\Controllers\VideoController::class, 'upload_UI'])->name('video.upload');
-        Route::get('/{slug}', [App\Http\Controllers\VideoController::class, 'video_play_UI'])->name('video.play');
-        Route::get('/edit/{slug}', [App\Http\Controllers\VideoController::class, 'edit_ui'])->name('video.edit.ui');
+        //Route::get('/{slug}', [App\Http\Controllers\VideoController::class, 'video_play_UI'])->name('video.play');
+        Route::get('/edit/{file_name}', [App\Http\Controllers\VideoController::class, 'edit_ui'])->name('video.edit.ui');
         Route::post('/delete/{slug}', [App\Http\Controllers\VideoController::class, 'videoDelete'])->name('video.delete');
         Route::post('/file-upload', [App\Http\Controllers\VideoController::class, 'fileUploadPost'])->name('video.fileupload');
         Route::post('/save-video-info', [App\Http\Controllers\VideoController::class, 'saveVideoInfo'])->name('video.save.info');
@@ -90,7 +94,7 @@ Route::prefix('video')->group(function () {
 ->middleware(['host','FraudCheckingEmbed']);
 
 Route::get('/secret/{userid}/{filename}/{key}',  [App\Http\Controllers\VideoController::class, 'getAESKey'])->name('embed.key')->middleware(['host','FraudCheckingEmbed']);
-Route::get('/embed/{slug}', [App\Http\Controllers\EmbedPlayerController::class, 'getEmbedPlayer'])->name('video.player.embed');
+Route::get('/embed/{file_name}', [App\Http\Controllers\EmbedPlayerController::class, 'getEmbedPlayer'])->name('video.player.embed');
 
 
 Route::get('/test', [App\Http\Controllers\VideoController::class, 'test']);

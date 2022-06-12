@@ -28,6 +28,14 @@ class VideoController extends Controller
 {
 
     public function index(){
+
+        \Log::info("index=> video_play_UI=> ".request()->get('v'));
+        \Log::info( !empty(request()->get('v')) );
+
+        if( !empty(request()->get('v')) ){
+            return $this->video_play_UI(request()->get('v'));
+        }
+
         $videos = Video::where('user_id', Auth::user()->id)
                     ->orderBy('id', 'DESC')
                     ->paginate(4);
@@ -48,21 +56,26 @@ class VideoController extends Controller
         return view('video.upload');
     }
 
-    public function video_play_UI(){
-        $video = Video::where('slug', request()->slug)
+    public function video_play_UI($videoId){
+
+        $video = Video::where('file_name', $videoId)
         ->where('status', 1)
         ->first();
 
-        //empty check and redirect to 404 page
         if(!$video){
-            return view('video.404');
+            return redirect()->route('notfound');
         }
 
         return view('video.play', compact('video'));
     }
 
     public function edit_ui(){
-        $video = Video::where('slug', request()->slug)->first();
+
+        $video = Video::where('file_name', request()->file_name)->first();
+        if(!$video){
+            return redirect()->route('notfound');
+        }
+
         return view('video.edit', compact('video'));
     }
 
@@ -90,7 +103,7 @@ class VideoController extends Controller
 
         if($request->file() && $isValid) {
 
-            $fileName = time();
+            $fileName = $this->getUniqueVideoId();//time();
             $filePath = $fileName.'.'.request()->file->getClientOriginalExtension();
             $save_path = Auth::user()->id.'/'.$fileName;
 
@@ -246,6 +259,11 @@ class VideoController extends Controller
         return response()->json(['success'=>'true']);
     }
 
+    public function getUniqueVideoId(): string{
+        $bytes = random_bytes(8);
+        $base64 = base64_encode($bytes);
+        return rtrim(strtr($base64, '+/', '-_'), '=');
+    }
 
     public function test(){
         $ffprobe = '/usr/bin/ffprobe';
