@@ -63,6 +63,17 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="mb-3 row">
+                                <label for="staticEmail" class="col-sm-4 col-form-label">Custom Thumbnails</label>
+                                <div class="col-sm-5">
+                                    <input name="file" id="posterImage" type="file" vlaue="" class="form-control">
+                                </div>
+                                <div class="col-sm-3">
+                                    <img id="posterImagePreview"
+                                        src="/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->poster}}"
+                                        alt="Poster Image" class="img-thumbnail" style="max-height:300px">
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -121,6 +132,7 @@ function validFile(filename, filetype) {
 
 
 function saveVideoInfo() {
+    var file = $("#posterImage")[0].files[0];
     var formData = new FormData();
 
     var title = $('#VideoTitle').val();
@@ -139,6 +151,7 @@ function saveVideoInfo() {
     formData.append("title", title);
     formData.append("description", $('#VideoDescription').val());
     formData.append("allow_host", $('#allowHost').val());
+    formData.append("poster", file);
     if ($('#VideoSkipIntroTimer').val() <= 0) {
         formData.append("skip_intro_time", 0);
     } else {

@@ -109,6 +109,13 @@ class VideoController extends Controller
         $video->description = $request->description;
         $video->allow_hosts = $request->allow_host;
         $video->skip_intro_time = $request->skip_intro_time;
+
+        if($request->hasFile('poster')) {
+            // Process the new image
+            $fileName = 'poster.'.request()->file('poster')->getClientOriginalExtension();
+            $save_path = $video->user_id.'/'.$video->file_name;
+            request()->file('poster')->move(public_path('uploads/'.$save_path), $fileName);
+        }
         
         if($video->save()){
             return response()->json(['success'=>'true', 'videoId'=>$video->id]);
