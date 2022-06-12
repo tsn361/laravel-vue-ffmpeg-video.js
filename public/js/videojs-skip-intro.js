@@ -252,8 +252,6 @@
      */
 
     var onPlayerReady = function onPlayerReady(player, options) {
-        // var track = player.mediaCuePointsTrack();
-        var skipRanges = [];
         player.skipIntroButton = player.addChild("SkipIntroButton");
         player.addClass("vjs-skip-intro");
 

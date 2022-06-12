@@ -211,7 +211,6 @@ player.ready(function() {
     });
 
     player.on('play', function() {
-        player.muted(true);
         if (playerSkipIntroTime > 0) {
             player.skipIntro({
                 label: 'Skip Intro',
@@ -220,7 +219,6 @@ player.ready(function() {
         }
 
     });
-
 
 
     player.tech().on('usage', (e) => {
@@ -233,7 +231,7 @@ player.ready(function() {
 
         player.poster(
             "{{ config('app.url')}}/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->poster}}"
-            );
+        );
         player.bigPlayButton.show();
         player.src({
             src: "{{ route('video.playback', ['userid' =>$video->user_id, 'filename'=> $video->file_name,'playlist' => $video->playback_url ])}}",
