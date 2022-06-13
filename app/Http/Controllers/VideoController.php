@@ -37,7 +37,7 @@ class VideoController extends Controller
         }
 
         $videos = Video::where('user_id', Auth::user()->id)
-                    ->orderBy('id', 'DESC')
+                    ->orderBy('sequence', 'ASC')
                     ->paginate(4);
         return view('video.index', compact('videos'));
     }
@@ -47,7 +47,7 @@ class VideoController extends Controller
         if($request->get('search') != 'all' && $request->get('search') != ''){
             $videos = $videos->where('title', 'like', '%'.$request->get('search').'%');
         }
-        $videos = $videos->orderBy('id', 'DESC')
+        $videos = $videos->orderBy('sequence', 'ASC')
                     ->paginate(4);
         return view('video.videoListSearchData', compact('videos'));
     }
@@ -260,15 +260,36 @@ class VideoController extends Controller
     }
 
     public function deleteMultipleVideos(Request $request){
-        $videos = $request->get('deleteSelected');
-        $videos = json_decode($videos);
-        foreach($videos as $video){
-            $video = Video::where('id', $video)->first();
-            if ($video->delete()) {
-                File::deleteDirectory(public_path('uploads/'.$video->user_id.'/'.$video->file_name));
+        try {
+            $videos = $request->get('deleteSelected');
+            $videos = json_decode($videos);
+            foreach($videos as $video){
+                $video = Video::where('id', $video)->first();
+                if ($video->delete()) {
+                    File::deleteDirectory(public_path('uploads/'.$video->user_id.'/'.$video->file_name));
+                }
             }
+            return response()->json(['success'=>'true']);
+        } catch (\Throwable $th) {
+            return response()->json(['success'=>'false', 'message'=>'Error deleting videos']);
         }
-        return response()->json(['success'=>'true']);
+        
+    }
+
+    public function UpdateVideoOrder(Request $request){
+        try {
+            $videos = $request->get('order');
+            $sortArray = explode(',', $videos);
+            $i = 1;
+            foreach($sortArray as $video){
+                $video = Video::where('id', $video)->update(['sequence' => $i]);
+                $i++;
+            }
+            return response()->json(['success'=>'true']);
+        } catch (\Throwable $th) {
+            return response()->json(['success'=>'false']);
+        }
+        
     }
 
     public function getUniqueVideoId(): string{

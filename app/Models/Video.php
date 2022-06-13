@@ -33,6 +33,7 @@ class Video extends Model
         'is_transcoded',
         'status',
         'skip_intro_time',
+        'sequence',
     ];
     // protected $appends = ['video_original_type'];
     public function sluggable(): array

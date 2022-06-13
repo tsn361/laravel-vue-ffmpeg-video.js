@@ -1,6 +1,6 @@
 @if(count($videos) > 0)
 @foreach ($videos as $key => $video)
-<div class="row border-bottom d-flex align-items-center">
+<div class="row border-bottom d-flex align-items-center" id="individualList" index="{{$video->id}}">
     <div class="col-md-1 p-3">
         <div class="d-flex align-items-center">
             <div class="form-check">

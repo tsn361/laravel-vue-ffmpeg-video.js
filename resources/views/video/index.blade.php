@@ -5,6 +5,18 @@
     padding: 10px
 }
 
+#videosLists {
+    cursor: move;
+    cursor: -webkit-grabbing;
+}
+
+/* ghostClass */
+.ghost {
+    opacity: .5;
+    background: #C8EBFB;
+}
+
+
 .pagination {
     float: right;
     margin-top: 10px;
@@ -34,6 +46,10 @@ input[type="search"]::-webkit-search-results-decoration {
     display: none;
     width: 0;
     height: 0;
+}
+
+#deleteSelected {
+    display: none;
 }
 </style>
 @endsection
@@ -137,7 +153,7 @@ input[type="search"]::-webkit-search-results-decoration {
 @endsection
 
 @section('script')
-
+<script src="{{ asset('js/Sortable.min.js') }}"></script>
 <script>
 $('#searchStart').hide();
 $.ajaxSetup({
@@ -220,7 +236,6 @@ function deleteVideo(slug) {
 }
 
 
-$("#deleteSelected").hide();
 $('#selectAll').change(function() {
     // check all checkboxes
     if ($(this).prop('checked')) {
@@ -290,5 +305,30 @@ function deleteSelected() {
         }
     })
 }
+
+
+Sortable.create(videosLists, {
+    sort: true, // sorting inside list
+    delay: 100, // time in milliseconds to define when the sorting should start
+    animation: 150,
+    dragoverBubble: true,
+    ghostClass: 'ghost',
+    onChange: function(evt) {
+        var item_order = new Array();
+        $('#videosLists #individualList').each(function() {
+            item_order.push($(this).attr("index"));
+        });
+        var order_string = 'order=' + item_order;
+        $.ajax({
+            url: '/video/update-order',
+            type: 'Post',
+            data: order_string,
+            success: function(result) {
+                getSeachData('all')
+            }
+        })
+    }
+
+});
 </script>
 @endsection

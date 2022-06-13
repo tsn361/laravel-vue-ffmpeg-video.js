@@ -42,6 +42,7 @@ Route::prefix('video')->group(function () {
         Route::get('/edit/{file_name}', [App\Http\Controllers\VideoController::class, 'edit_ui'])->name('video.edit.ui');
         Route::post('/delete/{slug}', [App\Http\Controllers\VideoController::class, 'videoDelete'])->name('video.delete');
         Route::post('/delete-selected', [App\Http\Controllers\VideoController::class, 'deleteMultipleVideos'])->name('video.delete.multiple');
+        Route::post('/update-order', [App\Http\Controllers\VideoController::class, 'UpdateVideoOrder'])->name('video.update.order');
         Route::post('/file-upload', [App\Http\Controllers\VideoController::class, 'fileUploadPost'])->name('video.fileupload');
         Route::post('/save-video-info', [App\Http\Controllers\VideoController::class, 'saveVideoInfo'])->name('video.save.info');
         Route::post('/edit-video', [App\Http\Controllers\VideoController::class, 'updateVideoInfo'])->name('video.edit');
