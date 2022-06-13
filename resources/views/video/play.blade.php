@@ -6,10 +6,6 @@
 <script src="{{ asset('js/video.min.js') }}"></script>
 <link href="{{ asset('css/videojs-skip-intro.css') }}" rel="stylesheet">
 
-
-
-<style>
-</style>
 @endsection
 
 @section('content')

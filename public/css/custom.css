@@ -1,37 +1,87 @@
 body {
-  font-family: "Poppins", sans-serif;
-  font-size: 14px;
-  line-height: 1.5;
-  color: #333;
-  background-color: #fff;
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #333;
+    background-color: #fff;
 }
 
 .profile-img {
-  width: 110px !important;
-  height: 110px !important;
+    width: 110px !important;
+    height: 110px !important;
 }
 
 .icon-color {
-  color: #BBC8E2;
+    color: #bbc8e2;
 }
 
 .c-p {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .project-detail .profile-img {
-  width: 138px !important;
-  height: 138px !important;
+    width: 138px !important;
+    height: 138px !important;
 }
 
 .twitter-color {
-  color: #00ACEE;
+    color: #00acee;
 }
 
 .discord-color {
-  color: #4F5ECB;
+    color: #4f5ecb;
 }
 
 .color-green {
-  color: #45d386;
+    color: #45d386;
+}
+
+.container {
+    padding: 10px;
+}
+
+#videosLists {
+    cursor: move;
+    cursor: -webkit-grabbing;
+}
+
+/* ghostClass */
+.ghost {
+    opacity: 0.5;
+    background: #c8ebfb;
+}
+
+.pagination {
+    float: right;
+    margin-top: 10px;
+}
+
+.ms-n5 {
+    margin-left: -40px;
+}
+
+input[type="search"]::-ms-clear {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+input[type="search"]::-ms-reveal {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+/* clears the 'X' from Chrome */
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+#deleteSelected {
+    display: none;
 }

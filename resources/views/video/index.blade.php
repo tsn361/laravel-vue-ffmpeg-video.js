@@ -1,56 +1,7 @@
 @extends('layouts.app')
 @section('style')
 <style>
-.container {
-    padding: 10px
-}
 
-#videosLists {
-    cursor: move;
-    cursor: -webkit-grabbing;
-}
-
-/* ghostClass */
-.ghost {
-    opacity: .5;
-    background: #C8EBFB;
-}
-
-
-.pagination {
-    float: right;
-    margin-top: 10px;
-}
-
-.ms-n5 {
-    margin-left: -40px;
-}
-
-input[type=search]::-ms-clear {
-    display: none;
-    width: 0;
-    height: 0;
-}
-
-input[type=search]::-ms-reveal {
-    display: none;
-    width: 0;
-    height: 0;
-}
-
-/* clears the 'X' from Chrome */
-input[type="search"]::-webkit-search-decoration,
-input[type="search"]::-webkit-search-cancel-button,
-input[type="search"]::-webkit-search-results-button,
-input[type="search"]::-webkit-search-results-decoration {
-    display: none;
-    width: 0;
-    height: 0;
-}
-
-#deleteSelected {
-    display: none;
-}
 </style>
 @endsection
 @section('content')
