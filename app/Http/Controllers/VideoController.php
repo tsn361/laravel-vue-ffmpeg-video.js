@@ -259,6 +259,18 @@ class VideoController extends Controller
         return response()->json(['success'=>'true']);
     }
 
+    public function deleteMultipleVideos(Request $request){
+        $videos = $request->get('deleteSelected');
+        $videos = json_decode($videos);
+        foreach($videos as $video){
+            $video = Video::where('id', $video)->first();
+            if ($video->delete()) {
+                File::deleteDirectory(public_path('uploads/'.$video->user_id.'/'.$video->file_name));
+            }
+        }
+        return response()->json(['success'=>'true']);
+    }
+
     public function getUniqueVideoId(): string{
         $bytes = random_bytes(8);
         $base64 = base64_encode($bytes);

@@ -1,10 +1,15 @@
 @if(count($videos) > 0)
 @foreach ($videos as $key => $video)
-<div class="row border-bottom">
+<div class="row border-bottom d-flex align-items-center">
     <div class="col-md-1 p-3">
-        <button class="btn btn-dark btn-sm">
-            <strong>{{$key+1}}</strong>
-        </button>
+        <div class="d-flex align-items-center">
+            <div class="form-check">
+                <input class="form-check-input checkItem" type="checkbox" value="{{$video->id}}" name="checkItem">
+            </div>
+            <button class="btn btn-dark btn-sm">
+                <strong>{{$key+1}}</strong>
+            </button>
+        </div>
     </div>
     <div class="col-md-3 p-3">
         <a href="{{ route('video.index', ['v' => $video->file_name])}}">

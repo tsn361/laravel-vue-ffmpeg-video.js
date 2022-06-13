@@ -63,9 +63,29 @@ input[type="search"]::-webkit-search-results-decoration {
         </div>
     </div>
     <div class="row border-bottom">
-        <div class="col-md-1 p-3"><strong>ID</strong></div>
+        <div class="col-md-1 p-3">
+            <div class="d-flex align-items-center">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="selectAll">
+                </div>
+                <strong>ID</strong>
+            </div>
+
+        </div>
         <div class="col-md-3">&nbsp;</div>
-        <div class="col-md-8 p-3"><strong>Title</strong></div>
+        <div class="col-md-8 p-3">
+            <div class="d-flex align-items-center">
+                <strong>Title</strong>
+                <div class="form-check">
+                    <button class="btn btn-sm btn-danger mb-0" data-bs-toggle="modal"
+                        data-bs-target="#deleteSelectedVideos" id="deleteSelected">
+                        <i class="fas fa-trash"></i>
+                        Delete selected
+                    </button>
+                </div>
+            </div>
+
+        </div>
     </div>
     <div id="videosLists">
         @include('video.videoListSearchData')
@@ -93,7 +113,25 @@ input[type="search"]::-webkit-search-results-decoration {
             <span class="visually-hidden">Loading...</span>
         </div>
     </div>
-
+    <!-- Vertically centered modal delete selected videos -->
+    <div class="modal fade" id="deleteSelectedVideos" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete Video</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete the selected videos?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-danger" onclick="deleteSelected()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @endsection
@@ -177,6 +215,78 @@ function deleteVideo(slug) {
                 window.location.href = "{{route('video.index')}}";
             }
 
+        }
+    })
+}
+
+
+$("#deleteSelected").hide();
+$('#selectAll').change(function() {
+    // check all checkboxes
+    if ($(this).prop('checked')) {
+        $('.checkItem').prop('checked', true);
+    } else {
+        $('.checkItem').prop('checked', false);
+    }
+    // if checked any checkbox show delete button
+    if ($('.checkItem:checked').length > 0) {
+        $('#deleteSelected').show();
+    } else {
+        $('#deleteSelected').hide();
+    }
+});
+
+$(".checkItem").click(function() {
+    var check_count = $(".checkItem:checked");
+    if (check_count.length > 0) {
+        $("#deleteSelected").show();
+    } else {
+        $("#deleteSelected").hide();
+    }
+});
+
+// if any of checkbox is not checked then unchecked the select all checkbox
+$(".checkItem").click(function() {
+    if ($(this).prop("checked") == false) {
+        $("#selectAll").prop("checked", false);
+    }
+});
+// if all checkboxes are checked then checked the select all checkbox
+$(".checkItem").click(function() {
+    if ($(".checkItem:checked").length == $(".checkItem").length) {
+        $("#selectAll").prop("checked", true);
+    }
+});
+
+function deleteSelected() {
+    var selected = [];
+    $('.checkItem:checked').each(function() {
+        selected.push($(this).val());
+    });
+
+    $.ajax({
+        url: '/video/delete-selected',
+        type: 'Post',
+        data: {
+            deleteSelected: JSON.stringify(selected)
+        },
+        success: function(result) {
+            if (result.success == 'true') {
+                Swal.fire({
+                    title: 'Delete selected',
+                    text: 'Delete all selected videos.',
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                })
+                window.location.href = "{{route('video.index')}}";
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Something went wrong',
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                })
+            }
         }
     })
 }
