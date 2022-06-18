@@ -109,7 +109,7 @@ class VideoController extends Controller
 
             //--old $request->file('file')->storeAs($save_path, $fileName,'uploads');
             request()->file->move(public_path('uploads/'.$save_path), $filePath);
-            return response()->json(['success'=>'true', 'fileName'=>$fileName, 'filePath'=>$filePath]);
+            return response()->json(['success'=>'true', 'fileName'=>$fileName, 'filePath'=>$filePath,'status' => 'ok','path' => $filePath]);
         }else{
             return response()->json(['success'=>'false', 'Fail upload failed']);
         }
@@ -138,58 +138,80 @@ class VideoController extends Controller
     }
 
     public function saveVideoInfo(Request $request){
-        $request->validate([
-            'title' => 'required'
-        ]);
-        
 
-        $path = Auth::user()->id.'/'.$request->fileName.'/'.$request->fileNameWithExt;
-        $media = FFMpeg::fromDisk('uploads')->open($path);
-        $durationInSeconds = $media->getDurationInSeconds(); // returns an integer
-        $codec = $media->getVideoStream()->get('codec_name'); // returns a string
-        $original_resolution = $media->getVideoStream()->get('height'); // returns an array
-        $bitrate = $media->getVideoStream()->get('bit_rate'); // returns an integer
-
-        $original_filesize = $size = Storage::disk('uploads')->size($path);
-
-        $posterImage = null;
-        if($request->hasFile('poster')) {
-            // Process the new image
-            $fileName = 'poster.'.request()->file('poster')->getClientOriginalExtension();
-            $save_path = Auth::user()->id.'/'.$request->fileName;
-            request()->file('poster')->move(public_path('uploads/'.$save_path), $fileName);
-            $posterImage = $fileName;
-        }else{
-            $media->getFrameFromSeconds(8)
-            ->export()
-            ->save(Auth::user()->id.'/'.$request->fileName.'/'.'poster.png');
-            $posterImage = 'poster.png';
+        $data = $request->input('data') ;
+       
+        $videos = [];
+        foreach ($data as $key => $value) {
+            if(!empty($value['title']) && isset($value['title'])){
+                $videos[] = [
+                    'user_id' => Auth::user()->id,
+                    'file_name' => $value['fileName'],
+                    'title' => $value['title'],
+                    'description' => $value['description'],
+                    'origianl_file_url' => $value['fileNameWithExt'],
+                ];
+            }else{
+                return response()->json(['success'=>'false', 'message'=>'Title is required']);
+            }
         }
-
-        $video = new Video();
-        $video->title = $request->title;
-        $video->slug = SlugService::createSlug(Video::class, 'slug', $request->title);
-        $video->description = $request->description;
-        $video->poster = $posterImage;
-        $video->origianl_file_url =  $request->fileNameWithExt;
-        $video->playback_url =  'master.m3u8';
-        $video->user_id = Auth::user()->id;
-        $video->video_duration = $durationInSeconds;
-        $video->original_filesize = $original_filesize;
-        $video->original_resolution = $original_resolution;
-        $video->original_bitrate = $bitrate ? $bitrate : rand(1,600000);
-        $video->original_video_codec = $codec;
-        $video->file_name = $request->fileName;
-        $video->is_transcoded = 0;
-        $video->upload_duration = $request->uploadDuration  > 4 ? $request->uploadDuration : 10;
-        
-        if($video->save()){
-            $this->createTmpTranscodeEntry($original_resolution, $request->fileName, $video->id);
-            return response()->json(['success'=>'true', 'lastInsertedId'=>$video->id]);
+         dd($videos);
+        $videosModel = new Video();
+        $videosModel->insert($videos);
+        if($videosModel){
+            return response()->json(['success'=>'true', 'message'=>'Video saved successfully']);
         }else{
             return response()->json(['success'=>'false', 'message'=>'Error saving video']);
         }
+
         
+
+        // $path = Auth::user()->id.'/'.$request->fileName.'/'.$request->fileNameWithExt;
+        // $media = FFMpeg::fromDisk('uploads')->open($path);
+        // $durationInSeconds = $media->getDurationInSeconds(); // returns an integer
+        // $codec = $media->getVideoStream()->get('codec_name'); // returns a string
+        // $original_resolution = $media->getVideoStream()->get('height'); // returns an array
+        // $bitrate = $media->getVideoStream()->get('bit_rate'); // returns an integer
+
+        // $original_filesize = $size = Storage::disk('uploads')->size($path);
+
+        // $posterImage = null;
+        // if($request->hasFile('poster')) {
+        //     // Process the new image
+        //     $fileName = 'poster.'.request()->file('poster')->getClientOriginalExtension();
+        //     $save_path = Auth::user()->id.'/'.$request->fileName;
+        //     request()->file('poster')->move(public_path('uploads/'.$save_path), $fileName);
+        //     $posterImage = $fileName;
+        // }else{
+        //     $media->getFrameFromSeconds(8)
+        //     ->export()
+        //     ->save(Auth::user()->id.'/'.$request->fileName.'/'.'poster.png');
+        //     $posterImage = 'poster.png';
+        // }
+
+        // $video = new Video();
+        // $video->title = $request->title;
+        // $video->slug = SlugService::createSlug(Video::class, 'slug', $request->title);
+        // $video->description = $request->description;
+        // $video->poster = $posterImage;
+        // $video->origianl_file_url =  $request->fileNameWithExt;
+        // $video->playback_url =  'master.m3u8';
+        // $video->user_id = Auth::user()->id;
+        // $video->video_duration = $durationInSeconds;
+        // $video->original_filesize = $original_filesize;
+        // $video->original_resolution = $original_resolution;
+        // $video->original_bitrate = $bitrate ? $bitrate : rand(1,600000);
+        // $video->original_video_codec = $codec;
+        // $video->file_name = $request->fileName;
+        // $video->is_transcoded = 0;
+        // $video->upload_duration = $request->uploadDuration  > 4 ? $request->uploadDuration : 10;
+        
+        // if($video->save()){
+        //     $this->createTmpTranscodeEntry($original_resolution, $request->fileName, $video->id);
+        //     return response()->json(['success'=>'true', 'lastInsertedId'=>$video->id]);
+        // }else{
+        //     return response()->json(['success'=>'false', 'message'=>'Error saving video']);
+        // }
     }
 
     public function transcode(Request $request){
