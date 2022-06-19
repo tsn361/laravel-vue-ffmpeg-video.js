@@ -32,12 +32,10 @@ use ProtoneMedia\LaravelFFMpeg\Filters\TileFactory;
 use FFMpeg\Filters\Video\VideoFilters;
 use FFMpeg\Media\AdvancedMedia;
 use ProtoneMedia\LaravelFFMpeg\FFMpeg\VideoMedia;
-use Throwable;
+
 class VideoTranscode implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
-    public $timeout = 1000000;
     public $tries = 1;
     public $maxExceptions = 1;
 
@@ -156,18 +154,23 @@ class VideoTranscode implements ShouldQueue
                     $timeConsumed = round(microtime(true) - $curTime,3); 
                     $this->updateVideoProcessTime($video->id,$timeConsumed);
             }else{
-                $this->fail();
+                \Log::info("video: {$this->video_id} already transcoded\n");
+                return true;
             }
-        }catch (Exception  $e) {
-             \Log::info("VideoTranscode=> exception ".$e);
+        }catch (Exception $e) {
+            \Log::info("VideoTranscode=> exception ".$e);
+            $this->updateVideoStatus($this->video_id, 2, 2);
+            if ($this->attempts() > 1) { 
+                return; 
+            }
+            throw new \Exception($e);
             $this->fail();
         }
     }
 
-    public function failed(Throwable $exception) 
+    public function failed() 
     {
         \Log::info("VideoTranscode=> exception id ".$this->video_id);
-        $this->updateVideoStatus($this->video_id, 2, 2);
     }
 
     public function updateTranscodeStatus($progress, $is_complete, $file_name,$fileFormatArray){

@@ -40,7 +40,7 @@ return [
             'queue' => 'default',
             'retry_after' => 9000,
             'after_commit' => false,
-            'timeout' => 9100
+            'timeout' => 9100000000000000
         ],
 
         'beanstalkd' => [

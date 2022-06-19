@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('style')
+<meta http-equiv="refresh" content="30" />
 <style>
 
 </style>

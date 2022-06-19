@@ -12,9 +12,13 @@
         </div>
     </div>
     <div class="col-md-3 p-3">
+        @if($video->is_transcoded == 1)
         <a href="{{ route('video.index', ['v' => $video->file_name])}}">
             <img src="/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->poster}}" />
         </a>
+        @else
+        <img src="/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->poster}}" />
+        @endif
     </div>
     <div class="col-md-6 p-3 ts-sm">
         <div>
@@ -26,8 +30,11 @@
         <div class="mt-1">Upload duration: <strong>{{$video->upload_duration}}</strong></div>
         <div class="mt-1">Status: <strong>
                 @if($video->is_transcoded == 0)
-                <a href="javascript:void(0)" class="badge bg-warning text-center text-light">Transcoding Not
-                    Attempted</a>
+                <a href="/video/{{$video->id}}/status" target="_blank"
+                    class="badge bg-primary text-center text-light text-underline">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    See Transcoding Progress
+                </a>
                 @elseif($video->is_transcoded == 1)
                 <a href="javascript:void(0)" class="badge bg-success text-center text-light">Transcoded</a>
                 @elseif($video->is_transcoded == 2)

@@ -81,7 +81,7 @@ hr {
                                     <div class="card-header bg-dark text-white">
                                         <div class="row">
                                             <div class="col-md-6 float-start pt-2">
-                                                <h4>Create New Video</h4>
+                                                <h4>%%filename%%</h4>
                                             </div>
                                             <div class="col-md-6 text-end" id="seeTranscodeProgress"
                                                 style="display:none">
@@ -94,8 +94,7 @@ hr {
                                     </div>
                                     <div class="card-body">
                                         <div class="media-body mb-1">
-                                            <p class="mb-2"><strong>%%filename%%</strong> - Status: <span
-                                                    class="text-muted">Waiting</span></p>
+                                            <p class="mb-2">Status: <span class="text-muted">Waiting</span></p>
                                             <div class="progress mb-2">
                                                 <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
                                                     role="progressbar" style="width: 0%" aria-valuenow="0"
