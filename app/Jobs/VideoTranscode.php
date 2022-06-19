@@ -32,7 +32,7 @@ use ProtoneMedia\LaravelFFMpeg\Filters\TileFactory;
 use FFMpeg\Filters\Video\VideoFilters;
 use FFMpeg\Media\AdvancedMedia;
 use ProtoneMedia\LaravelFFMpeg\FFMpeg\VideoMedia;
-
+use Throwable;
 class VideoTranscode implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -143,7 +143,7 @@ class VideoTranscode implements ShouldQueue
                         }
                     })
                     ->onProgress(function ($percentage) use($video,$newArray) {
-                        \Log::info("percent: {$percentage} %\n");
+                        \Log::info("video: {$video->id} percent: {$percentage} %\n");
                         if ($percentage == 100) {
                             $this->updateTranscodeStatus($percentage, 1, $video->file_name,$newArray);
                         }else{
@@ -159,15 +159,15 @@ class VideoTranscode implements ShouldQueue
                 $this->fail();
             }
         }catch (Exception  $e) {
+             \Log::info("VideoTranscode=> exception ".$e);
             $this->fail();
         }
     }
 
-    public function failed() 
+    public function failed(Throwable $exception) 
     {
-        \Log::info("VideoTranscode=> e ".$this->video_id);
+        \Log::info("VideoTranscode=> exception id ".$this->video_id);
         $this->updateVideoStatus($this->video_id, 2, 2);
-        $this->fail();
     }
 
     public function updateTranscodeStatus($progress, $is_complete, $file_name,$fileFormatArray){

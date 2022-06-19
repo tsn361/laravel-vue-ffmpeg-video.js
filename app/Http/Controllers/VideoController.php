@@ -29,9 +29,6 @@ class VideoController extends Controller
 
     public function index(){
 
-        \Log::info("index=> video_play_UI=> ".request()->get('v'));
-        \Log::info( !empty(request()->get('v')) );
-
         if( !empty(request()->get('v')) ){
             return $this->video_play_UI(request()->get('v'));
         }
@@ -139,82 +136,70 @@ class VideoController extends Controller
 
     public function saveVideoInfo(Request $request){
 
-        $data = $request->input('data') ;
-       
-        $videos = [];
-        foreach ($data as $key => $value) {
-            if(!empty($value['title']) && isset($value['title'])){
-                $videos[] = [
-                    'user_id' => Auth::user()->id,
-                    'file_name' => $value['fileName'],
-                    'title' => $value['title'],
-                    'description' => $value['description'],
-                    'origianl_file_url' => $value['fileNameWithExt'],
-                ];
-            }else{
-                return response()->json(['success'=>'false', 'message'=>'Title is required']);
-            }
+        $request->validate([
+            'title' => 'required'
+        ]);
+        
+
+        $path = Auth::user()->id.'/'.$request->fileName.'/'.$request->fileNameWithExt;
+        $media = FFMpeg::fromDisk('uploads')->open($path);
+        try {
+            $durationInSeconds = $media->getDurationInSeconds(); // returns an integer
+        } catch (\Throwable $th) {
+           $durationInSeconds = 0;
         }
-         dd($videos);
-        $videosModel = new Video();
-        $videosModel->insert($videos);
-        if($videosModel){
-            return response()->json(['success'=>'true', 'message'=>'Video saved successfully']);
+        
+        $codec = $media->getVideoStream()->get('codec_name'); // returns a string
+        $original_resolution = $media->getVideoStream()->get('height'); // returns an array
+        $bitrate = $media->getVideoStream()->get('bit_rate'); // returns an integer
+
+        $original_filesize = $size = Storage::disk('uploads')->size($path);
+
+        $posterImage = null;
+        if($request->hasFile('poster')) {
+            // Process the new image
+            $fileName = 'poster.'.request()->file('poster')->getClientOriginalExtension();
+            $save_path = Auth::user()->id.'/'.$request->fileName;
+            request()->file('poster')->move(public_path('uploads/'.$save_path), $fileName);
+            $posterImage = $fileName;
+        }else{
+            $media->getFrameFromSeconds(8)
+            ->export()
+            ->save(Auth::user()->id.'/'.$request->fileName.'/'.'poster.png');
+            $posterImage = 'poster.png';
+        }
+
+        $video = new Video();
+        $video->title = $request->title;
+        $video->slug = SlugService::createSlug(Video::class, 'slug', $request->title);
+        $video->description = $request->description;
+        $video->poster = $posterImage;
+        $video->origianl_file_url =  $request->fileNameWithExt;
+        $video->playback_url =  'master.m3u8';
+        $video->user_id = Auth::user()->id;
+        $video->video_duration =  $durationInSeconds;
+        $video->original_filesize = $original_filesize;
+        $video->original_resolution = $original_resolution;
+        $video->original_bitrate = $bitrate ? $bitrate : rand(1,600000);
+        $video->original_video_codec = $codec;
+        $video->file_name = $request->fileName;
+        $video->is_transcoded = 0;
+        $video->upload_duration = $request->uploadDuration  > 4 ? $request->uploadDuration : 10;
+        
+        if($video->save()){
+            $this->createTmpTranscodeEntry($original_resolution, $request->fileName, $video->id);
+            $this->transcode($video->id);
+            return response()->json(['success'=>'true', 'lastInsertedId'=>$video->id,'formId' => $request->formId]);
         }else{
             return response()->json(['success'=>'false', 'message'=>'Error saving video']);
         }
-
-        
-
-        // $path = Auth::user()->id.'/'.$request->fileName.'/'.$request->fileNameWithExt;
-        // $media = FFMpeg::fromDisk('uploads')->open($path);
-        // $durationInSeconds = $media->getDurationInSeconds(); // returns an integer
-        // $codec = $media->getVideoStream()->get('codec_name'); // returns a string
-        // $original_resolution = $media->getVideoStream()->get('height'); // returns an array
-        // $bitrate = $media->getVideoStream()->get('bit_rate'); // returns an integer
-
-        // $original_filesize = $size = Storage::disk('uploads')->size($path);
-
-        // $posterImage = null;
-        // if($request->hasFile('poster')) {
-        //     // Process the new image
-        //     $fileName = 'poster.'.request()->file('poster')->getClientOriginalExtension();
-        //     $save_path = Auth::user()->id.'/'.$request->fileName;
-        //     request()->file('poster')->move(public_path('uploads/'.$save_path), $fileName);
-        //     $posterImage = $fileName;
-        // }else{
-        //     $media->getFrameFromSeconds(8)
-        //     ->export()
-        //     ->save(Auth::user()->id.'/'.$request->fileName.'/'.'poster.png');
-        //     $posterImage = 'poster.png';
-        // }
-
-        // $video = new Video();
-        // $video->title = $request->title;
-        // $video->slug = SlugService::createSlug(Video::class, 'slug', $request->title);
-        // $video->description = $request->description;
-        // $video->poster = $posterImage;
-        // $video->origianl_file_url =  $request->fileNameWithExt;
-        // $video->playback_url =  'master.m3u8';
-        // $video->user_id = Auth::user()->id;
-        // $video->video_duration = $durationInSeconds;
-        // $video->original_filesize = $original_filesize;
-        // $video->original_resolution = $original_resolution;
-        // $video->original_bitrate = $bitrate ? $bitrate : rand(1,600000);
-        // $video->original_video_codec = $codec;
-        // $video->file_name = $request->fileName;
-        // $video->is_transcoded = 0;
-        // $video->upload_duration = $request->uploadDuration  > 4 ? $request->uploadDuration : 10;
-        
-        // if($video->save()){
-        //     $this->createTmpTranscodeEntry($original_resolution, $request->fileName, $video->id);
-        //     return response()->json(['success'=>'true', 'lastInsertedId'=>$video->id]);
-        // }else{
-        //     return response()->json(['success'=>'false', 'message'=>'Error saving video']);
-        // }
     }
 
-    public function transcode(Request $request){
+    public function transcode($id){
+        dispatch(new VideoTranscode($id));
+        return response()->json(['success'=>'true']);
+    }  
+    public function transcodeOld(Request $request){
         dispatch(new VideoTranscode($request->id));
         return response()->json(['success'=>'true']);
     }       
@@ -315,18 +300,31 @@ class VideoController extends Controller
     }
 
     public function getUniqueVideoId(): string{
-        $bytes = random_bytes(8);
-        $base64 = base64_encode($bytes);
-        return rtrim(strtr($base64, '+/', '-_'), '=');
+        // $bytes = random_bytes(8);
+        // $base64 = base64_encode($bytes);
+        // return rtrim(strtr($base64, '+/', '-_'), '=');
+        $chars = "bcdfghjklmnpqrstvwxyz";
+        $chars .= "BCDFGHJKLMNPQRSTVWXYZ";
+        $chars .= "0123456789";
+        while(1){
+            $key = '';
+            srand((double)microtime()*1000000);
+            for($i = 0; $i < 10; $i++){
+                $key .= substr($chars,(rand()%(strlen($chars))), 1);
+            }
+            break;
+        }
+        return $key;
+
     }
 
     public function test(){
         $ffprobe = '/usr/bin/ffprobe';
-        $videoFile = '/var/www/html/upwork/laravel-vue-ffmpeg-video.js/public/uploads/3/1654623378/1654623378.mp4';
+        $videoFile = '/var/www/html/upwork/laravel-vue-ffmpeg-video.js/public/uploads/3/0nD0AHMQP_g/0nD0AHMQP_g.webm';
         $cmd = shell_exec($ffprobe .' -v quiet -print_format json -select_streams v:0  -show_streams "'.$videoFile.'"');
         $parsed = json_decode($cmd, true);
         $bitrate = @$parsed['streams'][0]['bit_rate'];
         $duration = @$parsed['streams'][0]['duration'];
-        return response()->json($parsed['streams'][0]);
+        return response()->json($parsed);
     }
 }

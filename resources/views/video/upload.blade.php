@@ -8,16 +8,16 @@ hr {
     margin-bottom: 2rem;
 }
 
-#filesDiv {
+/* #filesDiv {
     overflow-y: auto !important;
     min-height: 100px;
     max-height: 300px;
-}
+} */
 
 @media (max-width: 768px) {
-    #filesDiv {
+    /* #filesDiv {
         min-height: 0;
-    }
+    } */
 }
 
 .dm-uploader {
@@ -64,18 +64,6 @@ hr {
         </div>
         <div class="col-md-11 mt-3">
             <div class="card">
-                <div class="card-header bg-dark text-white">
-                    <div class="row">
-                        <div class="col-md-6 float-start pt-2">
-                            <h4>Create New Video</h4>
-                        </div>
-                        <div class="col-md-6 text-end">
-                            <button id="createBtn" style="display:none" class="btn btn-primary btn-sm" type="submit"
-                                onclick="saveVideoInfo()">+Create</button>
-                            <button id="uploadProgressBtn" style="display:none" class="btn btn-primary btn-sm"></button>
-                        </div>
-                    </div>
-                </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-12" id="filesDiv">
@@ -89,40 +77,68 @@ hr {
                             <!-- File item template -->
                             <script type="text/html" id="files-template">
                             <li class="media">
-                                <div class="media-body mb-1">
-                                    <p class="mb-2">Status: <span class="text-muted">Waiting</span></p>
-                                    <div class="progress mb-2">
-                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
-                                            role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0"
-                                            aria-valuemax="100"></div>
+                                <div class="card mb-3">
+                                    <div class="card-header bg-dark text-white">
+                                        <div class="row">
+                                            <div class="col-md-6 float-start pt-2">
+                                                <h4>Create New Video</h4>
+                                            </div>
+                                            <div class="col-md-6 text-end" id="seeTranscodeProgress"
+                                                style="display:none">
+                                                <button class=" btn btn-sm btn-danger mb-0">
+                                                    <i class="fas fa-gear fa-spin"></i>
+                                                    See Transcode Progress
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <form method="POST" id="videoInfo" enctype="multipart/form-data">
-                                        <input type="hidden" name="fileName" id="fileName" value="">
-                                        <input type="hidden" name="fileNameWithExt" id="fileNameWithExt" value="">
-                                        <input type="hidden" name="uploadDuration" id="uploadDuration" value="20">
-                                        <div class="mb-3 row">
-                                            <label for="staticEmail" class="col-sm-2 col-form-label">Title</label>
-                                            <div class="col-sm-10">
-                                                <input type="text" class="form-control" name="title" id="VideoTitle"
-                                                    value="">
+                                    <div class="card-body">
+                                        <div class="media-body mb-1">
+                                            <p class="mb-2"><strong>%%filename%%</strong> - Status: <span
+                                                    class="text-muted">Waiting</span></p>
+                                            <div class="progress mb-2">
+                                                <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
+                                                    role="progressbar" style="width: 0%" aria-valuenow="0"
+                                                    aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                            <form method="POST" enctype="multipart/form-data">
+                                                <input type="hidden" id="fileName" value="">
+                                                <input type="hidden" id="fileNameWithExt" value="">
+                                                <input type="hidden" id="uploadDuration" value="20">
+                                                <div class="mb-3 row">
+                                                    <label for="staticEmail"
+                                                        class="col-sm-2 col-form-label">Title</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text" class="form-control" id="VideoTitle"
+                                                            value="">
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3 row">
+                                                    <label for="staticEmail"
+                                                        class="col-sm-2 col-form-label">Description</label>
+                                                    <div class="col-sm-10">
+                                                        <textarea class="form-control" id="VideoDescription"
+                                                            rows="3"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3 row">
+                                                    <label for="staticEmail"
+                                                        class="col-sm-2 col-form-label">Poster</label>
+                                                    <div class="col-sm-10">
+                                                        <input id="posterImage" type="file" vlaue=""
+                                                            class="form-control">
+                                                    </div>
+                                                </div>
+                                            </form>
+                                            <div class="mb-3 row">
+                                                <div class="col-sm-6"></div>
+                                                <div class="col-sm-6 text-end">
+                                                    <button class="btn btn-primary" type="submit"
+                                                        id="submitBtn">+Create</button>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="mb-3 row">
-                                            <label for="staticEmail" class="col-sm-2 col-form-label">Description</label>
-                                            <div class="col-sm-10">
-                                                <textarea class="form-control" name="description" id="VideoDescription"
-                                                    rows="3"></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label for="staticEmail" class="col-sm-2 col-form-label">Poster</label>
-                                            <div class="col-sm-10">
-                                                <input name="poster" id="posterImage" type="file" vlaue=""
-                                                    class="form-control">
-                                            </div>
-                                        </div>
-                                    </form>
-                                    <hr class="mt-2 mb-5" />
+                                    </div>
                                 </div>
                             </li>
                             </script>
@@ -138,8 +154,58 @@ hr {
 @section('script')
 <script src="{{ asset('js/jquery.dm-uploader.js') }}"></script>
 <script src="{{ asset('js/demo-ui.js') }}"></script>
-<!-- <script src="{{ asset('js/demo-config.js') }}"></script> -->
 <script type="text/javascript">
+function test() {
+
+    // javascript add value to attribute
+    $('#component').attr('vid', '2');
+    setTimeout(() => {
+        $('#showComponent').show();
+    }, 1000);
+}
+
+function saveVideoInfo(formId) {
+    console.log(formId);
+    // get specific form data
+    var formData = new FormData();
+    formData.append("formId", formId);
+    formData.append("fileName", $("#uploaderFile" + formId).find("#fileName").val());
+    formData.append("fileNameWithExt", $("#uploaderFile" + formId).find("#fileNameWithExt").val());
+    formData.append("title", $("#uploaderFile" + formId).find("#VideoTitle").val());
+    formData.append("poster", $("#uploaderFile" + formId).find("#posterImage")[0].files[0]);
+    formData.append("description", $("#uploaderFile" + formId).find("#VideoDescription").val());
+    formData.append("uploadDuration", $("#uploaderFile" + formId).find("#uploadDuration").val());
+
+    $.ajax({
+        url: "{{route('video.save.info')}}",
+        method: 'POST',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function(result) {
+            if (result.success == 'true') {
+                // window.location.href = `/video/${result.lastInsertedId}/status`;
+                console.log(result);
+                $("#uploaderFile" + formId).find("#submitBtn").hide();
+
+                $("#uploaderFile" + formId).find("#seeTranscodeProgress button").attr('onclick',
+                    `seeTranscodeProgress('${result.lastInsertedId}')`);
+                $("#uploaderFile" + formId).find("#seeTranscodeProgress").show();
+            } else {
+                console.log(res.message);
+            }
+        },
+        error: function(err) {
+            // window.location.reload();
+        }
+    });
+}
+
+function seeTranscodeProgress(videoId) {
+    var url = `/video/${videoId}/status`;
+    window.open(url, '_blank');
+}
 $(function() {
     /*
      * For the sake keeping the code clean and the examples simple this file
@@ -153,6 +219,10 @@ $(function() {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         maxFileSize: 300000000000, // 3 Megs 
+        allowedTypes: 'video/*',
+        extFilter: ['mp4', 'mkv', 'mov', 'fvl', 'flv', 'avi', 'wmv', 'mpg', 'mpeg', '3gp', '3g2',
+            'webm'
+        ],
         onDragEnter: function() {
             // Happens when dragging something over the DnD area
             this.addClass('active');
@@ -195,10 +265,12 @@ $(function() {
             // A file was successfully uploaded
             ui_multi_update_file_status(id, 'success', 'Upload Complete');
             ui_multi_update_file_progress(id, 100, 'success', false);
-
             setTimeout(() => {
                 $("#uploaderFile" + id).find("#fileName").val(data.fileName);
                 $("#uploaderFile" + id).find("#fileNameWithExt").val(data.filePath);
+                $("#uploaderFile" + id).find("#submitBtn").attr('onclick',
+                    `saveVideoInfo('${id}')`);
+
             }, 100);
             console.log("onUploadSuccess", data);
         },
@@ -211,7 +283,14 @@ $(function() {
             ui_add_log('Plugin cant be used here, running Fallback callback', 'danger');
         },
         onFileSizeError: function(file) {
-            ui_add_log('File \'' + file.name + '\' cannot be added: size excess limit', 'danger');
+            console.log('File size \'' + file.name + '\' cannot be added: size excess limit');
+        },
+        onFileExtError: function(file) {
+            console.log("File extension \'" + file.name +
+                "\' cannot be added: extension not allowed");
+        },
+        onFileTypeError: function(file) {
+            console.log("File type error", file);
         }
     });
 });
@@ -220,54 +299,5 @@ $.ajaxSetup({
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
 });
-
-function saveVideoInfo() {
-    var postData = [];
-    var videoInfo = new FormData();
-    $('li.media').each(function() {
-        var formData = $(this).find('form').serializeArray();
-        // formData.push({
-        //     name: 'poster',
-        //     value: $(this).find("#posterImage")[0].files[0]
-        // });
-        // postData.push(formData);
-        // appand form data to videoInfo
-
-        $.each(formData, function(key, input) {
-            videoInfo.append(input.name, input.value);
-            videoInfo.append('poster', $("#posterImage")[0].files[0]);
-        });
-    });
-    // postData to key value pair
-    // var dataArray = [];
-    // $.each(postData, function(index, value) {
-    //     var data = {};
-    //     $.each(value, function(index, value) {
-    //         data[value.name] = value.value;
-    //     });
-    //     dataArray.push(data);
-    // });
-    // console.log(dataArray);
-
-
-    // ajax post array to server
-    $.ajax({
-        url: "{{route('video.save.info')}}",
-        method: 'POST',
-        type: 'POST',
-        data: videoInfo,
-        success: function(result) {
-            if (result.success == 'true') {
-                // window.location.href = `/video/${result.lastInsertedId}/status`;
-                console.log(result);
-            } else {
-                console.log(result.message);
-            }
-        },
-        error: function(err) {
-            // window.location.reload();
-        }
-    });
-}
 </script>
 @endsection
