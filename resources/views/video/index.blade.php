@@ -2,7 +2,24 @@
 @section('style')
 <meta http-equiv="refresh" content="30" />
 <style>
+.showTrancoding {
+    position: relative;
+    background-color: red;
+    text-align: center;
+}
 
+.showTrancoding img {
+    opacity: 0.5;
+}
+
+.showLoading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    width: 100%;
+}
 </style>
 @endsection
 @section('content')

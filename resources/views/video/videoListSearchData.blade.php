@@ -17,8 +17,16 @@
             <img src="/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->poster}}" />
         </a>
         @else
-        <img src="/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->poster}}" />
+        <div class="showTrancoding">
+            <a href="/video/{{$video->id}}/status" target="_blank">
+                <img src="/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->poster}}" />
+                <div class="showLoading">
+                    <b><i class="fas fa-spinner fa-spin"></i> Transcoding...</b>
+                </div>
+            </a>
+        </div>
         @endif
+
     </div>
     <div class="col-md-6 p-3 ts-sm">
         <div>
