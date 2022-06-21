@@ -8,7 +8,11 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', "HLS") }}</title>
+    <!-- <title>{{ config('app.name', "HLS") }}</title> -->
+    <title>@yield('title', 'HLS Video')</title>
+    <meta name="description" content="@yield('description', 'video upload and secure distribution site')">
+    <meta name="keywords"
+        content="@yield('keywords','video upload, video sharing, hls video upload,secure hls video distribution ')">
 
 
     <!-- Scripts -->

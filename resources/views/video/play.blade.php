@@ -1,4 +1,6 @@
 @extends('layouts.app')
+@section('title', $video->title)
+@section('description', $video->description)
 
 @section('style')
 <link href="{{ asset('css/video-js.min.css') }}" rel="stylesheet">
