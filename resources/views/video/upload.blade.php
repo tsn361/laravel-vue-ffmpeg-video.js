@@ -269,6 +269,7 @@ $(function() {
                 $("#uploaderFile" + id).find("#fileNameWithExt").val(data.filePath);
                 $("#uploaderFile" + id).find("#submitBtn").attr('onclick',
                     `saveVideoInfo('${id}')`);
+                $("#uploaderFile" + id).addClass(data.fileName);
 
             }, 100);
             console.log("onUploadSuccess", data);
@@ -298,5 +299,36 @@ $.ajaxSetup({
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
 });
+
+
+
+
+var myInterval = setInterval(function() {
+    checkUserPendingVideoTranscoded()
+}, 3000);
+
+function checkUserPendingVideoTranscoded() {
+    $.ajax({
+        url: "{{route('video.upload.status')}}",
+        method: 'Get',
+        type: 'Get',
+        dataType: 'json',
+        contentType: 'application/json',
+        processData: false,
+        async: true,
+        success: function(result) {
+            var progress = result;
+
+            if (progress.length > 0) {
+                $.each(progress, function(key, value) {
+                    var element = $(`.${value.file_name}`);
+                    if (element && value.is_transcoded == 1) {
+                        $(element).hide();
+                    }
+                });
+            }
+        }
+    });
+}
 </script>
 @endsection

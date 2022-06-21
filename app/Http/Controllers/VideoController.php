@@ -315,7 +315,15 @@ class VideoController extends Controller
             break;
         }
         return $key;
+    }
 
+    public function checkUserPendingVideoTranscoded(){
+        $data = Video::select('file_name','is_transcoded')->where('user_id', Auth::user()->id)->orderBy('id', 'desc')->take(10)->get();
+        if(count($data) > 0){
+            return response()->json($data);
+        }else{
+            return response()->json([]);
+        }
     }
 
     public function test(){
