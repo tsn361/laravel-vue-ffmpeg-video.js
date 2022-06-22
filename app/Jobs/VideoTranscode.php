@@ -163,14 +163,7 @@ class VideoTranscode implements ShouldQueue
             if ($this->attempts() > 1) { 
                 return; 
             }
-            throw new \Exception($e);
-            $this->fail();
         }
-    }
-
-    public function failed() 
-    {
-        \Log::info("VideoTranscode=> exception id ".$this->video_id);
     }
 
     public function updateTranscodeStatus($progress, $is_complete, $file_name,$fileFormatArray){

@@ -100,4 +100,8 @@ Route::get('/secret/{userid}/{filename}/{key}',  [App\Http\Controllers\VideoCont
 Route::get('/embed/{file_name}', [App\Http\Controllers\EmbedPlayerController::class, 'getEmbedPlayer'])->name('video.player.embed');
 
 
+// test routes
+
 Route::get('/test', [App\Http\Controllers\VideoController::class, 'test']);
+
+Route::get('/schema/{videId}', [App\Http\Controllers\VideoObjectSchemaController::class, 'generateVideoSchemaObject'])->name('video.schema.object');

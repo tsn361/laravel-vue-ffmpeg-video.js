@@ -45,18 +45,15 @@ class Video extends Model
         ];
     }
 
+     
+
     protected function uploadDuration(): Attribute
     {
         return Attribute::make(
             get: fn ($value) => $value >0 && $value !=null ? gmdate("H:i:s", $value). ' Seconds' : '00:00:00 Seconds',
         );
     }
-    protected function videoDuration(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($value) => $value >0 && $value !=null ? gmdate("H:i:s", $value). ' Seconds' : '00:00:00 Seconds',
-        );
-    }
+    
 
     protected function 	processTime(): Attribute
     {
@@ -90,4 +87,23 @@ class Video extends Model
         $getVideoType = end($getVideoType);
     }
 
+
+    
+    protected function getVideoDurationAttribute(){
+        return $this->attributes['video_duration'] > 0 && $this->attributes['video_duration'] !=null ? gmdate("H:i:s", $this->attributes['video_duration']). ' Seconds' : '00:00:00 Seconds';
+    }
+
+    protected function getVideoDurationIsoFormatAttribute()
+    {
+        $seconds = $this->attributes['video_duration'];
+
+        $hours = floor($seconds / 3600);
+        $seconds = $seconds % 3600;
+
+        $minutes = floor($seconds / 60);
+        $seconds = $seconds % 60;
+    
+        return sprintf('P%02dH%02dM%dS', $hours, $minutes, $seconds);
+    }
+    
 }

@@ -17,7 +17,9 @@
         "laravel/sanctum": "^2.14.1",
         "laravel/tinker": "^2.7",
         "laravel/ui": "^3.4",
+        "nesbot/carbon": "^2.58",
         "pbmedia/laravel-ffmpeg": "^8.1",
+        "spatie/schema-org": "^3.11",
         "usmanhalalit/laracsv": "^2.1"
     },
     "require-dev": {
