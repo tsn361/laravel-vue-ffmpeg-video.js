@@ -259,11 +259,13 @@ $(function() {
             console.log('Upload progress for file #' + id + ': ' + percent + '%');
             // Updating file progress
             ui_multi_update_file_progress(id, percent);
+            $("#uploaderFile" + id).find("#submitBtn").hide()
         },
         onUploadSuccess: function(id, data) {
             // A file was successfully uploaded
             ui_multi_update_file_status(id, 'success', 'Upload Complete');
             ui_multi_update_file_progress(id, 100, 'success', false);
+            $("#uploaderFile" + id).find("#submitBtn").show()
             setTimeout(() => {
                 $("#uploaderFile" + id).find("#fileName").val(data.fileName);
                 $("#uploaderFile" + id).find("#fileNameWithExt").val(data.filePath);
