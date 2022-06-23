@@ -3,10 +3,17 @@
 @section('description', $video->description)
 
 @section('style')
+<script type="application/ld+json">
+<?= json_encode($video->videoObjectSchema) ?>
+</script>
+
 <link href="{{ asset('css/video-js.min.css') }}" rel="stylesheet">
+<!-- Fantasy -->
+<link href="{{ asset('css/player.css') }}" rel="stylesheet" />
 <link href="{{ asset('css/videojs-hls-quality-selector.css') }}" rel="stylesheet">
 <script src="{{ asset('js/video.min.js') }}"></script>
 <link href="{{ asset('css/videojs-skip-intro.css') }}" rel="stylesheet">
+
 
 @endsection
 
@@ -19,8 +26,8 @@
         </div>
         <div class="col-md-12 p-2 text-end">
 
-            <video id="hls-video" class="video-js vjs-big-play-centered" preload="none" controls height="560"
-                width="995" poster="/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->poster}}"
+            <video id="hls-video" class="video-js vjs-big-play-centered vjs-theme-forest" preload="none" controls
+                height="560" width="995" poster="/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->poster}}"
                 data-setup="{}">
                 <!-- <source
                     src="{{ route('video.playback', ['userid' =>$video->user_id, 'filename'=> $video->file_name,'playlist' => $video->playback_url ])}}"

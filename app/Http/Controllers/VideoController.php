@@ -67,7 +67,8 @@ class VideoController extends Controller
         if(!$video){
             return redirect()->route('notfound');
         }
-        VideoObjectSchemaController::generateVideoSchemaObject($video);
+        $schema =  VideoObjectSchemaController::generateVideoSchemaObject($video);
+        $video->videoObjectSchema = $schema;
         return view('video.play', compact('video'));
     }
 

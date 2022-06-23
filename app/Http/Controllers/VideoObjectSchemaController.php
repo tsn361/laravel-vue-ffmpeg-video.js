@@ -32,8 +32,9 @@ class VideoObjectSchemaController extends Controller
                 ->embedUrl($embedUrl)
                 ->thumbnailUrl($thumbUrl);
                 
-            // echo json_encode($localBusiness);
-            echo $localBusiness->toScript();
+            // echo json_encode($localBusiness->toArray());
+            // echo $localBusiness->toScript();
+            return $localBusiness->toArray();
         }
     }
     
