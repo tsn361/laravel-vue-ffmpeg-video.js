@@ -9,11 +9,11 @@
 
 <link href="{{ asset('css/video-js.min.css') }}" rel="stylesheet">
 <!-- Fantasy -->
-<link href="{{ asset('css/player.css') }}" rel="stylesheet" />
+<!-- <link href="{{ asset('css/player.css') }}" rel="stylesheet" /> -->
 <link href="{{ asset('css/videojs-hls-quality-selector.css') }}" rel="stylesheet">
 <script src="{{ asset('js/video.min.js') }}"></script>
 <link href="{{ asset('css/videojs-skip-intro.css') }}" rel="stylesheet">
-
+<link href="{{ asset('css/videojs-seek-buttons.css') }}" rel="stylesheet">
 
 @endsection
 
@@ -172,6 +172,7 @@
 <script src="{{ asset('js/videojs-sprite-thumbnails.min.js') }}"></script>
 
 <script src="{{ asset('js/videojs-skip-intro.js') }}"></script>
+<script src="{{ asset('js/videojs-seek-buttons.min.js') }}"></script>
 <script>
 var playerSkipIntroTime = "{{$video->skip_intro_time}}";
 const options = {
@@ -228,6 +229,11 @@ player.ready(function() {
 
     player.tech().on('usage', (e) => {
         console.log(e.name);
+    });
+
+    player.seekButtons({
+        forward: 10,
+        back: 10
     });
 
     player.on('ended', function() {
