@@ -238,12 +238,12 @@ $(function() {
         onComplete: function() {
             console.log('All pending transfers completed');
             // All files in the queue are processed (success or error)
-            $('#createBtn').show();
         },
         onNewFile: function(id, file) {
             console.log('New file added with ID: ' + id);
             // When a new file is added using the file selector or the DnD area
             ui_multi_add_file(id, file);
+            $("#uploaderFile" + id).find("#submitBtn").hide()
         },
         onBeforeUpload: function(id) {
             // about tho start uploading a file
@@ -279,6 +279,7 @@ $(function() {
         onUploadError: function(id, xhr, status, message) {
             ui_multi_update_file_status(id, 'danger', message);
             ui_multi_update_file_progress(id, 0, 'danger', false);
+            $("#uploaderFile" + id).hide();
         },
         onFallbackMode: function() {
             // When the browser doesn't support this plugin :(
