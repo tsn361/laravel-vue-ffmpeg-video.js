@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-
+//call the controller you want to use its methods
+use App\Http\Controllers\VideoObjectSchemaController;
 use App\Models\Video;
 use App\Models\TmpTranscodeProgress;
 use Illuminate\Support\Facades\Storage;
@@ -10,6 +11,8 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 use Auth;
 use Cviebrock\EloquentSluggable\Services\SlugService;
+use Carbon\Carbon;
+use Spatie\SchemaOrg\Schema;
 
 use FFMpeg\FFProbe;
 use FFMpeg;
@@ -55,6 +58,8 @@ class VideoController extends Controller
 
     public function video_play_UI($videoId){
 
+        
+
         $video = Video::where('file_name', $videoId)
         ->where('status', 1)
         ->first();
@@ -62,7 +67,7 @@ class VideoController extends Controller
         if(!$video){
             return redirect()->route('notfound');
         }
-
+        VideoObjectSchemaController::generateVideoSchemaObject($video);
         return view('video.play', compact('video'));
     }
 

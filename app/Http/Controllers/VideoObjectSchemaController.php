@@ -9,20 +9,14 @@ use Spatie\SchemaOrg\Schema;
 
 class VideoObjectSchemaController extends Controller
 {
-    public function generateVideoSchemaObject($videId){
+    public static function generateVideoSchemaObject($video){
 
-        if(isset($videId)){
-            $video = Video::where('file_name', $videId)
-            ->where('status', 1)
-            ->first();
-
-            if(!$video){
-                return response()->json('nope');
-            }
+        if(isset($video)){
+            
             $host = request()->getSchemeAndHttpHost();
-            $contentUrl = $host.'/video?v='.$videId;
-            $embedUrl = $host.'/embed/'.$videId;
-            $thumbUrl = $host.'/uploads/'.$video->user_id.'/'.$videId.'/poster.png';
+            $contentUrl = $host.'/video?v='.$video->file_name;
+            $embedUrl = $host.'/embed/'.$video->file_name;
+            $thumbUrl = $host.'/uploads/'.$video->user_id.'/'.$video->file_name.'/poster.png';
             $name = $video->title;
             $desc = $video->description ? $video->description : 'Not secified';
             $duration = $video->video_duration_iso_format;
@@ -38,11 +32,10 @@ class VideoObjectSchemaController extends Controller
                 ->embedUrl($embedUrl)
                 ->thumbnailUrl($thumbUrl);
                 
-            echo json_encode($localBusiness);
-            // echo $localBusiness->toScript();
-            return;
+            // echo json_encode($localBusiness);
+            echo $localBusiness->toScript();
         }
-        return response()->json('nope');
     }
+    
     
 }

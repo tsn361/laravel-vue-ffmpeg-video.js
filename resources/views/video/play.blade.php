@@ -251,22 +251,5 @@ function copyEmbedCode() {
         confirmButtonText: 'OK'
     })
 }
-
-
-$.ajax({
-    url: "{{route('video.schema.object', ['videId' =>$video->file_name])}}",
-    type: 'Get',
-    data: null,
-    dataType: 'JSON',
-    success: function(result) {
-        if (result != 'nope') {
-            const script = document.createElement('script');
-            script.setAttribute('type', 'application/ld+json');
-            script.textContent = JSON.stringify(result);
-            document.head.appendChild(script);
-        };
-        console.log(result)
-    }
-})
 </script>
 @endsection
