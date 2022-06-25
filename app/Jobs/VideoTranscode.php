@@ -10,6 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\Middleware\WithoutOverlapping;
 
 
 use App\Models\Video;
@@ -48,6 +49,13 @@ class VideoTranscode implements ShouldQueue
     public function __construct($video_id)
     {
         $this->video_id = $video_id;
+    }
+
+    // commented `handle` method for brevity
+
+    public function middleware()
+    {
+        return [(new WithoutOverlapping($this->video_id))->releaseAfter(30)];
     }
 
     /**
