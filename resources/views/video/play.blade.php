@@ -16,29 +16,26 @@
 <link href="{{ asset('css/videojs-seek-buttons.css') }}" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/videojs-playlist-ui@3.0.5/dist/videojs-playlist-ui.css" rel="stylesheet">
 <style>
-.containers {
-    /* background: rgba(0, 0, 0, 0.4) */
-}
-
-.main-preview-player {
-    box-shadow: rgba(0, 0, 0, 0.4) 0px 30px 90px;
-}
-
 .main-preview-player {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
 }
 
+.video-js,
+.playlist-container {
+    position: relative;
+    min-width: 300px;
+    min-height: 150px;
+    height: 0;
+}
 
 .video-js {
     flex: 3 1 80%;
 }
 
 .playlist-container {
-    position: relative;
     flex: 1 1 20%;
-    overflow-x: auto;
 }
 
 .vjs-playlist {
@@ -291,33 +288,63 @@ player.ready(function() {
 
     });
 
-    player.showHidePlaylist({
-        playList: [{
-                name: 'Disney\'s Oceans 2',
-                duration: 123,
-                sources: [{
-                    src: 'http://localhost:8000/video/playback/3/B51Yf8dzlZ/master.m3u8',
-                    type: 'application/x-mpegURL'
-                }],
-                poster: 'http://localhost:8000/uploads/3/B51Yf8dzlZ/poster.png',
-                thumbnail: [{
-                    src: 'http://localhost:8000/uploads/3/B51Yf8dzlZ/poster.png'
-                }]
-            },
-            {
-                name: 'Disney\'s Oceans 1',
-                duration: 45,
-                sources: [{
-                    src: 'http://localhost:8000/video/playback/3/KtPHkgPsC6/master.m3u8',
-                    type: 'application/x-mpegURL'
-                }],
-                thumbnail: [{
-                    src: 'http://localhost:8000/uploads/3/KtPHkgPsC6/poster.png'
-                }],
-                poster: 'http://localhost:8000/uploads/3/KtPHkgPsC6/poster.png'
-            },
-        ]
-    });
+    player.playlist([{
+            name: 'Disney\'s Oceans 2',
+            duration: 123,
+            sources: [{
+                src: 'http://localhost:8000/video/playback/3/B51Yf8dzlZ/master.m3u8',
+                type: 'application/x-mpegURL'
+            }],
+            poster: 'http://localhost:8000/uploads/3/B51Yf8dzlZ/poster.png',
+            thumbnail: [{
+                src: 'http://localhost:8000/uploads/3/B51Yf8dzlZ/poster.png'
+            }]
+        },
+        {
+            name: 'Disney\'s Oceans 1',
+            duration: 45,
+            sources: [{
+                src: 'http://localhost:8000/video/playback/3/KtPHkgPsC6/master.m3u8',
+                type: 'application/x-mpegURL'
+            }],
+            thumbnail: [{
+                src: 'http://localhost:8000/uploads/3/KtPHkgPsC6/poster.png'
+            }],
+            poster: 'http://localhost:8000/uploads/3/KtPHkgPsC6/poster.png'
+        },
+    ]);
+    // Initialize the playlist-ui plugin with the horizontal option
+    player.playlistUi();
+    // Play through the playlist automatically.
+    player.playlist.autoadvance(0);
+
+    // player.showHidePlaylist({
+    //     playList: [{
+    //             name: 'Disney\'s Oceans 2',
+    //             duration: 123,
+    //             sources: [{
+    //                 src: 'http://localhost:8000/video/playback/3/B51Yf8dzlZ/master.m3u8',
+    //                 type: 'application/x-mpegURL'
+    //             }],
+    //             poster: 'http://localhost:8000/uploads/3/B51Yf8dzlZ/poster.png',
+    //             thumbnail: [{
+    //                 src: 'http://localhost:8000/uploads/3/B51Yf8dzlZ/poster.png'
+    //             }]
+    //         },
+    //         {
+    //             name: 'Disney\'s Oceans 1',
+    //             duration: 45,
+    //             sources: [{
+    //                 src: 'http://localhost:8000/video/playback/3/KtPHkgPsC6/master.m3u8',
+    //                 type: 'application/x-mpegURL'
+    //             }],
+    //             thumbnail: [{
+    //                 src: 'http://localhost:8000/uploads/3/KtPHkgPsC6/poster.png'
+    //             }],
+    //             poster: 'http://localhost:8000/uploads/3/KtPHkgPsC6/poster.png'
+    //         },
+    //     ]
+    // });
 
     player.tech().on('usage', (e) => {
         console.log(e.name);
