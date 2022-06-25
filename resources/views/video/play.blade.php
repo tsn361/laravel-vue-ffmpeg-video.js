@@ -9,151 +9,163 @@
 
 <link href="{{ asset('css/video-js.min.css') }}" rel="stylesheet">
 <!-- Fantasy -->
-<!-- <link href="{{ asset('css/player.css') }}" rel="stylesheet" /> -->
+<link href="{{ asset('css/player.css') }}" rel="stylesheet" />
 <link href="{{ asset('css/videojs-hls-quality-selector.css') }}" rel="stylesheet">
 <script src="{{ asset('js/video.min.js') }}"></script>
 <link href="{{ asset('css/videojs-skip-intro.css') }}" rel="stylesheet">
 <link href="{{ asset('css/videojs-seek-buttons.css') }}" rel="stylesheet">
+<style>
+.containers {
+    /* background: rgba(0, 0, 0, 0.4) */
+}
 
+.player {
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 30px 90px;
+}
+</style>
 @endsection
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-12 p-2 text-end">
-            {{-- @include('layouts.breadcrumbs') --}}
-            {{ Breadcrumbs::render('video', $video) }}
+<div class="containers">
+    <div class="row m-0">
+        <div class="container">
+            <div class="col-md-12 p-2 text-end">
+                {{-- @include('layouts.breadcrumbs') --}}
+                {{ Breadcrumbs::render('video', $video) }}
+            </div>
         </div>
-        <div class="col-md-12 p-2 text-end">
-
-            <video id="hls-video" class="video-js vjs-big-play-centered vjs-theme-forest" preload="none" controls
-                height="560" width="995" poster="/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->poster}}"
-                data-setup="{}">
+        <div class="col-md-12 p-0 text-end player">
+            <video id="hls-video"
+                class="video-js vjs-fluid vjs-big-play-centered playsinline webkit-playsinline vjs-theme-forest"
+                preload="none" controls height="560" widthw="995"
+                poster="/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->poster}}" data-setup="{}">
                 <!-- <source
                     src="{{ route('video.playback', ['userid' =>$video->user_id, 'filename'=> $video->file_name,'playlist' => $video->playback_url ])}}"
                     type="application/x-mpegURL"> -->
             </video>
         </div>
     </div>
-    <div class="row mt-4">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    {{ $video->title }}
-                </div>
-                <div class="card-body">
-                    <p class="py-1">{{ $video->description }}</p>
-                    <p class="py-1">Created at: {{$video->created_at}}</p>
-                    <p class="py-1">Playback URL:
-                        <a class="badge bg-dark text-start"
-                            href="{{ config('app.playback_url')}}/video/playback/{{$video->user_id}}/{{$video->file_name}}/master.m3u8">
-                            {{ config('app.playback_url')}}/video/playback/{{$video->user_id}}/{{$video->file_name}}/master.m3u8
-                        </a>
-                    </p>
-                    <p class="py-1">
-                    <div>
-                        Embed Code: <a class="badge bg-danger text-start text-light" href="javascript:void(0)"
-                            onclick="copyEmbedCode()">Click to Copy </a>
+    <div class="container">
+        <div class="row mt-4 p-2">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        {{ $video->title }}
                     </div>
-                    <div class="mt-3">
-                        <textarea id="embedCode" class="offscreen" rows="5"
-                            cols="40"><iframe src="{{ config('app.url')}}/embed/{{$video->file_name}}" frameborder="0"  allow="accelerometer; autoplay; encrypted-media;" allowfullscreen style="width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;"></iframe></textarea>
+                    <div class="card-body">
+                        <p class="py-1">{{ $video->description }}</p>
+                        <p class="py-1">Created at: {{$video->created_at}}</p>
+                        <p class="py-1">Playback URL:
+                            <a class="badge bg-dark text-start"
+                                href="{{ config('app.playback_url')}}/video/playback/{{$video->user_id}}/{{$video->file_name}}/master.m3u8">
+                                {{ config('app.playback_url')}}/video/playback/{{$video->user_id}}/{{$video->file_name}}/master.m3u8
+                            </a>
+                        </p>
+                        <p class="py-1">
+                        <div>
+                            Embed Code: <a class="badge bg-danger text-start text-light" href="javascript:void(0)"
+                                onclick="copyEmbedCode()">Click to Copy </a>
+                        </div>
+                        <div class="mt-3">
+                            <textarea id="embedCode" class="offscreen" rows="5"
+                                cols="40"><iframe src="{{ config('app.url')}}/embed/{{$video->file_name}}" frameborder="0"  allow="accelerometer; autoplay; encrypted-media;" allowfullscreen style="width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;"></iframe></textarea>
+                        </div>
+                        </p>
                     </div>
-                    </p>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row mt-4">
-        <div class="col-md-4">
-            <div class="d-flex rounded bg-white shadow-sm p-3">
-                <div class="bg-success rounded p-2" style="width: 55px;height: 48px; text-align: center;">
-                    <i class="fas fa-hourglass-half fa-2x text-light"></i>
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <div class="d-flex rounded bg-white shadow-sm p-3">
+                    <div class="bg-success rounded p-2" style="width: 55px;height: 48px; text-align: center;">
+                        <i class="fas fa-hourglass-half fa-2x text-light"></i>
+                    </div>
+                    <div class="px-3">
+                        <p class="mb-2">Video Duration</p>
+                        <span>{{$video->video_duration}}</span>
+                    </div>
                 </div>
-                <div class="px-3">
-                    <p class="mb-2">Video Duration</p>
-                    <span>{{$video->video_duration}}</span>
+            </div>
+            <div class="col-md-4">
+                <div class="d-flex rounded bg-white shadow-sm p-3">
+                    <div class="bg-danger rounded p-2" style="width: 55px;height: 48px; text-align: center;">
+                        <i class="fas fa-database fa-2x text-light"></i>
+                    </div>
+                    <div class="px-3">
+                        <p class="mb-2">Video Filesize</p>
+                        <span>{{$video->original_filesize}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="d-flex rounded bg-white shadow-sm p-3">
+                    <div class="bg-warning rounded p-2" style="width: 55px;height: 48px; text-align: center;">
+                        <i class="fas fa-stopwatch fa-2x text-light"></i>
+                    </div>
+                    <div class="px-3">
+                        <p class="mb-2">Processing Time</p>
+                        <span>{{$video->process_time}}</span>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="d-flex rounded bg-white shadow-sm p-3">
-                <div class="bg-danger rounded p-2" style="width: 55px;height: 48px; text-align: center;">
-                    <i class="fas fa-database fa-2x text-light"></i>
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <div class="d-flex rounded bg-white shadow-sm p-3">
+                    <div class="bg-info rounded p-2" style="width: 55px;height: 48px; text-align: center;">
+                        <i class="fa-solid fa-video fa-2x text-light"></i>
+                    </div>
+                    <div class="px-3">
+                        <p class="mb-2">Video Resulation</p>
+                        <span>{{$video->original_resolution}}p</span>
+                    </div>
                 </div>
-                <div class="px-3">
-                    <p class="mb-2">Video Filesize</p>
-                    <span>{{$video->original_filesize}}</span>
+            </div>
+            <div class="col-md-4">
+                <div class="d-flex rounded bg-white shadow-sm p-3">
+                    <div class="bg-info rounded p-2" style="width: 55px;height: 48px; text-align: center;">
+                        <i class="fas fa-hourglass-half fa-2x text-light"></i>
+                    </div>
+                    <div class="px-3">
+                        <p class="mb-2">Upload Duration</p>
+                        <span>{{$video->upload_duration}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="d-flex rounded bg-white shadow-sm p-3">
+                    <div class="bg-danger rounded p-2" style="width: 55px;height: 48px; text-align: center;">
+                        <i class="fa-solid fa-video fa-2x text-light"></i>
+                    </div>
+                    <div class="px-3">
+                        <p class="mb-2">Original Codec</p>
+                        <span>{{$video->original_video_codec}}</span>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="d-flex rounded bg-white shadow-sm p-3">
-                <div class="bg-warning rounded p-2" style="width: 55px;height: 48px; text-align: center;">
-                    <i class="fas fa-stopwatch fa-2x text-light"></i>
-                </div>
-                <div class="px-3">
-                    <p class="mb-2">Processing Time</p>
-                    <span>{{$video->process_time}}</span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row mt-4">
-        <div class="col-md-4">
-            <div class="d-flex rounded bg-white shadow-sm p-3">
-                <div class="bg-info rounded p-2" style="width: 55px;height: 48px; text-align: center;">
-                    <i class="fa-solid fa-video fa-2x text-light"></i>
-                </div>
-                <div class="px-3">
-                    <p class="mb-2">Video Resulation</p>
-                    <span>{{$video->original_resolution}}p</span>
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <div class="d-flex rounded bg-white shadow-sm p-3">
+                    <div class="bg-success rounded p-2" style="width: 55px;height: 48px; text-align: center;">
+                        <i class="fa-solid fa-video fa-2x text-light"></i>
+                    </div>
+                    <div class="px-3">
+                        <p class="mb-2">Original Bitrate</p>
+                        <span>{{$video->original_bitrate}}</span>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-4">
-            <div class="d-flex rounded bg-white shadow-sm p-3">
-                <div class="bg-info rounded p-2" style="width: 55px;height: 48px; text-align: center;">
-                    <i class="fas fa-hourglass-half fa-2x text-light"></i>
-                </div>
-                <div class="px-3">
-                    <p class="mb-2">Upload Duration</p>
-                    <span>{{$video->upload_duration}}</span>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="d-flex rounded bg-white shadow-sm p-3">
-                <div class="bg-danger rounded p-2" style="width: 55px;height: 48px; text-align: center;">
-                    <i class="fa-solid fa-video fa-2x text-light"></i>
-                </div>
-                <div class="px-3">
-                    <p class="mb-2">Original Codec</p>
-                    <span>{{$video->original_video_codec}}</span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row mt-4">
-        <div class="col-md-4">
-            <div class="d-flex rounded bg-white shadow-sm p-3">
-                <div class="bg-success rounded p-2" style="width: 55px;height: 48px; text-align: center;">
-                    <i class="fa-solid fa-video fa-2x text-light"></i>
-                </div>
-                <div class="px-3">
-                    <p class="mb-2">Original Bitrate</p>
-                    <span>{{$video->original_bitrate}}</span>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="d-flex rounded bg-white shadow-sm p-3">
-                <div class="bg-info rounded p-2" style="width: 55px;height: 48px; text-align: center;">
-                    <i class="fa-solid fa-video fa-2x text-light"></i>
-                </div>
-                <div class="px-3">
-                    <p class="mb-2">Original Video Type</p>
-                    <span>{{$video->video_original_type}}</span>
+            <div class="col-md-4">
+                <div class="d-flex rounded bg-white shadow-sm p-3">
+                    <div class="bg-info rounded p-2" style="width: 55px;height: 48px; text-align: center;">
+                        <i class="fa-solid fa-video fa-2x text-light"></i>
+                    </div>
+                    <div class="px-3">
+                        <p class="mb-2">Original Video Type</p>
+                        <span>{{$video->video_original_type}}</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -181,8 +193,15 @@ const options = {
             'playToggle',
             'progressControl',
             'volumePanel',
-            'fullscreenToggle',
+            "volumeMenuButton",
+            "durationDisplay",
+            "timeDivider",
+            "currentTimeDisplay",
+            "remainingTimeDisplay",
+
+            "CustomControlSpacer",
             'qualitySelector',
+            "fullscreenToggle",
         ],
     },
     html5: {
@@ -201,7 +220,16 @@ const options = {
 }
 
 const player = videojs(document.getElementById('hls-video'), options);
+
+
+
 player.ready(function() {
+
+    $(".vjs-volume-panel-horizontal, .vjs-play-control, button.skip-forward").addClass('left-half')
+    $(".vjs-custom-control-spacer").addClass('middle-half')
+    $(".vjs-quality-selector, .vjs-picture-in-picture-control, .vjs-fullscreen-control")
+        .addClass('right-half');
+
     player.src({
         src: "{{ route('video.playback', ['userid' =>$video->user_id, 'filename'=> $video->file_name,'playlist' => $video->playback_url ])}}",
         // woring with hls and key
@@ -250,6 +278,8 @@ player.ready(function() {
             withCredentials: true,
         });
     });
+
+
 });
 
 

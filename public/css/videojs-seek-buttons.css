@@ -4,6 +4,7 @@
     cursor: pointer;
     font-weight: 400;
     font-style: normal;
+    width: 2em;
 }
 .video-js .vjs-seek-button.skip-back::before,
 .video-js.vjs-v6 .vjs-seek-button.skip-back .vjs-icon-placeholder::before,
@@ -17,8 +18,7 @@
     background-size: 100%;
     content: " ";
     display: block;
-    height: 30px !important;
-    width: 1em !important;
+    width: 0.9em !important;
 }
 .video-js .vjs-seek-button.skip-forward::before {
     /* transform: rotateY(180deg) rotate(-45deg);
@@ -30,8 +30,7 @@
     background-size: 100%;
     content: " ";
     display: block;
-    height: 1.875em !important;
-    width: 1em !important;
+    width: 0.9em !important;
 }
 .video-js.vjs-v6 .vjs-seek-button.skip-back::before,
 .video-js.vjs-v6 .vjs-seek-button.skip-forward::before,
@@ -51,6 +50,5 @@
     background-size: 100%;
     content: " ";
     display: block;
-    height: 1.875em !important;
-    width: 1em !important;
+    width: 0.9em !important;
 }
