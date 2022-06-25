@@ -41,7 +41,7 @@
     var defaults = {
         forceTimeout: 4000,
         text: "",
-        position: "top right",
+        position: "top left",
     };
     /**
      * A floating button that appears over the video, outside the controls
@@ -207,7 +207,6 @@
              * @param {string} data.label Text for button
              */
             _proto.update = function update(data) {
-                this.seekTo = data.seekTo;
                 this.controlText(data.label);
             };
 
@@ -219,7 +218,8 @@
             };
 
             _proto.handleClick = function handleClick() {
-                $(".card-header").toggle();
+                $("#sidebar").toggle();
+                $("#sidebar").toggleClass("active");
             };
 
             return ShowHidePlaylistButton;
@@ -228,7 +228,8 @@
     videojs.registerComponent("ShowHidePlaylistButton", ShowHidePlaylistButton);
 
     var defaults$1 = {
-        label: "Show playlist",
+        label: "Playlist",
+        iconClass: "",
         playList: [],
     };
     /**
@@ -257,23 +258,16 @@
         player.addClass("vjs-show-hide-playlist");
         player.showHidePlaylistButton.show(options.playList);
         player.showHidePlaylistButton.update({
-            seekTo: options.skipTime,
             label: options.label,
         });
-        // if (options.skipTime > 0) {
-        //     player.on("loadedmetadata", function () {
-        //         player.showHidePlaylistButton.update({
-        //             seekTo: options.skipTime,
-        //             label: options.label,
-        //         });
-        //         player.showHidePlaylistButton.show();
-        //         player.on("timeupdate", function () {
-        //             if (Math.round(this.currentTime()) > options.skipTime) {
-        //                 player.showHidePlaylistButton.hide();
-        //             }
-        //         });
-        //     });
-        // }
+        if (!options.label) {
+            $(".vjs-show-hide-playlist-button span").hide();
+        }
+        if (options.iconClass) {
+            $(".vjs-show-hide-playlist-button").append(
+                `<i class='${options.iconClass}'></i>`
+            );
+        }
     };
     /**
      * A video.js plugin.
