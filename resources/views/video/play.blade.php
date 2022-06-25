@@ -30,20 +30,15 @@
     justify-content: space-between;
 }
 
-.video-js,
-.playlist-container {
-    position: relative;
-    min-width: 300px;
-    min-height: 150px;
-    height: 0;
-}
 
 .video-js {
-    flex: 3 1 70%;
+    flex: 3 1 80%;
 }
 
 .playlist-container {
-    flex: 1 1 30%;
+    position: relative;
+    flex: 1 1 20%;
+    overflow-x: auto;
 }
 
 .vjs-playlist {
@@ -53,6 +48,7 @@
     bottom: 0;
     left: 0;
     right: 0;
+    overflow-x: auto;
 }
 </style>
 @endsection
@@ -219,7 +215,9 @@
 <script src="{{ asset('js/videojs-sprite-thumbnails.min.js') }}"></script>
 
 <script src="{{ asset('js/videojs-skip-intro.js') }}"></script>
+<script src="{{ asset('js/videojs-show-hide-playlist.js') }}"></script>
 <script src="{{ asset('js/videojs-seek-buttons.min.js') }}"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/videojs-playlist@5.0.0/dist/videojs-playlist.min.js"
     integrity="sha256-K0Uz7Frsk0virhC2mKXgDYODHjfYIx+Yl6B3Cu6ICcU=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/videojs-playlist-ui@3.0.5/dist/videojs-playlist-ui.min.js"></script>
@@ -274,37 +272,6 @@ player.ready(function() {
         type: 'application/x-mpegURL',
         withCredentials: true
     });
-    player.playlist([{
-            name: 'Disney\'s Oceans 1',
-            duration: 45,
-            sources: [{
-                src: 'http://localhost:8000/video/playback/3/KtPHkgPsC6/master.m3u8',
-                type: 'application/x-mpegURL'
-            }],
-
-            // you can use <picture> syntax to display responsive images
-            thumbnail: [{
-                src: 'https://picsum.photos/id/1/200/300'
-            }]
-        },
-        {
-            name: 'Disney\'s Oceans 2',
-            duration: 123,
-            sources: [{
-                src: 'http://localhost:8000/video/playback/3/B51Yf8dzlZ/master.m3u8',
-                type: 'application/x-mpegURL'
-            }],
-            // you can use <picture> syntax to display responsive images
-            thumbnail: [{
-                src: 'https://picsum.photos/id/1/200/300'
-            }]
-        },
-    ]);
-
-    // Initialize the playlist-ui plugin with the horizontal option
-    player.playlistUi();
-    // Play through the playlist automatically.
-    player.playlist.autoadvance(0);
 
     player.hlsQualitySelector();
     player.spriteThumbnails({
@@ -324,6 +291,33 @@ player.ready(function() {
 
     });
 
+    player.showHidePlaylist({
+        playList: [{
+                name: 'Disney\'s Oceans 2',
+                duration: 123,
+                sources: [{
+                    src: 'http://localhost:8000/video/playback/3/B51Yf8dzlZ/master.m3u8',
+                    type: 'application/x-mpegURL'
+                }],
+                poster: 'http://localhost:8000/uploads/3/B51Yf8dzlZ/poster.png',
+                thumbnail: [{
+                    src: 'http://localhost:8000/uploads/3/B51Yf8dzlZ/poster.png'
+                }]
+            },
+            {
+                name: 'Disney\'s Oceans 1',
+                duration: 45,
+                sources: [{
+                    src: 'http://localhost:8000/video/playback/3/KtPHkgPsC6/master.m3u8',
+                    type: 'application/x-mpegURL'
+                }],
+                thumbnail: [{
+                    src: 'http://localhost:8000/uploads/3/KtPHkgPsC6/poster.png'
+                }],
+                poster: 'http://localhost:8000/uploads/3/KtPHkgPsC6/poster.png'
+            },
+        ]
+    });
 
     player.tech().on('usage', (e) => {
         console.log(e.name);
