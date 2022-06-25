@@ -14,13 +14,45 @@
 <script src="{{ asset('js/video.min.js') }}"></script>
 <link href="{{ asset('css/videojs-skip-intro.css') }}" rel="stylesheet">
 <link href="{{ asset('css/videojs-seek-buttons.css') }}" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/videojs-playlist-ui@3.0.5/dist/videojs-playlist-ui.css" rel="stylesheet">
 <style>
 .containers {
     /* background: rgba(0, 0, 0, 0.4) */
 }
 
-.player {
+.main-preview-player {
     box-shadow: rgba(0, 0, 0, 0.4) 0px 30px 90px;
+}
+
+.main-preview-player {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.video-js,
+.playlist-container {
+    position: relative;
+    min-width: 300px;
+    min-height: 150px;
+    height: 0;
+}
+
+.video-js {
+    flex: 3 1 70%;
+}
+
+.playlist-container {
+    flex: 1 1 30%;
+}
+
+.vjs-playlist {
+    margin: 0;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 </style>
 @endsection
@@ -34,7 +66,7 @@
                 {{ Breadcrumbs::render('video', $video) }}
             </div>
         </div>
-        <div class="col-md-12 p-0 text-end player">
+        <div class="col-md-12 p-0 text-end main-preview-player">
             <video id="hls-video"
                 class="video-js vjs-fluid vjs-big-play-centered playsinline webkit-playsinline vjs-theme-forest"
                 preload="none" controls height="560" widthw="995"
@@ -43,6 +75,9 @@
                     src="{{ route('video.playback', ['userid' =>$video->user_id, 'filename'=> $video->file_name,'playlist' => $video->playback_url ])}}"
                     type="application/x-mpegURL"> -->
             </video>
+            <div class="playlist-container  preview-player-dimensions vjs-fluid">
+                <ol class="vjs-playlist"></ol>
+            </div>
         </div>
     </div>
     <div class="container">
@@ -185,6 +220,9 @@
 
 <script src="{{ asset('js/videojs-skip-intro.js') }}"></script>
 <script src="{{ asset('js/videojs-seek-buttons.min.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/videojs-playlist@5.0.0/dist/videojs-playlist.min.js"
+    integrity="sha256-K0Uz7Frsk0virhC2mKXgDYODHjfYIx+Yl6B3Cu6ICcU=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/videojs-playlist-ui@3.0.5/dist/videojs-playlist-ui.min.js"></script>
 <script>
 var playerSkipIntroTime = "{{$video->skip_intro_time}}";
 const options = {
@@ -236,6 +274,38 @@ player.ready(function() {
         type: 'application/x-mpegURL',
         withCredentials: true
     });
+    player.playlist([{
+            name: 'Disney\'s Oceans 1',
+            duration: 45,
+            sources: [{
+                src: 'http://localhost:8000/video/playback/3/KtPHkgPsC6/master.m3u8',
+                type: 'application/x-mpegURL'
+            }],
+
+            // you can use <picture> syntax to display responsive images
+            thumbnail: [{
+                src: 'https://picsum.photos/id/1/200/300'
+            }]
+        },
+        {
+            name: 'Disney\'s Oceans 2',
+            duration: 123,
+            sources: [{
+                src: 'http://localhost:8000/video/playback/3/B51Yf8dzlZ/master.m3u8',
+                type: 'application/x-mpegURL'
+            }],
+            // you can use <picture> syntax to display responsive images
+            thumbnail: [{
+                src: 'https://picsum.photos/id/1/200/300'
+            }]
+        },
+    ]);
+
+    // Initialize the playlist-ui plugin with the horizontal option
+    player.playlistUi();
+    // Play through the playlist automatically.
+    player.playlist.autoadvance(0);
+
     player.hlsQualitySelector();
     player.spriteThumbnails({
         interval: 2,
@@ -278,6 +348,10 @@ player.ready(function() {
             withCredentials: true,
         });
     });
+
+
+
+
 
 
 });
