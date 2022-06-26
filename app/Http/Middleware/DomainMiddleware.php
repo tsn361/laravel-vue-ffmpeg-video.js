@@ -19,7 +19,12 @@ class DomainMiddleware
     public function handle(Request $request, Closure $next)
     {
         \Log::info('DomainMiddleware');
-        $domain = parse_url(config('app.url'), PHP_URL_HOST);
+        if($request->header('ActualDomain')){
+             $domain = $request->header('ActualDomain');
+        }else{
+            $domain = parse_url(config('app.url'), PHP_URL_HOST);
+        }
+        
         
         $fileName = $request->route('filename');
         $host = $request->getHost(); // returns dev.site.com

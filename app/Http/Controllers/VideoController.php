@@ -120,10 +120,18 @@ class VideoController extends Controller
 
     public function updateVideoInfo(Request $request){
         $video = Video::where('slug', request()->slug)->first();
-
+        $host = trim($request->allow_host);
+        $newHostArray =[];
+        if(isset($host)){
+            $hosts = explode(",", $host);
+            foreach($hosts as $h){
+                $newHostArray []= $this->trimUrlProtocol($h);
+            }
+        }
+        $newHosts = implode(', ', $newHostArray);
         $video->title = $request->title;
         $video->description = $request->description;
-        $video->allow_hosts = $request->allow_host;
+        $video->allow_hosts = $newHosts;
         $video->skip_intro_time = $request->skip_intro_time;
 
         if($request->hasFile('poster')) {
@@ -138,6 +146,22 @@ class VideoController extends Controller
         }else{
             return response()->json(['success'=>'false', 'message'=>'Error saving video']);
         }
+    }
+    public function trimUrlProtocol($url) {
+        if ( substr($url, 0, 8) == 'https://' ) {
+            $url = substr($url, 8);
+        }
+        if ( substr($url, 0, 7) == 'http://' ) {
+            $url = substr($url, 7);
+        }
+        if ( substr($url, 0, 4) == 'www.' ) {
+            $url = substr($url, 4);
+        }
+        if ( strpos($url, '/') !== false ) {
+            $explode = explode('/', $url);
+            $url     = $explode['0'];
+        }
+        return $url;
     }
 
     public function saveVideoInfo(Request $request){
