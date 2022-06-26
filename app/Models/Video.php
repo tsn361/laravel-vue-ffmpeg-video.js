@@ -85,6 +85,7 @@ class Video extends Model
     {
         $getVideoType = explode('.', $this->attributes['origianl_file_url']);
         $getVideoType = end($getVideoType);
+        return $getVideoType;
     }
 
 
@@ -104,6 +105,10 @@ class Video extends Model
         $seconds = $seconds % 60;
     
         return sprintf('P%02dH%02dM%dS', $hours, $minutes, $seconds);
+    }
+    protected function getVideoRawDurationAttribute()
+    {
+       return $this->attributes['video_duration'];
     }
 
     protected function getPosterAttribute()

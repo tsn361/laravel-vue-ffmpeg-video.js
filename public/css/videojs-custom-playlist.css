@@ -1,0 +1,80 @@
+.vjs-show-hide-playlist-button {
+    z-index: 10000;
+}
+
+.main-preview-player {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.video-js,
+.playlist-container {
+    position: relative;
+    min-width: 300px;
+    min-height: 150px;
+    height: 0;
+}
+
+.video-js {
+    flex: 3 1 80%;
+}
+
+.playlist-container {
+    flex: 1 1 20%;
+}
+
+.vjs-playlist {
+    margin: 0;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow-x: auto;
+}
+
+.vjs-playlist .vjs-playlist-item-list {
+    padding: 20px;
+}
+
+.vjs-mouse.vjs-playlist .vjs-playlist-thumbnail img {
+    object-fit: cover;
+    min-height: 150px;
+    max-height: 150px;
+}
+
+.vjs-playlist .vjs-playlist-item {
+    margin-bottom: 10px;
+}
+
+/* sidebar */
+
+#sidebar .vjs-playlist {
+    -ms-overflow-style: none;
+    /* Internet Explorer 10+ */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+#sidebar .vjs-playlist::-webkit-scrollbar {
+    display: none;
+    /* Safari and Chrome */
+}
+
+#sidebar {
+    min-width: 250px;
+    max-width: 250px;
+    left: 0;
+    /* top layer */
+    z-index: 9999;
+    display: none;
+}
+
+/* Shrinking the sidebar from 250px to 80px and center aligining its content*/
+#sidebar.active {
+    min-width: 80px;
+    max-width: 250px;
+    text-align: center;
+    transition: 0.5s;
+}

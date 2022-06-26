@@ -14,75 +14,10 @@
 <script src="{{ asset('js/video.min.js') }}"></script>
 <link href="{{ asset('css/videojs-skip-intro.css') }}" rel="stylesheet">
 <link href="{{ asset('css/videojs-seek-buttons.css') }}" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/videojs-playlist-ui@3.0.5/dist/videojs-playlist-ui.css" rel="stylesheet">
+<link href="{{ asset('css/videojs-custom-playlist.css') }}" rel="stylesheet">
+<link href="{{ asset('css/videojs-playlist-ui.css') }}" rel="stylesheet">
 <style>
-.main-preview-player {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-}
 
-.video-js,
-.playlist-container {
-    position: relative;
-    min-width: 300px;
-    min-height: 150px;
-    height: 0;
-}
-
-.video-js {
-    flex: 3 1 80%;
-}
-
-.playlist-container {
-    flex: 1 1 20%;
-}
-
-.vjs-playlist {
-    margin: 0;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    overflow-x: auto;
-}
-
-.vjs-playlist .vjs-playlist-item-list {
-    padding: 20px;
-}
-
-/* sidebar */
-
-#sidebar .vjs-playlist {
-    -ms-overflow-style: none;
-    /* Internet Explorer 10+ */
-    scrollbar-width: none;
-    /* Firefox */
-}
-
-#sidebar .vjs-playlist::-webkit-scrollbar {
-    display: none;
-    /* Safari and Chrome */
-}
-
-#sidebar {
-    min-width: 250px;
-    max-width: 250px;
-    left: 0;
-    /* top layer */
-    z-index: 9999;
-    display: none;
-
-}
-
-/* Shrinking the sidebar from 250px to 80px and center aligining its content*/
-#sidebar.active {
-    min-width: 80px;
-    max-width: 250px;
-    text-align: center;
-    transition: 0.5s;
-}
 </style>
 @endsection
 
@@ -103,7 +38,7 @@
                 </div>
                 <video id="hls-video"
                     class="video-js vjs-fluid vjs-big-play-centered playsinline webkit-playsinline vjs-theme-forest"
-                    preload="none" controls height="560" widthw="995" poster="{{$video->poster}}" data-setup="{}">
+                    preload="none" controls height="560" poster="{{$video->poster}}" data-setup="{}">
                 </video>
 
             </div>
@@ -250,12 +185,47 @@
 <script src="{{ asset('js/videojs-skip-intro.js') }}"></script>
 <script src="{{ asset('js/videojs-show-hide-playlist.js') }}"></script>
 <script src="{{ asset('js/videojs-seek-buttons.min.js') }}"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/videojs-playlist@5.0.0/dist/videojs-playlist.min.js"
-    integrity="sha256-K0Uz7Frsk0virhC2mKXgDYODHjfYIx+Yl6B3Cu6ICcU=" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/videojs-playlist-ui@3.0.5/dist/videojs-playlist-ui.min.js"></script>
+<script src="{{ asset('js/videojs-playlist.min.js') }}"></script>
+<script src="{{ asset('js/videojs-playlist-ui.min.js') }}"></script>
 <script>
 var playerSkipIntroTime = "{{$video->skip_intro_time}}";
+var playlistData = [{
+        name: 'Sample from Apple',
+        duration: 123,
+        sources: [{
+            src: 'https://multiplatform-f.akamaihd.net/i/multi/will/bunny/big_buck_bunny_,640x360_400,640x360_700,640x360_1000,950x540_1500,.f4v.csmil/master.m3u8',
+            type: 'application/x-mpegURL'
+        }],
+        poster: 'https://picsum.photos/id/237/200/300',
+        thumbnail: [{
+            src: 'https://picsum.photos/id/237/200/300'
+        }]
+    },
+    {
+        name: 'Tears of Steel',
+        duration: 45,
+        sources: [{
+            src: 'https://multiplatform-f.akamaihd.net/i/multi/will/bunny/big_buck_bunny_,640x360_400,640x360_700,640x360_1000,950x540_1500,.f4v.csmil/master.m3u8',
+            type: 'application/x-mpegURL'
+        }],
+        thumbnail: [{
+            src: 'https://picsum.photos/seed/picsum/200/300'
+        }],
+        poster: 'https://picsum.photos/seed/picsum/200/300'
+    },
+    {
+        name: 'Big Buck Bunny VOD ',
+        duration: 123,
+        sources: [{
+            src: 'https://multiplatform-f.akamaihd.net/i/multi/will/bunny/big_buck_bunny_,640x360_400,640x360_700,640x360_1000,950x540_1500,.f4v.csmil/master.m3u8',
+            type: 'application/x-mpegURL'
+        }],
+        poster: 'https://picsum.photos/200/300?grayscale',
+        thumbnail: [{
+            src: 'https://picsum.photos/200/300?grayscale'
+        }]
+    },
+];
 const options = {
     controlBar: {
         children: [
@@ -326,107 +296,24 @@ player.ready(function() {
         }
 
     });
+    playlistData.unshift({
+        name: '{{$video->title}}',
+        duration: '{{$video->video_raw_duration}}',
+        sources: [{
+            src: "{{ route('video.playback', ['userid' =>$video->user_id, 'filename'=> $video->file_name,'playlist' => $video->playback_url ])}}",
+            type: 'application/x-mpegURL'
+        }],
+        poster: "{{ config('app.url')}}{{$video->poster}}",
+        thumbnail: [{
+            src: "{{ config('app.url')}}{{$video->poster}}"
+        }]
+    });
 
-    // player.showHidePlaylist({
-    //     iconClass: "fas fa-play fa-2x",
-    //     playList: [{
-    //             name: 'Disney\'s Oceans 2',
-    //             duration: 123,
-    //             sources: [{
-    //                 src: 'http://localhost:8000/video/playback/3/B51Yf8dzlZ/master.m3u8',
-    //                 type: 'application/x-mpegURL'
-    //             }],
-    //             poster: 'http://localhost:8000/uploads/3/B51Yf8dzlZ/poster.png',
-    //             thumbnail: [{
-    //                 src: 'http://localhost:8000/uploads/3/B51Yf8dzlZ/poster.png'
-    //             }]
-    //         },
-    //         {
-    //             name: 'Disney\'s Oceans 1',
-    //             duration: 45,
-    //             sources: [{
-    //                 src: 'http://localhost:8000/video/playback/3/KtPHkgPsC6/master.m3u8',
-    //                 type: 'application/x-mpegURL'
-    //             }],
-    //             thumbnail: [{
-    //                 src: 'http://localhost:8000/uploads/3/KtPHkgPsC6/poster.png'
-    //             }],
-    //             poster: 'http://localhost:8000/uploads/3/KtPHkgPsC6/poster.png'
-    //         },
-    //         {
-    //             name: 'Disney\'s Oceans 2',
-    //             duration: 123,
-    //             sources: [{
-    //                 src: 'http://localhost:8000/video/playback/3/B51Yf8dzlZ/master.m3u8',
-    //                 type: 'application/x-mpegURL'
-    //             }],
-    //             poster: 'http://localhost:8000/uploads/3/B51Yf8dzlZ/poster.png',
-    //             thumbnail: [{
-    //                 src: 'http://localhost:8000/uploads/3/B51Yf8dzlZ/poster.png'
-    //             }]
-    //         },
-    //         {
-    //             name: 'Disney\'s Oceans 1',
-    //             duration: 45,
-    //             sources: [{
-    //                 src: 'http://localhost:8000/video/playback/3/KtPHkgPsC6/master.m3u8',
-    //                 type: 'application/x-mpegURL'
-    //             }],
-    //             thumbnail: [{
-    //                 src: 'http://localhost:8000/uploads/3/KtPHkgPsC6/poster.png'
-    //             }],
-    //             poster: 'http://localhost:8000/uploads/3/KtPHkgPsC6/poster.png'
-    //         },
-    //         {
-    //             name: 'Disney\'s Oceans 2',
-    //             duration: 123,
-    //             sources: [{
-    //                 src: 'http://localhost:8000/video/playback/3/B51Yf8dzlZ/master.m3u8',
-    //                 type: 'application/x-mpegURL'
-    //             }],
-    //             poster: 'http://localhost:8000/uploads/3/B51Yf8dzlZ/poster.png',
-    //             thumbnail: [{
-    //                 src: 'http://localhost:8000/uploads/3/B51Yf8dzlZ/poster.png'
-    //             }]
-    //         },
-    //         {
-    //             name: 'Disney\'s Oceans 1',
-    //             duration: 45,
-    //             sources: [{
-    //                 src: 'http://localhost:8000/video/playback/3/KtPHkgPsC6/master.m3u8',
-    //                 type: 'application/x-mpegURL'
-    //             }],
-    //             thumbnail: [{
-    //                 src: 'http://localhost:8000/uploads/3/KtPHkgPsC6/poster.png'
-    //             }],
-    //             poster: 'http://localhost:8000/uploads/3/KtPHkgPsC6/poster.png'
-    //         },
-    //         {
-    //             name: 'Disney\'s Oceans 2',
-    //             duration: 123,
-    //             sources: [{
-    //                 src: 'http://localhost:8000/video/playback/3/B51Yf8dzlZ/master.m3u8',
-    //                 type: 'application/x-mpegURL'
-    //             }],
-    //             poster: 'http://localhost:8000/uploads/3/B51Yf8dzlZ/poster.png',
-    //             thumbnail: [{
-    //                 src: 'http://localhost:8000/uploads/3/B51Yf8dzlZ/poster.png'
-    //             }]
-    //         },
-    //         {
-    //             name: 'Disney\'s Oceans 2',
-    //             duration: 123,
-    //             sources: [{
-    //                 src: 'http://localhost:8000/video/playback/3/B51Yf8dzlZ/master.m3u8',
-    //                 type: 'application/x-mpegURL'
-    //             }],
-    //             poster: 'http://localhost:8000/uploads/3/B51Yf8dzlZ/poster.png',
-    //             thumbnail: [{
-    //                 src: 'http://localhost:8000/uploads/3/B51Yf8dzlZ/poster.png'
-    //             }]
-    //         },
-    //     ]
-    // });
+
+    player.showHidePlaylist({
+        iconClass: "fas fa-play fa-2x",
+        playList: playlistData
+    });
 
     player.tech().on('usage', (e) => {
         console.log(e.name);
