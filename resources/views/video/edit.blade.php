@@ -69,9 +69,8 @@
                                     <input name="file" id="posterImage" type="file" vlaue="" class="form-control">
                                 </div>
                                 <div class="col-sm-3">
-                                    <img id="posterImagePreview"
-                                        src="/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->poster}}"
-                                        alt="Poster Image" class="img-thumbnail" style="max-height:300px">
+                                    <img id="posterImagePreview" src="{{$video->poster}}" alt="Poster Image"
+                                        class="img-thumbnail" style="max-height:300px">
                                 </div>
                             </div>
                         </form>
