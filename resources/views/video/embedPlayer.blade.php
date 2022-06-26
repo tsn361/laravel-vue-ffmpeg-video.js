@@ -36,7 +36,7 @@
 
        <div class="player-wrapper">
            <video id="hls-video" class="video-js vj-player vjs-big-play-centered" controls preload="none"
-               poster="/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->poster}}" data-setup="{}">
+               poster="{{$video->poster}}" data-setup="{}">
            </video>
        </div>
 
@@ -109,7 +109,7 @@
                player.reset();
 
                player.poster(
-                   "{{ config('app.url')}}/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->poster}}"
+                   "{{ config('app.url')}}/{{$video->poster}}"
                );
                player.bigPlayButton.show();
                player.src({

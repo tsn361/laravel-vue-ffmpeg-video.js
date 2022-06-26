@@ -20,14 +20,14 @@ class DomainMiddleware
     {
         \Log::info('DomainMiddleware');
         if($request->header('ActualDomain')){
-             $domain = $request->header('ActualDomain');
+            $host = $request->header('ActualDomain');
         }else{
-            $domain = parse_url(config('app.url'), PHP_URL_HOST);
+            $host = $request->getHost();
         }
-        
+        $domain = parse_url(config('app.url'), PHP_URL_HOST);
         
         $fileName = $request->route('filename');
-        $host = $request->getHost(); // returns dev.site.com
+        // $host = $request->getHost(); // returns dev.site.com
         //$hostWithSchema = $request->getSchemeAndHttpHost(); // returns https://dev.site.com
         $getHost = Video::select('allow_hosts')->where("file_name", $fileName)->first();
 

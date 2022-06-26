@@ -93,6 +93,7 @@
             <div class="col-md-12 p-2 text-end">
                 {{-- @include('layouts.breadcrumbs') --}}
                 {{ Breadcrumbs::render('video', $video) }}
+
             </div>
         </div>
         <div class="col-md-12 p-0 text-end">
@@ -102,8 +103,7 @@
                 </div>
                 <video id="hls-video"
                     class="video-js vjs-fluid vjs-big-play-centered playsinline webkit-playsinline vjs-theme-forest"
-                    preload="none" controls height="560" widthw="995"
-                    poster="/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->poster}}" data-setup="{}">
+                    preload="none" controls height="560" widthw="995" poster="{{$video->poster}}" data-setup="{}">
                 </video>
 
             </div>
@@ -442,7 +442,7 @@ player.ready(function() {
         player.reset();
 
         player.poster(
-            "{{ config('app.url')}}/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->poster}}"
+            "{{ config('app.url')}}/{{$video->poster}}"
         );
         player.bigPlayButton.show();
         player.src({

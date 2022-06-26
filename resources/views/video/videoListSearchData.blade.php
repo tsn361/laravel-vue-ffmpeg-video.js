@@ -14,12 +14,12 @@
     <div class="col-md-3 p-3">
         @if($video->is_transcoded == 1)
         <a href="{{ route('video.index', ['v' => $video->file_name])}}">
-            <img src="/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->poster}}" />
+            <img src="{{$video->poster}}" />
         </a>
         @else
         <div class="showTrancoding">
             <a href="/video/{{$video->id}}/status" target="_blank">
-                <img src="/uploads/{{$video->user_id}}/{{$video->file_name}}/{{$video->poster}}" />
+                <img src="{{$video->poster}}" />
                 <div class="showLoading">
                     <b><i class="fas fa-spinner fa-spin"></i> Transcoding...</b>
                 </div>

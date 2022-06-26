@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
-
+use Illuminate\Support\Facades\Storage;
 use App\Models\User;
 
 class Video extends Model
@@ -83,7 +83,7 @@ class Video extends Model
 
     protected function getVideoOriginalTypeAttribute()
     {
-        $getVideoType = explode('.', $this->origianl_file_url);
+        $getVideoType = explode('.', $this->attributes['origianl_file_url']);
         $getVideoType = end($getVideoType);
     }
 
@@ -104,6 +104,20 @@ class Video extends Model
         $seconds = $seconds % 60;
     
         return sprintf('P%02dH%02dM%dS', $hours, $minutes, $seconds);
+    }
+
+    protected function getPosterAttribute()
+    {
+        $userId = $this->attributes['user_id'];
+        $fileName = $this->attributes['file_name'];
+        $img = $this->attributes['poster'];
+
+        $imagepath = "$userId/$fileName/$img";
+        if (Storage::disk('uploads')->exists($imagepath)) {
+            return '/uploads/'.$imagepath;
+        }else{
+            return '/img/thumb.png';
+        }
     }
     
 }
