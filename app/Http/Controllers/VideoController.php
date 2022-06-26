@@ -136,7 +136,7 @@ class VideoController extends Controller
 
         $posterImage = null;
         if($request->hasFile('poster')) {
-            File::deleteDirectory(public_path('uploads/'.$video->user_id.'/'.$video->file_name.'/poster.*'));
+            File::delete(File::glob('uploads/'.$video->user_id.'/'.$video->file_name.'/poster.*'));
             // Process the new image
             $fileName = 'poster.'.request()->file('poster')->getClientOriginalExtension();
             $save_path = $video->user_id.'/'.$video->file_name;
