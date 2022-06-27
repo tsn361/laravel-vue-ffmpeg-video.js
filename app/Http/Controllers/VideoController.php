@@ -133,6 +133,10 @@ class VideoController extends Controller
         $video->description = $request->description;
         $video->allow_hosts = $newHosts;
         $video->skip_intro_time = $request->skip_intro_time;
+        $video->stg_autoplay = $request->stg_autoplay == 1 ? $request->stg_autoplay:false;
+        $video->stg_muted	 = $request->stg_muted == 1 ? $request->stg_muted : false;
+        $video->stg_loop = $request->stg_loop == 1 ? $request->stg_loop : false;
+        $video->stg_autopause = $request->stg_autopause == 1 ? $request->stg_autopause:false;
 
         $posterImage = null;
         if($request->hasFile('poster')) {

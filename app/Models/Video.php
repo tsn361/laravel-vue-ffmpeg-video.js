@@ -34,6 +34,10 @@ class Video extends Model
         'status',
         'skip_intro_time',
         'sequence',
+        'stg_autoplay',
+        'stg_muted',
+        'stg_loop',
+        'stg_autopause'
     ];
     // protected $appends = ['video_original_type'];
     public function sluggable(): array

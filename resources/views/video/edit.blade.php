@@ -1,4 +1,11 @@
 @extends('layouts.app')
+@section('style')
+<style>
+.cp {
+    cursor: pointer;
+}
+</style>
+@endsection
 
 @section('content')
 <div class="container">
@@ -48,6 +55,58 @@
                                     </div>
                                 </div>
                             </div>
+                            <hr>
+                            <div class="mb-3 row">
+                                <h2>Player settings:</h3>
+                                    <div class="col-sm-6">
+                                        <div class="mt-2">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="1"
+                                                    <?php if($video->stg_autoplay == '1') {echo 'checked' ;} ?>
+                                                    id="stg_autoplay">
+                                                <label class="form-check-label mt-1"
+                                                    for="flexSwitchCheckChecked">Autoplay
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="mt-2">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="1"
+                                                    <?php if($video->stg_muted == '1') {echo 'checked' ;} ?>
+                                                    id="stg_muted">
+                                                <label class="form-check-label mt-1"
+                                                    for="flexSwitchCheckChecked">Muted</label>
+                                            </div>
+                                        </div>
+                                        <div class="mt-2">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="1"
+                                                    <?php if($video->stg_loop == '1') {echo 'checked' ;} ?>
+                                                    id="stg_loop">
+                                                <label class="form-check-label mt-1"
+                                                    for="flexSwitchCheckChecked">Loop</label>
+                                            </div>
+                                        </div>
+                                        <div class="mt-2">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="1"
+                                                    <?php if($video->stg_autopause == '1') {echo 'checked' ;} ?>
+                                                    id="stg_autopause">
+                                                <label class="form-check-label mt-1 cp"
+                                                    for="flexSwitchCheckChecked">Autopause
+                                                    <i class="fas fa-question text-info" data-bs-toggle="tooltip"
+                                                        data-bs-placement="top" title="Pause video on page scroll">
+                                                    </i></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="mt-2">
+
+                                        </div>
+                                    </div>
+                            </div>
+                            <hr>
                             <div class="mb-3 row">
                                 <label for="staticEmail" class="col-sm-4 col-form-label">Allowed remote host</label>
                                 <div class="col-sm-8">
@@ -150,6 +209,11 @@ function saveVideoInfo() {
     formData.append("title", title);
     formData.append("description", $('#VideoDescription').val());
     formData.append("allow_host", $('#allowHost').val());
+    formData.append("stg_autoplay", $('#stg_autoplay:checked').val());
+    formData.append("stg_muted", $('#stg_muted:checked').val());
+    formData.append("stg_loop", $('#stg_loop:checked').val());
+    formData.append("stg_autopause", $('#stg_autopause:checked').val());
+
     formData.append("poster", file);
     if ($('#VideoSkipIntroTimer').val() <= 0) {
         formData.append("skip_intro_time", 0);
@@ -178,7 +242,6 @@ function saveVideoInfo() {
                 setTimeout(() => {
                     window.location.href = `/video`;
                 }, 2000);
-                //console.log(result);
             } else {
                 console.log(res.message);
             }
