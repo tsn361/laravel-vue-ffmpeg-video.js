@@ -267,11 +267,14 @@ $(function() {
             ui_multi_update_file_progress(id, 100, 'success', false);
             $("#uploaderFile" + id).find("#submitBtn").show()
             setTimeout(() => {
+
                 $("#uploaderFile" + id).find("#fileName").val(data.fileName);
                 $("#uploaderFile" + id).find("#fileNameWithExt").val(data.filePath);
                 $("#uploaderFile" + id).find("#submitBtn").attr('onclick',
                     `saveVideoInfo('${id}')`);
                 $("#uploaderFile" + id).addClass(data.fileName);
+
+                $("#uploaderFile" + id).find("#uploadDuration").val(data.processTime);
 
             }, 100);
             console.log("onUploadSuccess", data);

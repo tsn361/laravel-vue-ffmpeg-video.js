@@ -220,7 +220,7 @@ class VideoController extends Controller
         $video->original_video_codec = $codec;
         $video->file_name = $request->fileName;
         $video->is_transcoded = 0;
-        $video->upload_duration = $request->uploadDuration  > 4 ? $request->uploadDuration : 10;
+        $video->upload_duration = $request->uploadDuration ? $request->uploadDuration: 10;
         
         if($video->save()){
             $this->createTmpTranscodeEntry($original_resolution, $request->fileName, $video->id);
