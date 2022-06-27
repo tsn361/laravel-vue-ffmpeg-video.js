@@ -7,8 +7,11 @@
        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
        <link href="{{ asset('css/video-js.min.css') }}" rel="stylesheet">
+       <!-- Fantasy -->
+       <link href="{{ asset('css/player.css') }}" rel="stylesheet" />
        <link href="{{ asset('css/videojs-hls-quality-selector.css') }}" rel="stylesheet">
        <link href="{{ asset('css/videojs-skip-intro.css') }}" rel="stylesheet">
+       <link href="{{ asset('css/videojs-seek-buttons.css') }}" rel="stylesheet">
        <script src="{{ asset('js/jquery.min.js') }}"></script>
        <script src="{{ asset('js/video.min.js') }}"></script>
        <style>
@@ -35,8 +38,9 @@
    <body>
 
        <div class="player-wrapper">
-           <video id="hls-video" class="video-js vj-player vjs-big-play-centered" controls preload="none"
-               poster="{{$video->poster}}" data-setup="{}">
+           <video id="hls-video"
+               class="video-js vj-player vjs-big-play-centered playsinline webkit-playsinline vjs-theme-forest" controls
+               preload="none" poster="{{$video->poster}}" data-setup="{}">
            </video>
        </div>
 
@@ -46,6 +50,7 @@
        <script src="{{ asset('js/videojs-sprite-thumbnails.min.js') }}"></script>
 
        <script src="{{ asset('js/videojs-skip-intro.js') }}"></script>
+       <script src="{{ asset('js/videojs-seek-buttons.min.js') }}"></script>
 
        <script>
        var playerSkipIntroTime = "{{$video->skip_intro_time}}";
@@ -96,6 +101,11 @@
                height: 90
            });
            player.hlsQualitySelector();
+
+           player.seekButtons({
+               forward: 10,
+               back: 10
+           });
            player.on('play', function() {
                if (playerSkipIntroTime > 0) {
                    player.skipIntro({
