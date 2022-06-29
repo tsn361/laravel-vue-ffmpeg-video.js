@@ -33,8 +33,7 @@
         </div>
         <div class="col-md-12 p-0 text-end">
             <video id="hls-video" class="video-js vjs-big-play-centered playsinline webkit-playsinline vjs-theme-forest"
-                preload="{{$video->stg_preload_configration}}" controls height="560" poster="{{$video->poster}}"
-                data-setup="{}">
+                preload="{{$video->stg_preload_configration}}" controls height="560" poster="{{$video->poster}}">
             </video>
             <!-- <div class="main-preview-player">
                 <div class="playlist-container vjs-fluid" id="sidebar">
@@ -227,9 +226,6 @@ const options = {
         },
         nativeAudioTracks: false,
         nativeVideoTracks: false,
-        // hlsjsConfig: {
-        //     debug: true,
-        // }
     }
 }
 
@@ -303,9 +299,6 @@ player.ready(function() {
     });
 
     player.on('ended', function() {
-        console.log('ended == ');
-        player.reset();
-
         player.poster(
             "{{ config('app.url')}}/{{$video->poster}}"
         );
