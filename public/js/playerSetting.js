@@ -3,7 +3,6 @@ function settings(player, settings) {
     volumeLevel = 0.7;
 
     if (settings.stg_autoplay == "1") {
-        // player.muted(true);
         player.play(true);
     }
     if (settings.stg_muted == "1") {
