@@ -147,8 +147,6 @@ class VideoController extends Controller
             $save_path = $video->user_id.'/'.$video->file_name;
             request()->file('poster')->move(public_path('uploads/'.$save_path), $fileName);
             $posterImage = $fileName;
-        }else{
-            $posterImage = 'poster.png';
         }
 
         $video->poster = $posterImage;
