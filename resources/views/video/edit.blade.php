@@ -102,7 +102,23 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="mt-2">
-
+                                            <p class="form-check-label my-1 cp" for="flexSwitchCheckChecked">Preload
+                                                configration
+                                                <i class="fas fa-question text-info" data-bs-toggle="tooltip"
+                                                    data-bs-placement="top" title="Pause video on page scroll">
+                                                </i>
+                                            </p>
+                                            <select class="form-select form-select-sm" id="preloadConfigration">
+                                                <option value="none"
+                                                    <?php if($video->stg_preload_configration == 'none') {echo 'selected' ;} ?>>
+                                                    None</option>
+                                                <option value="auto"
+                                                    <?php if($video->stg_preload_configration == 'auto') {echo 'selected' ;} ?>>
+                                                    Auto</option>
+                                                <option value="metadata"
+                                                    <?php if($video->stg_preload_configration == 'metadata') {echo 'selected' ;} ?>>
+                                                    Metadata</option>
+                                            </select>
                                         </div>
                                     </div>
                             </div>
@@ -213,6 +229,7 @@ function saveVideoInfo() {
     formData.append("stg_muted", $('#stg_muted:checked').val());
     formData.append("stg_loop", $('#stg_loop:checked').val());
     formData.append("stg_autopause", $('#stg_autopause:checked').val());
+    formData.append("stg_preload_configration", $('#preloadConfigration').val());
 
     formData.append("poster", file);
     if ($('#VideoSkipIntroTimer').val() <= 0) {

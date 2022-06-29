@@ -33,7 +33,8 @@
         </div>
         <div class="col-md-12 p-0 text-end">
             <video id="hls-video" class="video-js vjs-big-play-centered playsinline webkit-playsinline vjs-theme-forest"
-                preload="none" controls height="560" poster="{{$video->poster}}" data-setup="{}">
+                preload="{{$video->stg_preload_configration}}" controls height="560" poster="{{$video->poster}}"
+                data-setup="{}">
             </video>
             <!-- <div class="main-preview-player">
                 <div class="playlist-container vjs-fluid" id="sidebar">
@@ -174,6 +175,7 @@
 
 @section('script')
 
+<script src="{{ asset('js/playerSetting.js') }}"></script>
 <script src="{{ asset('js/videojs-hls-quality-selector.min.js') }}"></script>
 <script src="{{ asset('js/videojs-contrib-quality-levels.min.js') }}"></script>
 
@@ -186,6 +188,7 @@
 <script src="{{ asset('js/videojs-playlist-ui.min.js') }}"></script> -->
 <script>
 var playerSkipIntroTime = "{{$video->skip_intro_time}}";
+var videoObject = @json($video);;
 // var playlistData = [{
 //     name: 'Sample from Apple',
 //     duration: 123,
@@ -243,6 +246,9 @@ player.ready(function() {
     $(".vjs-custom-control-spacer").addClass('middle-half')
     $(".vjs-quality-selector, .vjs-picture-in-picture-control, .vjs-fullscreen-control")
         .addClass('right-half');
+    setTimeout(() => {
+        settings(player, videoObject)
+    }, 100);
 
     player.src({
         src: "{{ route('video.playback', ['userid' =>$video->user_id, 'filename'=> $video->file_name,'playlist' => $video->playback_url ])}}",
@@ -303,7 +309,7 @@ player.ready(function() {
         player.poster(
             "{{ config('app.url')}}/{{$video->poster}}"
         );
-        player.bigPlayButton.show();
+        // player.bigPlayButton.show();
         player.src({
             src: "{{ route('video.playback', ['userid' =>$video->user_id, 'filename'=> $video->file_name,'playlist' => $video->playback_url ])}}",
             type: 'application/x-mpegURL',

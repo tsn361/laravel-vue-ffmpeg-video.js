@@ -37,7 +37,8 @@ class Video extends Model
         'stg_autoplay',
         'stg_muted',
         'stg_loop',
-        'stg_autopause'
+        'stg_autopause',
+        'stg_preload_configration'
     ];
     // protected $appends = ['video_original_type'];
     public function sluggable(): array

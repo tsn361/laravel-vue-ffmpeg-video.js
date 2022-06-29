@@ -137,6 +137,7 @@ class VideoController extends Controller
         $video->stg_muted	 = $request->stg_muted == 1 ? $request->stg_muted : false;
         $video->stg_loop = $request->stg_loop == 1 ? $request->stg_loop : false;
         $video->stg_autopause = $request->stg_autopause == 1 ? $request->stg_autopause:false;
+        $video->stg_preload_configration = isset($request->stg_preload_configration) ? $request->stg_preload_configration:'none';
 
         $posterImage = null;
         if($request->hasFile('poster')) {

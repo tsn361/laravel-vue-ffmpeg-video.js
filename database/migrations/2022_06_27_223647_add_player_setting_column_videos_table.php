@@ -18,6 +18,7 @@ return new class extends Migration
             $table->boolean('stg_muted')->default(false);
             $table->boolean('stg_loop')->default(false);
             $table->boolean('stg_autopause')->default(false);
+            $table->string('stg_preload_configration')->default('none');
         });
     }
 };
