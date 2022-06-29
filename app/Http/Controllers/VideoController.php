@@ -148,8 +148,10 @@ class VideoController extends Controller
             request()->file('poster')->move(public_path('uploads/'.$save_path), $fileName);
             $posterImage = $fileName;
         }
-
-        $video->poster = $posterImage;
+        if ($posterImage !=null) {
+            $video->poster = $posterImage;
+        }
+        
         if($video->save()){
             return response()->json(['success'=>'true', 'videoId'=>$video->id]);
         }else{
