@@ -33,6 +33,10 @@
            width: 100% !important;
            height: 100% !important;
        }
+
+       .vj-player .vjs-quality-selector {
+           left: 84% !important;
+       }
        </style>
 
    <body>
@@ -40,10 +44,11 @@
        <div class="player-wrapper">
            <video id="hls-video"
                class="video-js vj-player vjs-big-play-centered playsinline webkit-playsinline vjs-theme-forest" controls
-               preload="none" poster="{{$video->poster}}" data-setup="{}">
+               preload="{{$video->stg_preload_configration}}" poster="{{$video->poster}}">
            </video>
        </div>
 
+       <script src="{{ asset('js/playerSetting.js') }}"></script>
        <script src="{{ asset('js/videojs-hls-quality-selector.min.js') }}"></script>
        <script src="{{ asset('js/videojs-contrib-quality-levels.min.js') }}"></script>
 
@@ -57,11 +62,18 @@
        const options = {
            controlBar: {
                children: [
-                   'playToggle',
-                   'progressControl',
-                   'volumePanel',
-                   'fullscreenToggle',
-                   'qualitySelector',
+                   "playToggle",
+                   "progressControl",
+                   "volumePanel",
+                   "volumeMenuButton",
+                   "durationDisplay",
+                   "timeDivider",
+                   "currentTimeDisplay",
+                   "remainingTimeDisplay",
+
+                   "CustomControlSpacer",
+                   "fullscreenToggle",
+                   "qualitySelector",
                ],
            },
            html5: {
@@ -88,6 +100,10 @@
 
        const player = videojs(document.getElementById('hls-video'), options);
        player.ready(function() {
+           setTimeout(() => {
+               settings(player, videoObject)
+           }, 100);
+
            player.src({
                src: "{{ route('embed.video.playback', ['userid' =>$video->user_id, 'filename'=> $video->file_name,'playlist' => $video->playback_url ])}}", // woring with hls and key
                type: 'application/x-mpegURL',
@@ -116,8 +132,6 @@
            });
            player.on('ended', function() {
                console.log('ended == ');
-               player.reset();
-
                player.poster(
                    "{{ config('app.url')}}/{{$video->poster}}"
                );

@@ -203,9 +203,9 @@ var videoObject = @json($video);;
 const options = {
     controlBar: {
         children: [
-            'playToggle',
-            'progressControl',
-            'volumePanel',
+            "playToggle",
+            "progressControl",
+            "volumePanel",
             "volumeMenuButton",
             "durationDisplay",
             "timeDivider",
@@ -213,8 +213,8 @@ const options = {
             "remainingTimeDisplay",
 
             "CustomControlSpacer",
-            'qualitySelector',
             "fullscreenToggle",
+            "qualitySelector",
         ],
     },
     html5: {
@@ -239,8 +239,8 @@ const player = videojs(document.getElementById('hls-video'), options);
 player.ready(function() {
 
     $(".vjs-volume-panel-horizontal, .vjs-play-control, button.skip-forward").addClass('left-half')
-    $(".vjs-custom-control-spacer").addClass('middle-half')
-    $(".vjs-quality-selector, .vjs-picture-in-picture-control, .vjs-fullscreen-control")
+    // $(".vjs-custom-control-spacer").addClass('middle-half')
+    $(".vjs-quality-selector, .vjs-picture-in-picture-control, .vjs-fullscreen-control, .vjs-menu-button")
         .addClass('right-half');
     setTimeout(() => {
         settings(player, videoObject)
