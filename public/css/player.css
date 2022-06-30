@@ -142,8 +142,8 @@
 /* .vjs-theme-forest .vjs-play-progress:before,
 .vjs-theme-forest .vjs-progress-control .vjs-play-progress:before, */
 .vjs-theme-forest .vjs-remaining-time,
-.vjs-theme-forest .vjs-volume-level:after,
-.vjs-theme-forest .vjs-volume-level:before,
+/* .vjs-theme-forest .vjs-volume-level:after,
+.vjs-theme-forest .vjs-volume-level:before, */
 .vjs-theme-forest.vjs-live .vjs-time-control.vjs-current-time,
 .vjs-theme-forest.vjs-live .vjs-time-control.vjs-duration,
 .vjs-theme-forest.vjs-live .vjs-time-control.vjs-time-divider,
@@ -352,7 +352,8 @@
 .vjs-theme-forest .vjs-volume-level {
     background-color: #2483d5;
 }
-.vjs-theme-forest .vjs-play-progress::before {
+
+.vjs-theme-forest .vjs-play-progress:before {
     border: 4px solid #2483d5;
     background-color: #2483d5;
     border-radius: 0.8em;
@@ -364,6 +365,20 @@
 
 .vjs-theme-fantasy .vjs-play-progress:before {
     background-color: #2483d5;
+}
+
+.vjs-theme-forest .vjs-slider-horizontal .vjs-volume-level:before {
+    top: -0.3em;
+    right: -0.5em;
+}
+
+.vjs-theme-forest .vjs-slider-horizontal .vjs-volume-level:before {
+    border: 4px solid #2483d5;
+    background-color: #2483d5;
+    border-radius: 0.8em;
+    content: "" !important;
+    height: 0.8em;
+    width: 0.8em;
 }
 
 .vjs-theme-forest .vjs-time-control {
