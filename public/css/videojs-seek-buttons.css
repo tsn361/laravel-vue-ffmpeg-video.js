@@ -7,12 +7,7 @@
     width: 2em;
 }
 .video-js .vjs-seek-button.skip-back::before,
-.video-js.vjs-v6 .vjs-seek-button.skip-back .vjs-icon-placeholder::before,
 .video-js.vjs-v7 .vjs-seek-button.skip-back .vjs-icon-placeholder::before {
-    /* transform: rotate(-45deg);
-    -ms-transform: rotate(-45deg);
-    -webkit-transform: rotate(-45deg);
-    content: "\f116"; */
     background: url("/img/jump-back-w-number.svg") no-repeat 50%;
     background-size: auto;
     background-size: 100%;
@@ -20,11 +15,16 @@
     display: block;
     width: 0.9em !important;
 }
+.video-js.vjs-v7 .vjs-seek-button.skip-back .vjs-icon-placeholder:hover:before {
+    background: url("/img/jump-back-w-number-hover.svg") no-repeat 50%;
+    background-size: auto;
+    background-size: 100%;
+    content: " ";
+    display: block;
+    width: 0.9em !important;
+}
+
 .video-js .vjs-seek-button.skip-forward::before {
-    /* transform: rotateY(180deg) rotate(-45deg);
-    -ms-transform: rotateY(180deg) rotate(-45deg);
-    -webkit-transform: rotateY(180deg) rotate(-45deg);
-    content: "\f116"; */
     background: url("/img/jump-next-w-number.svg") no-repeat 50%;
     background-size: auto;
     background-size: 100%;
@@ -32,20 +32,24 @@
     display: block;
     width: 0.9em !important;
 }
-.video-js.vjs-v6 .vjs-seek-button.skip-back::before,
-.video-js.vjs-v6 .vjs-seek-button.skip-forward::before,
+
 .video-js.vjs-v7 .vjs-seek-button.skip-back::before,
 .video-js.vjs-v7 .vjs-seek-button.skip-forward::before {
     content: none;
 }
-.video-js.vjs-v6 .vjs-seek-button.skip-forward .vjs-icon-placeholder::before,
 .video-js.vjs-v7 .vjs-seek-button.skip-forward .vjs-icon-placeholder::before {
-    /* transform: scale(-1, 1) rotate(-45deg);
-    -ms-transform: scale(-1, 1) rotate(-45deg);
-    -webkit-transform: scale(-1, 1) rotate(-45deg);
-    content: "\f116"; */
-
     background: url("/img/jump-next-w-number.svg") no-repeat 50%;
+    background-size: auto;
+    background-size: 100%;
+    content: " ";
+    display: block;
+    width: 0.9em !important;
+}
+
+.video-js.vjs-v7
+    .vjs-seek-button.skip-forward
+    .vjs-icon-placeholder:hover::before {
+    background: url("/img/jump-next-w-number-hover.svg") no-repeat 50%;
     background-size: auto;
     background-size: 100%;
     content: " ";

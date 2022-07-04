@@ -258,41 +258,15 @@ player.ready(function() {
     });
 
 
-    // player.touchOverlay({
-    //     seekLeft: {
-    //         handleClick: () => {
-    //             const time = Number(player.currentTime()) - 10;
-
-    //             player.currentTime(time);
-    //         },
-    //         doubleTap: true,
-    //     },
-    //     play: {
-    //         handleClick: () => {
-    //             if (player.paused()) {
-    //                 player.play();
-    //             } else {
-    //                 player.pause();
-    //             }
-    //         },
-    //     },
-    //     seekRight: {
-    //         handleClick: () => {
-    //             const time = Number(player.currentTime()) + 10;
-
-    //             player.currentTime(time);
-    //         },
-    //         doubleTap: true,
-    //     },
-    //     lockButton: false
-    // });
-
-    player.hlsQualitySelector();
     player.spriteThumbnails({
         interval: 2,
         url: "{{ config('app.url')}}/uploads/{{$video->user_id}}/{{$video->file_name}}/preview_01.jpg",
         width: 160,
         height: 90
+    });
+
+    player.hlsQualitySelector({
+        IsHd: "{{$video->original_resolution == '720' || $video->original_resolution == '1080' ? true : false}}",
     });
 
     player.on('play', function() {

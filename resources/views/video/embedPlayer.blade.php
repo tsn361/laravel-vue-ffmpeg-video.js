@@ -33,10 +33,6 @@
            width: 100% !important;
            height: 100% !important;
        }
-
-       .vj-player .vjs-quality-selector {
-           left: 84% !important;
-       }
        </style>
 
    <body>
@@ -116,7 +112,9 @@
                width: 160,
                height: 90
            });
-           player.hlsQualitySelector();
+           player.hlsQualitySelector({
+               IsHd: "{{$video->original_resolution == '720' || $video->original_resolution == '1080' ? true : false}}",
+           });
 
            player.seekButtons({
                forward: 10,
