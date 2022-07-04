@@ -52,3 +52,121 @@
     display: block;
     width: 0.9em !important;
 }
+
+.vjs-seek-forward-animation {
+    display: none;
+    position: absolute;
+    top: 60%;
+    right: 50%;
+    margin-right: -9em;
+    margin-top: -1em;
+    width: 1.5em;
+    height: 1.5em;
+    text-align: center;
+    line-height: 1.2em;
+    border: none;
+    border-radius: 50%;
+    font-size: 3.5em;
+    opacity: 1;
+    /* background-color: rgba(0, 0, 0, 0.45); */
+    color: #fff;
+}
+.vjs-seek-forward-animation span {
+    background: url("/img/right-arrow.png") no-repeat;
+    background-size: auto;
+    display: block;
+    height: 100%;
+    float: left;
+    width: 15px;
+    padding: 10px;
+}
+
+.vjs-seek-forward-animation span:nth-child(1) {
+    animation: blinkerForward1 0.5s cubic-bezier(0.5, 0, 1, 1) infinite
+        alternate;
+    font-size: 25px;
+}
+@keyframes blinkerForward1 {
+    to {
+        opacity: 0.5;
+    }
+}
+.vjs-seek-forward-animation span:nth-child(2) {
+    animation: blinkerForward2 0.9s cubic-bezier(0.5, 0, 1, 1) infinite
+        alternate;
+    font-size: 25px;
+}
+@keyframes blinkerForward2 {
+    to {
+        opacity: 0.5;
+    }
+}
+.vjs-seek-forward-animation span:nth-child(3) {
+    animation: blinkerForward3 1.5s cubic-bezier(0.5, 0, 1, 1) infinite
+        alternate;
+    font-size: 25px;
+}
+@keyframes blinkerForward3 {
+    to {
+        opacity: 0.5;
+    }
+}
+
+.vjs-seek-back-animation {
+    display: none;
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    margin-left: -9em;
+    margin-top: -1em;
+    width: 1.5em;
+    height: 1.5em;
+    line-height: 1.3em;
+    border: none;
+    border-radius: 50%;
+    font-size: 3.5em;
+    opacity: 1;
+    color: #fff;
+    text-align: center;
+}
+
+.vjs-seek-back-animation span {
+    background: url("/img/left-arrow.png") no-repeat;
+    background-size: auto;
+    display: block;
+    height: 100%;
+    float: left;
+    width: 15px;
+    padding: 10px;
+}
+
+.vjs-seek-back-animation span:nth-child(1) {
+    animation: blinkerForward 1.5s cubic-bezier(0.5, 0, 1, 1) infinite alternate;
+    font-size: 25px;
+}
+@keyframes blinkerForward {
+    to {
+        opacity: 0.5;
+    }
+}
+.vjs-seek-back-animation span:nth-child(2) {
+    animation: blinkerForward2 0.9s cubic-bezier(0.5, 0, 1, 1) infinite
+        alternate;
+    font-size: 25px;
+}
+@keyframes blinkerForward2 {
+    to {
+        opacity: 0.5;
+    }
+}
+
+.vjs-seek-back-animation span:nth-child(3) {
+    animation: blinkerForward3 0.5s cubic-bezier(0.5, 0, 1, 1) infinite
+        alternate;
+    font-size: 25px;
+}
+@keyframes blinkerForward3 {
+    to {
+        opacity: 0.5;
+    }
+}

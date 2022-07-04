@@ -16,6 +16,8 @@
 <link href="{{ asset('css/videojs-seek-buttons.css') }}" rel="stylesheet">
 <!-- <link href="{{ asset('css/videojs-custom-playlist.css') }}" rel="stylesheet">
 <link href="{{ asset('css/videojs-playlist-ui.css') }}" rel="stylesheet"> -->
+
+<link rel="stylesheet" href="https://unpkg.com/videojs-overlay-buttons@latest/dist/videojs-overlay-buttons.css" />
 <style>
 
 </style>
@@ -185,6 +187,8 @@
 <script src="{{ asset('js/videojs-seek-buttons.min.js') }}"></script>
 <!-- <script src="{{ asset('js/videojs-playlist.min.js') }}"></script>
 <script src="{{ asset('js/videojs-playlist-ui.min.js') }}"></script> -->
+
+
 <script>
 var playerSkipIntroTime = "{{$video->skip_intro_time}}";
 var videoObject = @json($video);;
@@ -252,6 +256,36 @@ player.ready(function() {
         type: 'application/x-mpegURL',
         withCredentials: true
     });
+
+
+    // player.touchOverlay({
+    //     seekLeft: {
+    //         handleClick: () => {
+    //             const time = Number(player.currentTime()) - 10;
+
+    //             player.currentTime(time);
+    //         },
+    //         doubleTap: true,
+    //     },
+    //     play: {
+    //         handleClick: () => {
+    //             if (player.paused()) {
+    //                 player.play();
+    //             } else {
+    //                 player.pause();
+    //             }
+    //         },
+    //     },
+    //     seekRight: {
+    //         handleClick: () => {
+    //             const time = Number(player.currentTime()) + 10;
+
+    //             player.currentTime(time);
+    //         },
+    //         doubleTap: true,
+    //     },
+    //     lockButton: false
+    // });
 
     player.hlsQualitySelector();
     player.spriteThumbnails({
