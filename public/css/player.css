@@ -88,6 +88,13 @@
     text-shadow: 0 0 1em #fff, 0 0 1em #fff, 0 0 1em #fff;
 }
 
+.vjs-theme-forest .vjs-control-bar {
+    /* background-color: transparent !important; */
+    background-color: rgb(0 0 0 / 17%) !important;
+    color: #ffffff;
+    font-size: 20px;
+}
+
 .vjs-theme-forest .vjs-spacer,
 .vjs-theme-forest .vjs-time-control {
     display: -webkit-box;
@@ -110,50 +117,13 @@
     flex: 0 1 auto;
     width: auto;
     padding: 0;
-}
-
-.vjs-theme-forest .vjs-time-control.vjs-time-divider {
-    width: 14px;
-    padding: 0 !important;
+    min-width: 1em;
+    font-weight: 400;
 }
 
 .vjs-theme-forest .vjs-time-control.vjs-time-divider div {
     width: 100%;
     text-align: center;
-}
-
-.vjs-theme-forest .vjs-time-control.vjs-current-time {
-    margin-left: 1em;
-}
-
-.vjs-theme-forest .vjs-time-control .vjs-current-time-display,
-.vjs-theme-forest .vjs-time-control .vjs-duration-display {
-    width: 100%;
-}
-
-.vjs-theme-forest .vjs-time-control .vjs-current-time-display {
-    text-align: right;
-}
-
-.vjs-theme-forest .vjs-time-control .vjs-duration-display {
-    text-align: left;
-}
-
-/* .vjs-theme-forest .vjs-play-progress:before,
-.vjs-theme-forest .vjs-progress-control .vjs-play-progress:before, */
-.vjs-theme-forest .vjs-remaining-time,
-/* .vjs-theme-forest .vjs-volume-level:after,
-.vjs-theme-forest .vjs-volume-level:before, */
-.vjs-theme-forest.vjs-live .vjs-time-control.vjs-current-time,
-.vjs-theme-forest.vjs-live .vjs-time-control.vjs-duration,
-.vjs-theme-forest.vjs-live .vjs-time-control.vjs-time-divider,
-.vjs-theme-forest.vjs-no-flex .vjs-time-control.vjs-remaining-time {
-    display: none;
-}
-
-.vjs-theme-forest.vjs-no-flex .vjs-time-control {
-    display: table-cell;
-    width: 4em;
 }
 
 .vjs-theme-forest .vjs-progress-control {
@@ -367,13 +337,6 @@
     background-color: #000000;
 }
 
-.vjs-theme-forest .vjs-control-bar {
-    background-color: transparent !important;
-    /* background-color: rgba(0, 0, 0, 0.3) !important; */
-    color: #ffffff;
-    font-size: 20px;
-}
-
 .vjs-theme-forest .vjs-play-progress,
 .vjs-theme-forest .vjs-volume-level {
     background-color: #0c9;
@@ -407,9 +370,6 @@
     width: 0.8em;
 }
 
-.vjs-theme-forest .vjs-time-control {
-    display: none;
-}
 .vjs-theme-forest .vjs-control-bar {
     display: flex;
 }
