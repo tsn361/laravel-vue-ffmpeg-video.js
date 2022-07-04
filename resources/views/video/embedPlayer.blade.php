@@ -62,14 +62,16 @@
                    "progressControl",
                    "volumePanel",
                    "volumeMenuButton",
-                   "durationDisplay",
-                   "timeDivider",
-                   "currentTimeDisplay",
-                   "remainingTimeDisplay",
+
 
                    "CustomControlSpacer",
-                   "fullscreenToggle",
+
+
+                   "currentTimeDisplay",
+                   "timeDivider",
+                   "durationDisplay",
                    "qualitySelector",
+                   "fullscreenToggle",
                ],
            },
            html5: {
