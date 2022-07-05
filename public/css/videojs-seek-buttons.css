@@ -4,7 +4,7 @@
     cursor: pointer;
     font-weight: 400;
     font-style: normal;
-    width: 2em;
+    width: 3em;
 }
 .video-js .vjs-seek-button.skip-back::before,
 .video-js.vjs-v7 .vjs-seek-button.skip-back .vjs-icon-placeholder::before {
@@ -14,6 +14,7 @@
     content: " ";
     display: block;
     width: 0.9em !important;
+    left: 0.35em;
 }
 .video-js.vjs-v7 .vjs-seek-button.skip-back .vjs-icon-placeholder:hover:before {
     background: url("/img/jump-back-w-number-hover.svg") no-repeat 50%;
@@ -22,6 +23,7 @@
     content: " ";
     display: block;
     width: 0.9em !important;
+    left: 0.35em;
 }
 
 .video-js .vjs-seek-button.skip-forward::before {
@@ -31,6 +33,7 @@
     content: " ";
     display: block;
     width: 0.9em !important;
+    left: 0.35em;
 }
 
 .video-js.vjs-v7 .vjs-seek-button.skip-back::before,
@@ -44,6 +47,7 @@
     content: " ";
     display: block;
     width: 0.9em !important;
+    left: 0.35em;
 }
 
 .video-js.vjs-v7
@@ -55,6 +59,7 @@
     content: " ";
     display: block;
     width: 0.9em !important;
+    left: 0.35em;
 }
 
 .vjs-seek-forward-animation {
