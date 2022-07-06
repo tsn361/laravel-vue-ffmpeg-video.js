@@ -55,6 +55,7 @@
 
        <script>
        var playerSkipIntroTime = "{{$video->skip_intro_time}}";
+       var videoObject = @json($video);;
        const options = {
            controlBar: {
                children: [
