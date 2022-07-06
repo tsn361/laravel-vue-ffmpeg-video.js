@@ -458,8 +458,8 @@
     content: "\f109";
 }
 
-.vjs-theme-forest button[title]:hover::after {
-    content: attr(title);
+.vjs-theme-forest button[tooltip]:hover::after {
+    content: attr(tooltip);
     position: absolute;
     top: -100%;
     left: 20%;
@@ -478,12 +478,32 @@
     font-size: 0.8em;
 }
 
-[title] {
+[tooltip] {
     position: relative;
 }
 
-.vjs-fullscreen-control[title]:hover:after {
-    content: attr(title);
+.vjs-fullscreen-control[tooltip]:hover:after {
+    content: attr(tooltip);
+    position: absolute;
+    top: -100%;
+    left: -80% !important;
+    background-color: #161719;
+    border-radius: 2px;
+    display: block;
+    padding: 0.5em 0.5em;
+    position: absolute;
+    text-align: center;
+    text-shadow: none;
+    text-transform: none;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+    z-index: 1;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.8em;
+}
+
+.vjs-big-play-button[tooltip]:hover:after {
+    content: attr(tooltip);
     position: absolute;
     top: -100%;
     left: -80% !important;
