@@ -154,6 +154,7 @@ player.ready(function() {
 
     player.src({
         src: "{{ route('video.playback', ['userid' =>$video->user_id, 'filename'=> $video->file_name,'playlist' => $video->playback_url ])}}",
+        // src: "http://demo.unified-streaming.com/video/tears-of-steel/tears-of-steel.ism/.m3u8",
         // woring with hls and key
         type: 'application/x-mpegURL',
         withCredentials: true
