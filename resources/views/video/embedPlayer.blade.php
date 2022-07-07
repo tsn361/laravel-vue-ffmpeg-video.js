@@ -12,6 +12,7 @@
        <link href="{{ asset('css/videojs-hls-quality-selector.css') }}" rel="stylesheet">
        <link href="{{ asset('css/videojs-skip-intro.css') }}" rel="stylesheet">
        <link href="{{ asset('css/videojs-seek-buttons.css') }}" rel="stylesheet">
+       <link href="{{ asset('css/videojs.sprite.thumbnails.css') }}" rel="stylesheet">
        <script src="{{ asset('js/jquery.min.js') }}"></script>
        <script src="{{ asset('js/video.min.js') }}"></script>
        <style>
@@ -54,9 +55,25 @@
        <script src="{{ asset('js/videojs-seek-buttons.min.js') }}"></script>
 
        <script>
+       $(window).on('load', function() {
+           var attributes = [];
+
+           var allElements = document.querySelectorAll("*");
+
+           for (var i = 0; i < allElements.length; i++) {
+               if (allElements[i].getAttribute("title")) {
+                   if (allElements[i].getAttribute("title") !== 'Play Video') {
+                       var value = allElements[i].getAttribute("title")
+                       allElements[i].setAttribute('tooltip', value);
+                   }
+                   allElements[i].removeAttribute('title')
+               }
+           }
+       })
        var playerSkipIntroTime = "{{$video->skip_intro_time}}";
        var videoObject = @json($video);;
        const options = {
+           techOrder: ['html5'],
            controlBar: {
                children: [
                    "playToggle",
@@ -72,6 +89,7 @@
                    "timeDivider",
                    "durationDisplay",
                    "qualitySelector",
+                   "pictureInPictureToggle",
                    "fullscreenToggle",
                ],
            },
