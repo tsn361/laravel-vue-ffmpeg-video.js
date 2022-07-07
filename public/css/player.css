@@ -481,7 +481,8 @@
     visibility: hidden !important;
 }
 
-/* player big play button styles */
+/* ################### player big play button styles #################### */
+/* #################################################################### */
 
 .vjs-theme-forest .vjs-big-play-button {
     top: 50%;
@@ -496,8 +497,6 @@
     height: 2em !important;
     line-height: 2em !important;
     margin-top: -1em !important;
-    /* -webkit-animation: middlePlayerIcon 0.5s linear 1 normal forwards;
-    animation: middlePlayerIcon 0.5s linear 1 normal forwards; */
 }
 
 .vjs-theme-forest:hover .vjs-big-play-button,
@@ -546,26 +545,8 @@
     }
 }
 
-@keyframes waves {
-    0% {
-        transform: scale(0);
-        opacity: 0.3;
-    }
-    40% {
-        transform: scale(0.2);
-        opacity: 0.5;
-    }
-    70% {
-        transform: scale(0.5);
-        opacity: 0.7;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
-
-/* player loader spinner */
+/* ########################### player loader spinner ###################### */
+/* #################################################################### */
 /* .vjs-theme-forest .vjs-loading-spinner {
     border-color: #a9aead;
     border: 6px solid #a9aead;
