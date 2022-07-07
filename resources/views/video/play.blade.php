@@ -78,7 +78,7 @@ $(window).on('load', function() {
 
     for (var i = 0; i < allElements.length; i++) {
         if (allElements[i].getAttribute("title")) {
-            if (allElements[i].getAttribute("title") != 'Play Video') {
+            if (allElements[i].getAttribute("title") !== 'Play Video') {
                 var value = allElements[i].getAttribute("title")
                 allElements[i].setAttribute('tooltip', value);
             }
