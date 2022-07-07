@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Http\Controllers\VideoObjectSchemaController;
 use App\Models\Video;
 use Illuminate\Http\Request;
 
@@ -13,6 +13,8 @@ class EmbedPlayerController extends Controller
         if(!$video){
             return redirect()->route('notfound');
         }
+        $schema =  VideoObjectSchemaController::generateVideoSchemaObject($video);
+        $video->videoObjectSchema = $schema;
         return view('video.embedPlayer', compact('video'));
     }
 }

@@ -6,6 +6,10 @@
        <meta http-equiv="X-UA-Compatible" content="IE=edge">
        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+       <script type="application/ld+json">
+       <?= json_encode($video->videoObjectSchema) ?>
+       </script>
+
        <link href="{{ asset('css/video-js.min.css') }}" rel="stylesheet">
        <!-- Fantasy -->
        <link href="{{ asset('css/player.css') }}" rel="stylesheet" />
