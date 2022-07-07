@@ -14,6 +14,7 @@
 <script src="{{ asset('js/video.min.js') }}"></script>
 <link href="{{ asset('css/videojs-skip-intro.css') }}" rel="stylesheet">
 <link href="{{ asset('css/videojs-seek-buttons.css') }}" rel="stylesheet">
+<link href="{{ asset('css/videojs.sprite.thumbnails.css') }}" rel="stylesheet">
 <!-- <link href="{{ asset('css/videojs-custom-playlist.css') }}" rel="stylesheet">
 <link href="{{ asset('css/videojs-playlist-ui.css') }}" rel="stylesheet"> -->
 
@@ -102,6 +103,7 @@ var videoObject = @json($video);;
 //     }]
 // }, ];
 const options = {
+    techOrder: ['html5'],
     controlBar: {
         children: [
             "playToggle",
@@ -117,6 +119,7 @@ const options = {
             "timeDivider",
             "durationDisplay",
             "qualitySelector",
+            "pictureInPictureToggle",
             "fullscreenToggle",
         ],
     },
