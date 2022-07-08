@@ -46,6 +46,12 @@
            <video id="hls-video"
                class="video-js vj-player vjs-big-play-centered playsinline webkit-playsinline vjs-theme-forest" controls
                preload="{{$video->stg_preload_configration}}" poster="{{$video->poster}}">
+
+               <track kind='captions' src='{{ asset("sample.vtt") }}' srclang='en' label='English' />
+               <track kind='captions' src='https://dotsub.com/media/5d5f008c-b5d5-466f-bb83-2b3cfa997992/c/spa/vtt'
+                   srclang='es' label='Spanish' />
+               <track kind='captions' src='https://dotsub.com/media/5d5f008c-b5d5-466f-bb83-2b3cfa997992/c/fre_ca/vtt'
+                   srclang='fr' label='French' />
            </video>
        </div>
 
