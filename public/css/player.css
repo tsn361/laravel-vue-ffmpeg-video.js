@@ -635,6 +635,106 @@
     }
 }
 
-.vjs-modal-dialog {
-    display: none;
+/* ####################### player caption or subtitle setting ############################### */
+/* ############################################################################################ */
+
+.vjs-theme-forest .vjs-subtitles-button .vjs-menu .vjs-menu-content,
+.vjs-theme-forest .vjs-captions-button .vjs-menu .vjs-menu-content {
+    background-color: rgba(24, 29, 37, 0.9);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+    position: absolute;
+    width: 135%;
+    bottom: 1.5em;
+    max-height: 17em;
+}
+
+.vjs-theme-forest .vjs-subtitles-button .vjs-menu li,
+.vjs-theme-forest .vjs-captions-button .vjs-menu li {
+    line-height: 1em !important;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.vjs-theme-forest .vjs-captions-button .vjs-texttrack-settings {
+    background-color: transparent !important;
+}
+
+.vjs-theme-forest .vjs-subtitles-button .vjs-menu .vjs-menu-item.vjs-selected,
+.vjs-theme-forest .vjs-captions-button .vjs-menu .vjs-menu-item.vjs-selected {
+    background-color: transparent;
+    color: #fff;
+}
+
+.vjs-theme-forest .vjs-subtitles-button .vjs-menu .vjs-menu-item,
+.vjs-theme-forest .vjs-captions-button .vjs-menu .vjs-menu-item {
+    font-weight: bold;
+    border-bottom: 1px solid rgba(62, 73, 91, 0.64);
+    color: #a3afc2;
+    text-transform: capitalize;
+}
+.vjs-theme-forest .vjs-subtitles-button .vjs-menu .vjs-menu-item:last-child,
+.vjs-theme-forest .vjs-captions-button .vjs-menu .vjs-menu-item:last-child {
+    margin-bottom: 20px;
+}
+.vjs-theme-forest
+    .vjs-subtitles-button
+    .vjs-menu
+    .vjs-menu-item.vjs-selected
+    .vjs-menu-item-text:before,
+.vjs-theme-forest
+    .vjs-captions-button
+    .vjs-menu
+    .vjs-menu-item.vjs-selected
+    .vjs-menu-item-text:before {
+    content: "\2713";
+    display: inline-block;
+    margin-right: 10px;
+}
+.vjs-theme-forest .vjs-subtitles-button .vjs-menu .vjs-menu-item:before,
+.vjs-theme-forest .vjs-captions-button .vjs-menu .vjs-menu-item:before {
+    margin-right: 30px;
+    content: "";
+    display: block;
+}
+
+/* chnage icon */
+
+.vjs-theme-forest .vjs-captions-button .vjs-icon-placeholder:before {
+    background: url("/img/player-caption.svg") no-repeat 50%;
+    background-size: auto;
+    background-size: 100%;
+    content: "";
+    display: block;
+    height: 100%;
+    left: 0.35em;
+    width: 1.1em !important;
+}
+
+.vjs-theme-forest .vjs-captions-button .vjs-icon-placeholder:hover:before {
+    background: url("/img/player-caption-hover.svg") no-repeat 50%;
+    background-size: auto;
+    background-size: 100%;
+    content: "";
+    display: block;
+    height: 100%;
+    left: 0.35em;
+    width: 1.1em !important;
+}
+
+.vjs-theme-forest .vjs-text-track-display .vjs-text-track-cue div {
+    color: #fff !important;
+    background-color: transparent !important;
+    position: relative !important;
+    inset: 0px;
+    display: inline;
+    writing-mode: horizontal-tb;
+    unicode-bidi: plaintext;
+    font-family: sans-serif;
+    top: -1em !important;
+
+    letter-spacing: normal;
+    line-height: 1.5;
+    text-align: center !important;
+    text-shadow: rgba(0, 0, 0, 0.5) -1px -1px 0, rgba(0, 0, 0, 0.5) 1px -1px 0,
+        rgba(0, 0, 0, 0.5) -1px 1px 0, rgba(0, 0, 0, 0.5) 1px 1px 0,
+        rgba(0, 0, 0, 0.6) 0 2px 2px !important;
 }

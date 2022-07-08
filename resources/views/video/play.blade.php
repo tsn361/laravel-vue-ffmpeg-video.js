@@ -37,6 +37,12 @@
         <div class="col-md-12 p-0 text-end">
             <video id="hls-video" class="video-js vjs-big-play-centered playsinline webkit-playsinline vjs-theme-forest"
                 preload="{{$video->stg_preload_configration}}" controls height="560" poster="{{$video->poster}}">
+                <track kind='captions' src='{{ asset("sample.vtt") }}' srclang='en' label='English' />
+                <track kind='captions' src='https://dotsub.com/media/5d5f008c-b5d5-466f-bb83-2b3cfa997992/c/spa/vtt'
+                    srclang='es' label='Spanish' />
+                <track kind='captions' src='https://dotsub.com/media/5d5f008c-b5d5-466f-bb83-2b3cfa997992/c/fre_ca/vtt'
+                    srclang='fr' label='French' />
+
             </video>
             <!-- <div class="main-preview-player">
                 <div class="playlist-container vjs-fluid" id="sidebar">
@@ -77,8 +83,9 @@ $(window).on('load', function() {
     var allElements = document.querySelectorAll("*");
 
     for (var i = 0; i < allElements.length; i++) {
+        var attVal = allElements[i].getAttribute("title");
         if (allElements[i].getAttribute("title")) {
-            if (allElements[i].getAttribute("title") !== 'Play Video') {
+            if (attVal !== 'Play Video' && attVal !== 'Captions' && attVal !== 'Subtitles') {
                 var value = allElements[i].getAttribute("title")
                 allElements[i].setAttribute('tooltip', value);
             }
@@ -112,12 +119,15 @@ const options = {
             "volumeMenuButton",
 
 
+
             "CustomControlSpacer",
 
 
             "currentTimeDisplay",
             "timeDivider",
             "durationDisplay",
+            "CaptionsButton",
+            "SubtitlesButton",
             "qualitySelector",
             "pictureInPictureToggle",
             "fullscreenToggle",
@@ -132,7 +142,9 @@ const options = {
         },
         nativeAudioTracks: false,
         nativeVideoTracks: false,
-    }
+        nativeTextTracks: false,
+    },
+    textTrackSettings: true
 }
 
 videojs.Hls.xhr.beforeRequest = function(options) {
@@ -144,10 +156,10 @@ videojs.Hls.xhr.beforeRequest = function(options) {
 const player = videojs(document.getElementById('hls-video'), options);
 player.ready(function() {
 
-    $(".vjs-volume-panel-horizontal, .vjs-play-control, button.skip-forward").addClass('left-half')
-    // $(".vjs-custom-control-spacer").addClass('middle-half')
-    $(".vjs-quality-selector, .vjs-picture-in-picture-control, .vjs-fullscreen-control, .vjs-menu-button")
-        .addClass('right-half');
+    // $(".vjs-volume-panel-horizontal, .vjs-play-control, button.skip-forward").addClass('left-half')
+    // // $(".vjs-custom-control-spacer").addClass('middle-half')
+    // $(".vjs-quality-selector, .vjs-picture-in-picture-control, .vjs-fullscreen-control, .vjs-menu-button")
+    //     .addClass('right-half');
     setTimeout(() => {
         settings(player, videoObject)
     }, 100);
@@ -159,6 +171,10 @@ player.ready(function() {
         type: 'application/x-mpegURL',
         withCredentials: true
     });
+
+
+    // player.textTracks[0].mode = 'showing';
+
 
 
     player.spriteThumbnails({
@@ -199,6 +215,11 @@ player.ready(function() {
     //     iconClass: "fas fa-play fa-2x",
     //     playList: playlistData
     // });
+
+    //If you want to start English as the caption automatically
+    player.one("play", function() {
+        player.textTracks()[0].mode = "showing";
+    });
 
     player.tech().on('usage', (e) => {
         console.log(e.name);

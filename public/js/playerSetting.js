@@ -20,6 +20,19 @@ function settings(player, settings) {
             player.play();
         });
     }
+
+    if (player.options_.controlBar.children.includes("CaptionsButton")) {
+        $("body .video-js .vjs-captions-button  .vjs-menu-content")
+            .children()
+            .each(function () {
+                $(this).html(
+                    $(this)
+                        .html()
+                        .replace("captions settings", "subtitles settings")
+                );
+                $(this).html($(this).html().replace("captions off", "off"));
+            });
+    }
 }
 
 (function () {
