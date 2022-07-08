@@ -78,10 +78,7 @@
 
 <script>
 $(window).on('load', function() {
-    var attributes = [];
-
     var allElements = document.querySelectorAll("*");
-
     for (var i = 0; i < allElements.length; i++) {
         var attVal = allElements[i].getAttribute("title");
         if (allElements[i].getAttribute("title")) {
@@ -217,9 +214,9 @@ player.ready(function() {
     // });
 
     //If you want to start English as the caption automatically
-    player.one("play", function() {
-        player.textTracks()[0].mode = "showing";
-    });
+    // player.one("play", function() {
+    //     player.textTracks()[0].mode = "showing";
+    // });
 
     player.tech().on('usage', (e) => {
         console.log(e.name);

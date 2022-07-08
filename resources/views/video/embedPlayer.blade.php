@@ -60,13 +60,11 @@
 
        <script>
        $(window).on('load', function() {
-           var attributes = [];
-
            var allElements = document.querySelectorAll("*");
-
            for (var i = 0; i < allElements.length; i++) {
+               var attVal = allElements[i].getAttribute("title");
                if (allElements[i].getAttribute("title")) {
-                   if (allElements[i].getAttribute("title") !== 'Play Video') {
+                   if (attVal !== 'Play Video' && attVal !== 'Captions' && attVal !== 'Subtitles') {
                        var value = allElements[i].getAttribute("title")
                        allElements[i].setAttribute('tooltip', value);
                    }
@@ -86,12 +84,15 @@
                    "volumeMenuButton",
 
 
+
                    "CustomControlSpacer",
 
 
                    "currentTimeDisplay",
                    "timeDivider",
                    "durationDisplay",
+                   "CaptionsButton",
+                   "SubtitlesButton",
                    "qualitySelector",
                    "pictureInPictureToggle",
                    "fullscreenToggle",
@@ -106,10 +107,9 @@
                },
                nativeAudioTracks: false,
                nativeVideoTracks: false,
-               // hlsjsConfig: {
-               //     debug: true,
-               // }
-           }
+               nativeTextTracks: false,
+           },
+           textTrackSettings: true
        }
 
        videojs.Hls.xhr.beforeRequest = function(options) {
@@ -153,6 +153,12 @@
                    });
                }
            });
+
+           //If you want to start English as the caption automatically
+           // player.one("play", function() {
+           //     player.textTracks()[0].mode = "showing";
+           // });
+
            player.on('ended', function() {
                console.log('ended == ');
                player.poster(
