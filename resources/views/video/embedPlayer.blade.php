@@ -63,6 +63,7 @@
 
        <script src="{{ asset('js/videojs-skip-intro.js') }}"></script>
        <script src="{{ asset('js/videojs-seek-buttons.min.js') }}"></script>
+       <script src="{{ asset('js/videojs-double-tap-skip.js') }}"></script>
 
        <script>
        $(window).on('load', function() {
@@ -127,6 +128,7 @@
 
        const player = videojs(document.getElementById('hls-video'), options);
        player.ready(function() {
+           player.tech_.off('dblclick');
            setTimeout(() => {
                settings(player, videoObject)
            }, 100);
@@ -136,6 +138,8 @@
                type: 'application/x-mpegURL',
                withCredentials: true,
            });
+
+           player.doubleTap(player)
 
            player.spriteThumbnails({
                interval: 2,
@@ -151,13 +155,9 @@
                forward: 10,
                back: 10
            });
-           player.on('play', function() {
-               if (playerSkipIntroTime > 0) {
-                   player.skipIntro({
-                       label: 'Skip Intro',
-                       skipTime: playerSkipIntroTime,
-                   });
-               }
+           player.skipIntro({
+               label: 'Skip Intro',
+               skipTime: playerSkipIntroTime,
            });
 
            //If you want to start English as the caption automatically

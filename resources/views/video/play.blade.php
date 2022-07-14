@@ -20,16 +20,7 @@
 
 <link rel="stylesheet" href="https://unpkg.com/videojs-overlay-buttons@latest/dist/videojs-overlay-buttons.css" />
 <style>
-.vjs-double-tap {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 10px;
-    z-index: 9999999999999;
-}
 
-.vjs-double-tap div {
-    border: 1px solid #123456;
-}
 </style>
 @endsection
 
@@ -180,7 +171,7 @@ player.ready(function() {
 
     console.log("playerSkipIntroTime = ", playerSkipIntroTime)
 
-    // player.doubleTap(player)
+    player.doubleTap(player)
 
     player.spriteThumbnails({
         interval: 2,

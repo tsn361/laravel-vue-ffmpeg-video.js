@@ -497,6 +497,7 @@
     height: 2em !important;
     line-height: 2em !important;
     margin-top: -1em !important;
+    z-index: 1000000000000000000000000 !important;
 }
 
 .vjs-theme-forest:hover .vjs-big-play-button,
