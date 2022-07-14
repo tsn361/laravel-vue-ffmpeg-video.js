@@ -18,7 +18,7 @@ function doubleTap(player, options = {}) {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         grid-gap: 10%;
-        height: 100% !important;
+        height: 88% !important;
         `;
 
     BackwordSkip = document.createElement("div");
@@ -27,10 +27,6 @@ function doubleTap(player, options = {}) {
 
     MiddleDiv = document.createElement("div");
     MiddleDiv.classList.add("vjs-double-click-MiddleDiv");
-    MiddleDiv.style.cssText = `
-        position: relative;
-        z-index:-10
-        `;
     MainDiv.appendChild(MiddleDiv);
 
     ForwardSkip = document.createElement("div");
