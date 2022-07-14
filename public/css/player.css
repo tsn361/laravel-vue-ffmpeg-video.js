@@ -1,10 +1,3 @@
-.vjs-theme-forest .vjs-menu-button-inline.vjs-slider-active,
-.vjs-theme-forest .vjs-menu-button-inline:focus,
-.vjs-theme-forest .vjs-menu-button-inline:hover,
-.vjs-theme-forest.vjs-no-flex .vjs-menu-button-inline {
-    width: 10em;
-}
-
 .vjs-theme-forest .vjs-controls-disabled .vjs-big-play-button {
     display: none !important;
 }
@@ -65,11 +58,6 @@
     .vjs-menu-content {
     height: 3em;
     width: 6.35em;
-}
-
-.vjs-theme-forest .vjs-control:focus:before,
-.vjs-theme-forest .vjs-control:hover:before {
-    text-shadow: 0 0 1em #fff, 0 0 1em #fff, 0 0 1em #fff;
 }
 
 .vjs-theme-forest .vjs-control-bar {
@@ -142,7 +130,7 @@
     top: -0.5em;
 }
 
-.vjs-theme-forest .vjs-control-bar {
+/* .vjs-theme-forest .vjs-control-bar {
     -webkit-transition: -webkit-transform 0.1s ease 0s;
     -moz-transition: -moz-transform 0.1s ease 0s;
     -ms-transition: -ms-transform 0.1s ease 0s;
@@ -211,7 +199,7 @@
     -ms-transition: opacity 1s ease 1s;
     -o-transition: opacity 1s ease 1s;
     transition: opacity 1s ease 1s;
-}
+} */
 
 .vjs-theme-forest.vjs-live .vjs-live-control {
     margin-left: 1em;
@@ -221,20 +209,6 @@
     left: -3em;
 }
 
-/*.vjs-theme-forest .vjs-menu-button-popup .vjs-menu .vjs-menu-content {
-    background-color: transparent;
-    width: 12em;
-    left: -1.5em;
-    padding-bottom: 0.5em;
-}
-
-.vjs-theme-forest .vjs-menu-button-popup .vjs-menu .vjs-menu-item,
-.vjs-theme-forest .vjs-menu-button-popup .vjs-menu .vjs-menu-title {
-    background-color: #151b17;
-    margin: 0.3em 0;
-    padding: 0.5em;
-    border-radius: 0.3em;
-} */
 .vjs-theme-forest .vjs-quality-selector .vjs-menu .vjs-menu-content {
     background-color: rgba(24, 29, 37, 0.9);
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
@@ -299,18 +273,12 @@
     height: 0.8em;
     top: -0.25em;
     width: 0.8em;
+    font-size: 0.9em !important;
 }
 
-/* .vjs-theme-forest .vjs-progress-holder:hover .vjs-play-progress:before {
-    border: 4px solid #0c9;
-    background-color: #0c9;
-    border-radius: 0.5em;
-    content: "";
-    height: 0.5em;
-    top: -0.18em;
-    width: 0.5em;
-    position: absolute;
-} */
+.vjs-theme-forest .vjs-progress-holder:hover .vjs-play-progress:before {
+    font-size: 0.55em !important;
+}
 
 .vjs-theme-forest .vjs-slider-horizontal .vjs-volume-level:before {
     top: -0.3em;

@@ -63,6 +63,7 @@
 
 @section('script')
 
+<script src="{{ asset('js/videojs-overwrite.js') }}"></script>
 <script src="{{ asset('js/playerSetting.js') }}"></script>
 <script src="{{ asset('js/videojs-hls-quality-selector.min.js') }}"></script>
 <script src="{{ asset('js/videojs-contrib-quality-levels.min.js') }}"></script>
