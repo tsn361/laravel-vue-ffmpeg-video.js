@@ -254,9 +254,9 @@
     var onPlayerReady = function onPlayerReady(player, options) {
         player.skipIntroButton = player.addChild("SkipIntroButton");
         player.addClass("vjs-skip-intro");
-
         if (options.skipTime > 0) {
-            player.on("loadedmetadata", function () {
+            player.on("play", function () {
+                console.log("skipTime == ", options.skipTime);
                 player.skipIntroButton.update({
                     seekTo: options.skipTime,
                     label: options.label,

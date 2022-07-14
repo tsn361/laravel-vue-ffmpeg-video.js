@@ -20,7 +20,16 @@
 
 <link rel="stylesheet" href="https://unpkg.com/videojs-overlay-buttons@latest/dist/videojs-overlay-buttons.css" />
 <style>
+.vjs-double-tap {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+    z-index: 9999999999999;
+}
 
+.vjs-double-tap div {
+    border: 1px solid #123456;
+}
 </style>
 @endsection
 
@@ -72,6 +81,7 @@
 <script src="{{ asset('js/videojs-skip-intro.js') }}"></script>
 <script src="{{ asset('js/videojs-show-hide-playlist.js') }}"></script>
 <script src="{{ asset('js/videojs-seek-buttons.min.js') }}"></script>
+<script src="{{ asset('js/videojs-double-tap-skip.js') }}"></script>
 <!-- <script src="{{ asset('js/videojs-playlist.min.js') }}"></script>
 <script src="{{ asset('js/videojs-playlist-ui.min.js') }}"></script> -->
 
@@ -151,12 +161,10 @@ videojs.Hls.xhr.beforeRequest = function(options) {
     return options;
 };
 const player = videojs(document.getElementById('hls-video'), options);
-player.ready(function() {
 
-    // $(".vjs-volume-panel-horizontal, .vjs-play-control, button.skip-forward").addClass('left-half')
-    // // $(".vjs-custom-control-spacer").addClass('middle-half')
-    // $(".vjs-quality-selector, .vjs-picture-in-picture-control, .vjs-fullscreen-control, .vjs-menu-button")
-    //     .addClass('right-half');
+player.ready(function() {
+    player.tech_.off('dblclick');
+
     setTimeout(() => {
         settings(player, videoObject)
     }, 100);
@@ -170,9 +178,9 @@ player.ready(function() {
     });
 
 
-    // player.textTracks[0].mode = 'showing';
+    console.log("playerSkipIntroTime = ", playerSkipIntroTime)
 
-
+    // player.doubleTap(player)
 
     player.spriteThumbnails({
         interval: 2,
@@ -185,14 +193,9 @@ player.ready(function() {
         IsHd: "{{$video->original_resolution == '720' || $video->original_resolution == '1080' ? true : false}}",
     });
 
-    player.on('play', function() {
-        if (playerSkipIntroTime > 0) {
-            player.skipIntro({
-                label: 'Skip Intro',
-                skipTime: playerSkipIntroTime,
-            });
-        }
-
+    player.skipIntro({
+        label: 'Skip Intro',
+        skipTime: playerSkipIntroTime,
     });
     // playlistData.unshift({
     //     name: '{{$video->title}}',
