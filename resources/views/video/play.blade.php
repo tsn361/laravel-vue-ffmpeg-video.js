@@ -69,8 +69,9 @@
 
 <script src="{{ asset('js/video.min.js') }}" type="text/javascript"></script>
 
-<script src="http://googleads.github.io/videojs-ima/node_modules/videojs-contrib-ads/dist/videojs.ads.min.js"></script>
-<script src="http://googleads.github.io/videojs-ima/dist/videojs.ima.js"></script>
+<script src="{{ asset('js/videojs.ads.min.js') }}"></script>
+<script src="{{ asset('js/videojs.ima.js') }}">
+</script>
 
 
 <script src="{{ asset('js/videojs-overwrite.js') }}"></script>
