@@ -150,11 +150,11 @@
 }
 
 .ima-playing:before {
-    content: "\f101";
+    content: "\00f103";
 }
 
 .ima-paused:before {
-    content: "\f103";
+    content: "\00f101";
 }
 
 .ima-playing:hover:before,
