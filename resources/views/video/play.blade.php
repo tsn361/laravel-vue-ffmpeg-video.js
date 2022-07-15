@@ -18,9 +18,9 @@
 <link href="{{ asset('css/videojs.markers.min.css') }}" rel="stylesheet">
 <!-- <link href="{{ asset('css/videojs-custom-playlist.css') }}" rel="stylesheet">
 <link href="{{ asset('css/videojs-playlist-ui.css') }}" rel="stylesheet"> -->
-<link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-ads/6.9.0/videojs-contrib-ads.min.css" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/videojs-ima/2.0.1/videojs.ima.css" />
+
+<link href="{{ asset('css/videojs-contrib-ads.min.css') }}" rel="stylesheet">
+<link href="{{ asset('css/videojs.ima.css') }}" rel="stylesheet">
 
 
 <style>
@@ -68,10 +68,9 @@
 @section('script')
 
 <script src="{{ asset('js/video.min.js') }}" type="text/javascript"></script>
-
+<script src="{{ asset('js/videojs.ima.js') }}"></script>
 <script src="{{ asset('js/videojs.ads.min.js') }}"></script>
-<script src="{{ asset('js/videojs.ima.js') }}">
-</script>
+
 
 
 <script src="{{ asset('js/videojs-overwrite.js') }}"></script>
@@ -167,139 +166,132 @@ videojs.Hls.xhr.beforeRequest = function(options) {
 };
 const player = videojs(document.getElementById('hls-video'), options);
 
-player.ready(function() {
-    player.tech_.off('dblclick');
+// player.ready(function() {
+player.tech_.off('dblclick');
 
 
-    settings(player, videoObject)
+settings(player, videoObject)
 
+player.src({
+    src: "{{ route('video.playback', ['userid' =>$video->user_id, 'filename'=> $video->file_name,'playlist' => $video->playback_url ])}}",
+    // src: "http://demo.unified-streaming.com/video/tears-of-steel/tears-of-steel.ism/.m3u8",
+    // woring with hls and key
+    type: 'application/x-mpegURL',
+    withCredentials: true
+});
+
+
+
+
+var marker = [{
+        time: 9.5,
+        adsUrl: "https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/single_preroll_skippable&sz=640x480&ciu_szs=300x250%2C728x90&gdfp_req=1&output=vast&unviewed_position_start=1&env=vp&impl=s&correlator=",
+    },
+    {
+        time: 36,
+        adsUrl: "https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/single_ad_samples&sz=640x480&cust_params=sample_ct%3Dlinear&ciu_szs=300x250%2C728x90&gdfp_req=1&output=vast&unviewed_position_start=1&env=vp&impl=s&correlator=",
+    },
+    {
+        time: 63.6,
+        adsUrl: "https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/vmap_ad_samples&sz=640x480&cust_params=sample_ar%3Dpostonly&ciu_szs=300x250&gdfp_req=1&ad_rule=1&output=vmap&unviewed_position_start=1&env=vp&impl=s&correlator=",
+    },
+    {
+        time: 120,
+        adsUrl: "https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/single_preroll_skippable&sz=640x480&ciu_szs=300x250%2C728x90&gdfp_req=1&output=vast&unviewed_position_start=1&env=vp&impl=s&correlator=",
+    },
+];
+var imaOptions = {
+    id: 'hls-video',
+    adLabel: 'AD',
+    adTagUrl: null,
+    adsRenderingSettings: {
+        enablePreloading: true
+    },
+    playAdAlways: true,
+    autoplay: true
+};
+player.ima(imaOptions);
+player.markers({
+    markerStyle: {
+        width: "4px",
+        "background-color": "yellow",
+    },
+    markerTip: {
+        display: false,
+    },
+    onMarkerReached: function(marker, index) {
+
+        console.log("onMarkerReached == ", index, marker);
+
+        player.ima.changeAdTag(marker.adsUrl); // really null
+        player.ima.requestAds();
+
+    },
+    markers: marker,
+});
+
+player.doubleTap(player)
+
+player.spriteThumbnails({
+    interval: 2,
+    url: "{{ config('app.url')}}/uploads/{{$video->user_id}}/{{$video->file_name}}/preview_01.jpg",
+    width: 160,
+    height: 90
+});
+
+player.hlsQualitySelector({
+    IsHd: "{{$video->original_resolution == '720' || $video->original_resolution == '1080' ? true : false}}",
+});
+
+player.skipIntro({
+    label: 'Skip Intro',
+    skipTime: playerSkipIntroTime,
+});
+// playlistData.unshift({
+//     name: '{{$video->title}}',
+//     duration: '{{$video->video_raw_duration}}',
+//     sources: [{
+//         src: "{{ route('video.playback', ['userid' =>$video->user_id, 'filename'=> $video->file_name,'playlist' => $video->playback_url ])}}",
+//         type: 'application/x-mpegURL'
+//     }],
+//     poster: "{{ config('app.url')}}{{$video->poster}}",
+//     thumbnail: [{
+//         src: "{{ config('app.url')}}{{$video->poster}}"
+//     }]
+// });
+
+
+// player.showHidePlaylist({
+//     iconClass: "fas fa-play fa-2x",
+//     playList: playlistData
+// });
+
+//If you want to start English as the caption automatically
+// player.one("play", function() {
+//     player.textTracks()[0].mode = "showing";
+// });
+
+player.tech().on('usage', (e) => {
+    console.log(e.name);
+});
+
+player.seekButtons({
+    forward: 10,
+    back: 10
+});
+
+player.on('ended', function() {
+    player.poster(
+        "{{ config('app.url')}}/{{$video->poster}}"
+    );
+    // player.bigPlayButton.show();
     player.src({
         src: "{{ route('video.playback', ['userid' =>$video->user_id, 'filename'=> $video->file_name,'playlist' => $video->playback_url ])}}",
-        // src: "http://demo.unified-streaming.com/video/tears-of-steel/tears-of-steel.ism/.m3u8",
-        // woring with hls and key
         type: 'application/x-mpegURL',
-        withCredentials: true
+        withCredentials: true,
     });
-
-    var imaOptions = {
-        id: 'hls-video',
-        adTagUrl: "https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/single_preroll_skippable&sz=640x480&ciu_szs=300x250%2C728x90&gdfp_req=1&output=vast&unviewed_position_start=1&env=vp&impl=s&correlator=",
-        adsRenderingSettings: {
-            enablePreloading: true
-        },
-        playAdAlways: true,
-        autoplay: true
-    };
-    player.ima(imaOptions);
-
-    var marker = [{
-            time: 9.5,
-            adsUrl: "adsurl.com",
-        },
-        {
-            time: 36,
-            adsUrl: "adsurl.com",
-        },
-        {
-            time: 63.6,
-            adsUrl: "adsurl.com",
-        },
-        {
-            time: 120,
-            adsUrl: "adsurl.com",
-        },
-    ];
-    player.markers({
-        markerStyle: {
-            width: "4px",
-            "background-color": "yellow",
-        },
-        markerTip: {
-            display: false,
-        },
-        onMarkerClick: function(marker) {},
-        onMarkerReached: function(marker) {
-
-            console.log(
-                "onMarkerReached == ",
-                Math.ceil(player.currentTime()),
-                marker
-            );
-            if (Math.ceil(player.currentTime()) > marker.time) {
-                // player.pause();
-                console.log("reached in ad condition");
-
-                player.ima.changeAdTag(
-                    "https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/single_preroll_skippable&sz=640x480&ciu_szs=300x250%2C728x90&gdfp_req=1&output=vast&unviewed_position_start=1&env=vp&impl=s&correlator="
-                ); // really null
-            }
-        },
-        markers: marker,
-    });
-
-    player.doubleTap(player)
-
-    player.spriteThumbnails({
-        interval: 2,
-        url: "{{ config('app.url')}}/uploads/{{$video->user_id}}/{{$video->file_name}}/preview_01.jpg",
-        width: 160,
-        height: 90
-    });
-
-    player.hlsQualitySelector({
-        IsHd: "{{$video->original_resolution == '720' || $video->original_resolution == '1080' ? true : false}}",
-    });
-
-    player.skipIntro({
-        label: 'Skip Intro',
-        skipTime: playerSkipIntroTime,
-    });
-    // playlistData.unshift({
-    //     name: '{{$video->title}}',
-    //     duration: '{{$video->video_raw_duration}}',
-    //     sources: [{
-    //         src: "{{ route('video.playback', ['userid' =>$video->user_id, 'filename'=> $video->file_name,'playlist' => $video->playback_url ])}}",
-    //         type: 'application/x-mpegURL'
-    //     }],
-    //     poster: "{{ config('app.url')}}{{$video->poster}}",
-    //     thumbnail: [{
-    //         src: "{{ config('app.url')}}{{$video->poster}}"
-    //     }]
-    // });
-
-
-    // player.showHidePlaylist({
-    //     iconClass: "fas fa-play fa-2x",
-    //     playList: playlistData
-    // });
-
-    //If you want to start English as the caption automatically
-    // player.one("play", function() {
-    //     player.textTracks()[0].mode = "showing";
-    // });
-
-    player.tech().on('usage', (e) => {
-        console.log(e.name);
-    });
-
-    player.seekButtons({
-        forward: 10,
-        back: 10
-    });
-
-    player.on('ended', function() {
-        player.poster(
-            "{{ config('app.url')}}/{{$video->poster}}"
-        );
-        // player.bigPlayButton.show();
-        player.src({
-            src: "{{ route('video.playback', ['userid' =>$video->user_id, 'filename'=> $video->file_name,'playlist' => $video->playback_url ])}}",
-            type: 'application/x-mpegURL',
-            withCredentials: true,
-        });
-    });
-
 });
+
 
 function getDomain() {
     var domain = ''

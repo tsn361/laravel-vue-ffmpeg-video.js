@@ -707,3 +707,49 @@
         rgba(0, 0, 0, 0.5) -1px 1px 0, rgba(0, 0, 0, 0.5) 1px 1px 0,
         rgba(0, 0, 0, 0.6) 0 2px 2px !important;
 }
+
+/* ############################### Ads style ################################### */
+/* ############################################################################# */
+.vjs-theme-forest .ima-controls-div {
+    display: flex !important;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 5.7em !important;
+    background-color: transparent !important;
+    /* background-color: rgb(0 0 0 / 17%) !important; */
+    color: #ffffff;
+}
+
+.vjs-theme-forest .ima-controls-div.ima-controls-div-showing {
+    height: 5.7em;
+}
+
+.vjs-theme-forest .ima-controls-div .ima-play-pause-div:before,
+.vjs-theme-forest .ima-controls-div .ima-mute-div:before {
+    font-size: 1.8em;
+    line-height: 1.67;
+    left: -0.5em;
+    color: #fff;
+}
+
+.vjs-theme-forest .ima-controls-div .ima-play-pause-div,
+.vjs-theme-forest .ima-controls-div .ima-mute-div {
+    width: 3em !important;
+    height: auto !important;
+}
+
+.vjs-theme-forest .ima-controls-div .ima-seek-bar-div {
+    width: 96% !important;
+    margin: 0 15px 0 20px;
+}
+
+.vjs-theme-forest .ima-controls-div .ima-countdown-div {
+    margin-left: 20px !important;
+}
+
+.videoAdUiPreSkipContainer {
+    min-width: 50px !important;
+    margin-right: 20px !important;
+    margin-bottom: 40% !important;
+}
