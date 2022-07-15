@@ -129,7 +129,7 @@
 
        const player = videojs(document.getElementById('hls-video'), options);
        player.ready(function() {
-           player.tech_.off('dblclick');
+
            setTimeout(() => {
                settings(player, videoObject)
            }, 100);
