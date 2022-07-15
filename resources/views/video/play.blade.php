@@ -186,10 +186,6 @@ player.ready(function() {
         adsRenderingSettings: {
             enablePreloading: true
         },
-        ontribAdsSettings: {
-            timeout: 3000
-        },
-        nativeControlsForTouch: false,
         playAdAlways: true,
         autoplay: true
     };
@@ -229,17 +225,12 @@ player.ready(function() {
                 marker
             );
             if (Math.ceil(player.currentTime()) > marker.time) {
-                player.pause();
+                // player.pause();
                 console.log("reached in ad condition");
 
                 player.ima.changeAdTag(
                     "https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/single_preroll_skippable&sz=640x480&ciu_szs=300x250%2C728x90&gdfp_req=1&output=vast&unviewed_position_start=1&env=vp&impl=s&correlator="
                 ); // really null
-                player.on(['contentupdate'], function() {
-                    player.ima.initializeAdDisplayContainer();
-                    player.ima.requestAds();
-                    //player.play()
-                });
             }
         },
         markers: marker,
