@@ -210,7 +210,7 @@ var imaOptions = {
     playAdAlways: true,
     autoplay: true
 };
-// player.ima(imaOptions);
+player.ima(imaOptions);
 player.markers({
     markerStyle: {
         width: "4px",
@@ -223,8 +223,8 @@ player.markers({
 
         console.log("onMarkerReached == ", index, marker);
 
-        // player.ima.changeAdTag(marker.adsUrl); // really null
-        // player.ima.requestAds();
+        player.ima.changeAdTag(marker.adsUrl); // really null
+        player.ima.requestAds();
 
     },
     markers: marker,
