@@ -66,10 +66,11 @@
 @endsection
 
 @section('script')
-<script src="//imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
+
 <script src="{{ asset('js/video.min.js') }}" type="text/javascript"></script>
-<script src="http://googleads.github.io/videojs-ima/dist/videojs.ima.js"></script>
+
 <script src="http://googleads.github.io/videojs-ima/node_modules/videojs-contrib-ads/dist/videojs.ads.min.js"></script>
+<script src="http://googleads.github.io/videojs-ima/dist/videojs.ima.js"></script>
 
 
 <script src="{{ asset('js/videojs-overwrite.js') }}"></script>
@@ -179,7 +180,20 @@ player.ready(function() {
         withCredentials: true
     });
 
-
+    var imaOptions = {
+        id: 'hls-video',
+        adTagUrl: "https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/single_preroll_skippable&sz=640x480&ciu_szs=300x250%2C728x90&gdfp_req=1&output=vast&unviewed_position_start=1&env=vp&impl=s&correlator=",
+        adsRenderingSettings: {
+            enablePreloading: true
+        },
+        ontribAdsSettings: {
+            timeout: 3000
+        },
+        nativeControlsForTouch: false,
+        playAdAlways: true,
+        autoplay: true
+    };
+    player.ima(imaOptions);
 
     var marker = [{
             time: 9.5,
@@ -217,21 +231,10 @@ player.ready(function() {
             if (Math.ceil(player.currentTime()) > marker.time) {
                 player.pause();
                 console.log("reached in ad condition");
-                var imaOptions = {
-                    id: 'hls-video',
-                    adTagUrl: "https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/single_preroll_skippable&sz=640x480&ciu_szs=300x250%2C728x90&gdfp_req=1&output=vast&unviewed_position_start=1&env=vp&impl=s&correlator=",
-                    adsRenderingSettings: {
-                        enablePreloading: true
-                    },
-                    ontribAdsSettings: {
-                        timeout: 3000
-                    },
-                    nativeControlsForTouch: false,
-                    playAdAlways: true,
-                    autoplay: true
-                };
-                player.ima(imaOptions);
-                // player.ima.changeAdTag(vm.midrollAdsVod[0]); // really null
+
+                player.ima.changeAdTag(
+                    "https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/single_preroll_skippable&sz=640x480&ciu_szs=300x250%2C728x90&gdfp_req=1&output=vast&unviewed_position_start=1&env=vp&impl=s&correlator="
+                ); // really null
                 player.on(['contentupdate'], function() {
                     player.ima.initializeAdDisplayContainer();
                     player.ima.requestAds();

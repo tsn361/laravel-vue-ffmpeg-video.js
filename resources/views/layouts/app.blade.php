@@ -28,7 +28,7 @@
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
-
+    <script src="//imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
 
     @yield('style')
 </head>
