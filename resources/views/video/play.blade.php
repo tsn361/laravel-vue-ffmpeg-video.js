@@ -11,14 +11,18 @@
 <!-- Fantasy -->
 <link href="{{ asset('css/player.css') }}" rel="stylesheet" />
 <link href="{{ asset('css/videojs-hls-quality-selector.css') }}" rel="stylesheet">
-<script src="{{ asset('js/video.min.js') }}"></script>
+
 <link href="{{ asset('css/videojs-skip-intro.css') }}" rel="stylesheet">
 <link href="{{ asset('css/videojs-seek-buttons.css') }}" rel="stylesheet">
 <link href="{{ asset('css/videojs.sprite.thumbnails.css') }}" rel="stylesheet">
+<link href="{{ asset('css/videojs.markers.min.css') }}" rel="stylesheet">
 <!-- <link href="{{ asset('css/videojs-custom-playlist.css') }}" rel="stylesheet">
 <link href="{{ asset('css/videojs-playlist-ui.css') }}" rel="stylesheet"> -->
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-ads/6.9.0/videojs-contrib-ads.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/videojs-ima/2.0.1/videojs.ima.css" />
 
-<link rel="stylesheet" href="https://unpkg.com/videojs-overlay-buttons@latest/dist/videojs-overlay-buttons.css" />
+
 <style>
 
 </style>
@@ -62,6 +66,11 @@
 @endsection
 
 @section('script')
+<script src="//imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
+<script src="{{ asset('js/video.min.js') }}" type="text/javascript"></script>
+<script src="http://googleads.github.io/videojs-ima/dist/videojs.ima.js"></script>
+<script src="http://googleads.github.io/videojs-ima/node_modules/videojs-contrib-ads/dist/videojs.ads.min.js"></script>
+
 
 <script src="{{ asset('js/videojs-overwrite.js') }}"></script>
 <script src="{{ asset('js/playerSetting.js') }}"></script>
@@ -74,8 +83,10 @@
 <script src="{{ asset('js/videojs-show-hide-playlist.js') }}"></script>
 <script src="{{ asset('js/videojs-seek-buttons.min.js') }}"></script>
 <script src="{{ asset('js/videojs-double-tap-skip.js') }}"></script>
+<script src="{{ asset('js/videojs-markers.min.js') }}"></script>
 <!-- <script src="{{ asset('js/videojs-playlist.min.js') }}"></script>
 <script src="{{ asset('js/videojs-playlist-ui.min.js') }}"></script> -->
+
 
 
 <script>
@@ -157,9 +168,8 @@ const player = videojs(document.getElementById('hls-video'), options);
 player.ready(function() {
     player.tech_.off('dblclick');
 
-    setTimeout(() => {
-        settings(player, videoObject)
-    }, 100);
+
+    settings(player, videoObject)
 
     player.src({
         src: "{{ route('video.playback', ['userid' =>$video->user_id, 'filename'=> $video->file_name,'playlist' => $video->playback_url ])}}",
@@ -170,7 +180,74 @@ player.ready(function() {
     });
 
 
-    console.log("playerSkipIntroTime = ", playerSkipIntroTime)
+
+    var marker = [{
+            time: 9.5,
+            adsUrl: "adsurl.com",
+        },
+        {
+            time: 36,
+            adsUrl: "adsurl.com",
+        },
+        {
+            time: 63.6,
+            adsUrl: "adsurl.com",
+        },
+        {
+            time: 120,
+            adsUrl: "adsurl.com",
+        },
+    ];
+    player.markers({
+        markerStyle: {
+            width: "4px",
+            "background-color": "yellow",
+        },
+        markerTip: {
+            display: false,
+        },
+        onMarkerClick: function(marker) {},
+        onMarkerReached: function(marker) {
+
+            console.log(
+                "onMarkerReached == ",
+                Math.ceil(player.currentTime()),
+                marker
+            );
+            if (Math.ceil(player.currentTime()) > marker.time) {
+                player.pause();
+                console.log("reached in ad condition");
+                var imaOptions = {
+                    id: 'hls-video',
+                    adTagUrl: "https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/single_preroll_skippable&sz=640x480&ciu_szs=300x250%2C728x90&gdfp_req=1&output=vast&unviewed_position_start=1&env=vp&impl=s&correlator=",
+                    adsManagerLoadedCallback: onAdsManagerLoaded,
+                    adsRenderingSettings: {
+                        enablePreloading: true
+                    },
+                    ontribAdsSettings: {
+                        timeout: 3000
+                    },
+                    nativeControlsForTouch: false
+                };
+                player.ima(imaOptions);
+                // player.ima.changeAdTag(vm.midrollAdsVod[0]); // really null
+                player.on(['contentupdate'], function() {
+                    player.ima.initializeAdDisplayContainer();
+                    player.ima.requestAds();
+                    //player.play()
+                });
+            }
+        },
+        markers: marker,
+    });
+
+    var onAdsManagerLoaded = function() {
+        player.ima.addEventListener(google.ima.AdEvent.Type.LOADED,
+            event => {
+                console.log('LOADED event');
+            }
+        );
+    };
 
     player.doubleTap(player)
 
