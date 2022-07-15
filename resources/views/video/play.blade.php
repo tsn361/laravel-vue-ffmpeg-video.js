@@ -220,14 +220,15 @@ player.ready(function() {
                 var imaOptions = {
                     id: 'hls-video',
                     adTagUrl: "https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/single_preroll_skippable&sz=640x480&ciu_szs=300x250%2C728x90&gdfp_req=1&output=vast&unviewed_position_start=1&env=vp&impl=s&correlator=",
-                    adsManagerLoadedCallback: onAdsManagerLoaded,
                     adsRenderingSettings: {
                         enablePreloading: true
                     },
                     ontribAdsSettings: {
                         timeout: 3000
                     },
-                    nativeControlsForTouch: false
+                    nativeControlsForTouch: false,
+                    playAdAlways: true,
+                    autoplay: true
                 };
                 player.ima(imaOptions);
                 // player.ima.changeAdTag(vm.midrollAdsVod[0]); // really null
@@ -240,14 +241,6 @@ player.ready(function() {
         },
         markers: marker,
     });
-
-    var onAdsManagerLoaded = function() {
-        player.ima.addEventListener(google.ima.AdEvent.Type.LOADED,
-            event => {
-                console.log('LOADED event');
-            }
-        );
-    };
 
     player.doubleTap(player)
 
