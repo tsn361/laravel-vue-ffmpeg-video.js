@@ -33,6 +33,50 @@ function settings(player, settings) {
                 $(this).html($(this).html().replace("captions off", "off"));
             });
     }
+
+    player.on(
+        [
+            "adserror",
+            "ended",
+            "adplay",
+            "adplaying",
+            "adfirstplay",
+            "adpause",
+            "adended",
+            "contentplay",
+            "contentplaying",
+            "contentfirstplay",
+            "contentpause",
+            "contentended",
+        ],
+        function (e) {
+            if (e.type == "adplaying") {
+                console.log("*************adplaying************* ");
+                setTimeout(function () {
+                    player.pause();
+                }, 500);
+            }
+            if (e.type == "adended") {
+                console.log("*************adended************* ");
+                setTimeout(function () {
+                    player.play();
+                }, 500);
+            }
+            if (e.type == "adserror") {
+                console.log("*************adserror************* ");
+                setTimeout(function () {
+                    player.play();
+                }, 500);
+            }
+        }
+    );
+    player.on("adend", function (event) {
+        console.log("********************AD ended***************************");
+        setTimeout(function () {
+            // player.removeClass('vjs-ad-playing');
+            player.play();
+        }, 500);
+    });
 }
 
 (function () {
