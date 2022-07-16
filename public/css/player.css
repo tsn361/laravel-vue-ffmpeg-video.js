@@ -352,7 +352,6 @@
 .video-js .vjs-fullscreen-control .vjs-icon-placeholder:before,
 .vjs-icon-fullscreen-enter:before {
     background: url("/img/fullscreen-expand.svg") no-repeat 50%;
-    background-size: auto;
     background-size: 100%;
     content: "";
     display: block;
@@ -363,7 +362,6 @@
 .video-js .vjs-fullscreen-control .vjs-icon-placeholder:hover:before,
 .vjs-icon-fullscreen-enter:hover:before {
     background: url("/img/fullscreen-expand-hover.svg") no-repeat 50%;
-    background-size: auto;
     background-size: 100%;
     content: "";
     display: block;
@@ -710,14 +708,25 @@
 
 /* ############################### Ads style ################################### */
 /* ############################################################################# */
+.vjs-theme-forest .ima-controls-div .ima-play-pause-div:hover:before,
+.vjs-theme-forest .ima-controls-div .ima-mute-div:hover:before,
+.vjs-theme-forest .ima-controls-div .ima-fullscreen-div:hover:before {
+    color: #0c9 !important;
+}
+
 .vjs-theme-forest .ima-controls-div {
     display: flex !important;
     bottom: 0;
     left: 0;
     right: 0;
     height: 5.7em !important;
-    background-color: transparent !important;
+    /* background-color: transparent !important; */
     /* background-color: rgb(0 0 0 / 17%) !important; */
+    background: linear-gradient(
+        to top,
+        rgb(7 20 30 / 12%) 0%,
+        rgba(7, 20, 30, 0) 100%
+    );
     color: #ffffff;
 }
 
@@ -726,9 +735,11 @@
 }
 
 .vjs-theme-forest .ima-controls-div .ima-play-pause-div:before,
-.vjs-theme-forest .ima-controls-div .ima-mute-div:before {
+.vjs-theme-forest .ima-controls-div .ima-mute-div:before,
+.vjs-theme-forest .ima-controls-div .ima-fullscreen-div:before {
     font-size: 1.8em;
-    line-height: 1.67;
+    /* line-height: 1.67; */
+    line-height: inherit !important;
     left: -0.5em;
     color: #fff;
 }
@@ -744,12 +755,117 @@
     margin: 0 15px 0 20px;
 }
 
+.vjs-theme-forest .ima-controls-div .ima-seek-bar-div {
+    top: 1.6em !important;
+    height: 0.3em;
+    position: absolute;
+    background: rgba(255, 255, 255, 0.4);
+}
+
+/* volumn var */
+.vjs-theme-forest .ima-controls-div .ima-mute-div {
+    left: auto;
+    right: 6.667em !important;
+}
+.vjs-theme-forest .ima-controls-div .ima-slider-div {
+    top: 2.4em !important;
+    height: 0.267em !important;
+    right: 3.33em !important;
+    background-color: #555555;
+}
+.vjs-theme-forest .ima-controls-div .ima-slider-div .ima-slider-level-div {
+    height: 0.267em !important;
+    background-color: #ecc546;
+}
+
+/* Ads label & remaining time */
 .vjs-theme-forest .ima-controls-div .ima-countdown-div {
     margin-left: 20px !important;
 }
+.vjs-theme-forest .ima-countdown-div .countdownDivAdLabel {
+    background-color: #0c9;
+    border-radius: 0.166667em;
+    font-size: 1.08333em;
+    font-stretch: normal;
+    font-style: normal;
+    font-weight: 700;
+    line-height: inherit !important;
+    margin-right: 0.9233em;
+    padding: 0.308em 0.308em calc(0.308em - 2px);
+    text-shadow: none !important;
+}
 
-.videoAdUiPreSkipContainer {
+.vjs-theme-forest .ima-countdown-div .countdownDivTime {
+    font-size: 1.16667em;
+    font-weight: 500;
+    color: #ffffff !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+/*  change fullscreen icon */
+
+.vjs-theme-forest .ima-controls-div .ima-non-fullscreen {
+    width: 2.33em;
+    height: 1.33em;
+    top: 1.933em !important;
+    position: absolute;
+    font-size: 1.5em;
+    line-height: 2;
+}
+.vjs-theme-forest .ima-controls-div .ima-non-fullscreen:before {
+    background: url(/img/fullscreen-expand.svg) no-repeat 50%;
+    background-size: 100%;
+    content: "";
+    display: block;
+    height: 100%;
+    left: 0.35em;
+    width: 50%;
+}
+.vjs-theme-forest .ima-controls-div .ima-non-fullscreen:hover:before {
+    background: url("/img/fullscreen-expand-hover.svg") no-repeat 50%;
+    background-size: 100%;
+    content: "";
+    display: block;
+    height: 100%;
+    left: 0.35em;
+    width: 50%;
+}
+
+.vjs-theme-forest .ima-controls-div .ima-fullscreen:before {
+    content: "\f109";
+}
+iframe .videoAdUiBottomBar {
+    bottom: 7em !important;
+}
+iframe .videoAdUiPreSkipContainer {
     min-width: 50px !important;
     margin-right: 20px !important;
     margin-bottom: 40% !important;
+}
+
+iframe .videoAdUiSkipButton {
+    line-height: normal;
+    min-width: 0;
+    padding: 7px 6px 7px 0px;
+    width: auto;
+    margin: 0;
+    margin-bottom: 30% !important;
+}
+
+iframe .videoAdUiAction {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    background: rgba(0, 0, 0, 0.8);
+    border: 1pxsolidrgba (255, 255, 255, 0.5);
+    border-right: 0;
+    box-sizing: content-box;
+    color: #fff;
+    cursor: pointer;
+    direction: ltr;
+    font-family: arial, sans-serif;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: normal;
+    min-width: 150px;
+    padding: 10px 7px;
+    text-align: center;
+    margin-top: -84px;
 }

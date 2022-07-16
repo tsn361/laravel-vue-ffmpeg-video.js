@@ -681,6 +681,7 @@
      * @struct
      * @final
      */
+    var countdownDivAdLabel, countdownDivTime;
     const AdUi = function (controller) {
         /**
          * Plugin controller.
@@ -701,6 +702,12 @@
          * Div used to display ad countdown timer.
          */
         this.countdownDiv = document.createElement("div");
+        countdownDivAdLabel = document.createElement("span");
+        countdownDivAdLabel.classList.add("countdownDivAdLabel");
+        countdownDivTime = document.createElement("span");
+        countdownDivTime.classList.add("countdownDivAdTimer");
+        this.countdownDiv.appendChild(countdownDivAdLabel);
+        this.countdownDiv.appendChild(countdownDivTime);
 
         /**
          * Div used to display add seek bar.
@@ -817,7 +824,9 @@
                 this.countdownDiv,
                 "ima-countdown-div"
             );
-            this.countdownDiv.innerHTML = this.controller.getSettings().adLabel;
+            countdownDivAdLabel.innerHTML =
+                this.controller.getSettings().adLabel;
+            // this.countdownDiv.innerHTML = this.controller.getSettings().adLabel;
             this.countdownDiv.style.display = this.showCountdown
                 ? "block"
                 : "none";
@@ -963,12 +972,12 @@
                 totalAds +
                 "): ";
         }
-        this.countdownDiv.innerHTML =
-            this.controller.getSettings().adLabel +
-            podCount +
-            remainingMinutes +
-            ":" +
-            remainingSeconds;
+
+        countdownDivAdLabel.innerHTML = this.controller.getSettings().adLabel;
+        countdownDivTime.innerHTML =
+            podCount + remainingMinutes + ":" + remainingSeconds;
+        // this.countdownDiv.innerHTML =
+        //     podCount + remainingMinutes + ":" + remainingSeconds;
 
         // Update UI
         const playProgressRatio = currentTime / duration;
