@@ -44,6 +44,11 @@
          */
         this.vjsPlayer = player;
 
+        player.on("volumechange", (event) => {
+            const newVolume = player.muted() ? 0 : player.volume();
+            this.controller.onPlayerVolumeChanged(newVolume);
+        });
+
         /**
          * Plugin controller.
          */
@@ -1780,6 +1785,7 @@
      */
     SdkImpl.prototype.createAdsRenderingSettings = function () {
         this.adsRenderingSettings = new google.ima.AdsRenderingSettings();
+
         this.adsRenderingSettings.restoreCustomPlaybackStateOnAdBreakComplete = true;
         if (this.controller.getSettings().adsRenderingSettings) {
             for (let setting in this.controller.getSettings()

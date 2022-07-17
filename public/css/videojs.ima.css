@@ -124,26 +124,6 @@
     cursor: pointer;
 }
 
-.ima-mute-div {
-    left: auto;
-    right: 5.667em;
-}
-
-.ima-slider-div {
-    left: auto;
-    right: 2.33em;
-    width: 3.33em;
-    height: 0.667em;
-    top: 1.33em;
-    background-color: #555555;
-}
-
-.ima-slider-level-div {
-    width: 100%;
-    height: 0.667em;
-    background-color: #ecc546;
-}
-
 .ima-fullscreen-div {
     left: auto;
     right: 0em;
@@ -186,4 +166,24 @@
 .ima-non-fullscreen:hover:before,
 .ima-fullscreen:hover:before {
     text-shadow: 0 0 1em #fff;
+}
+
+.ima-mute-div {
+    left: auto;
+    right: 6.667em;
+}
+
+.ima-slider-div {
+    left: auto;
+    right: 3.33em;
+    width: 3.33em;
+    height: 0.267em;
+    top: 2.33em;
+    background: rgb(255 255 255 / 50%);
+}
+
+.ima-slider-level-div {
+    width: 100%;
+    height: 0.267em;
+    background-color: #0c9;
 }

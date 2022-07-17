@@ -19,9 +19,7 @@
 <!-- <link href="{{ asset('css/videojs-custom-playlist.css') }}" rel="stylesheet">
 <link href="{{ asset('css/videojs-playlist-ui.css') }}" rel="stylesheet"> -->
 
-<link href="{{ asset('css/videojs-contrib-ads.min.css') }}" rel="stylesheet">
 <link href="{{ asset('css/videojs.ima.css') }}" rel="stylesheet">
-
 
 <style>
 
@@ -106,6 +104,7 @@ $(window).on('load', function() {
 })
 
 
+
 var playerSkipIntroTime = "{{$video->skip_intro_time}}";
 var videoObject = @json($video);;
 // var playlistData = [{
@@ -184,7 +183,7 @@ player.src({
 
 
 var marker = [{
-        time: 9.5,
+        time: 12,
         adsUrl: "https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/single_preroll_skippable&sz=640x480&ciu_szs=300x250%2C728x90&gdfp_req=1&output=vast&unviewed_position_start=1&env=vp&impl=s&correlator=",
     },
     {

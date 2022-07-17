@@ -1,6 +1,5 @@
 function settings(player, settings) {
     console.log("setrtings == ", settings);
-    volumeLevel = 0.7;
 
     if (settings.stg_autoplay == "1") {
         player.play(true);

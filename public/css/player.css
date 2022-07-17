@@ -747,7 +747,6 @@
 .vjs-theme-forest .ima-controls-div .ima-play-pause-div,
 .vjs-theme-forest .ima-controls-div .ima-mute-div {
     width: 3em !important;
-    height: auto !important;
 }
 
 .vjs-theme-forest .ima-controls-div .ima-seek-bar-div {
@@ -763,20 +762,22 @@
 }
 
 /* volumn var */
-.vjs-theme-forest .ima-controls-div .ima-mute-div {
-    left: auto;
-    right: 6.667em !important;
+/* .vjs-theme-forest .ima-controls-div .ima-volume-panel {
+    right: 9.667em;
 }
+
 .vjs-theme-forest .ima-controls-div .ima-slider-div {
-    top: 2.4em !important;
-    height: 0.267em !important;
-    right: 3.33em !important;
     background-color: #555555;
+    height: 0.267em;
+    position: absolute;
+    left: 2.5em;
+    width: 6.8em;
+    top: 1.6em;
 }
 .vjs-theme-forest .ima-controls-div .ima-slider-div .ima-slider-level-div {
     height: 0.267em !important;
     background-color: #ecc546;
-}
+} */
 
 /* Ads label & remaining time */
 .vjs-theme-forest .ima-controls-div .ima-countdown-div {
@@ -833,16 +834,36 @@
 .vjs-theme-forest .ima-controls-div .ima-fullscreen:before {
     content: "\f109";
 }
-iframe .videoAdUiBottomBar {
+
+.vjs-theme-forest.vjs-ad-playing .ima-mute-div,
+.vjs-theme-forest.vjs-ad-playing .ima-slider-div {
+    display: none;
+}
+
+.vjs-theme-forest.vjs-ad-playing .vjs-control-bar {
+    display: flex !important;
+}
+
+.vjs-theme-forest.vjs-ad-playing .vjs-control-bar .vjs-volume-panel {
+    z-index: 111111;
+    left: 3em;
+}
+
+.vjs-theme-forest.vjs-ad-playing .vjs-control-bar .vjs-play-control,
+.vjs-theme-forest.vjs-ad-playing .vjs-control-bar .vjs-seek-button {
+    display: none !important;
+}
+
+.videoAdUiBottomBar {
     bottom: 7em !important;
 }
-iframe .videoAdUiPreSkipContainer {
+.videoAdUiPreSkipContainer {
     min-width: 50px !important;
     margin-right: 20px !important;
     margin-bottom: 40% !important;
 }
 
-iframe .videoAdUiSkipButton {
+.videoAdUiSkipButton {
     line-height: normal;
     min-width: 0;
     padding: 7px 6px 7px 0px;
@@ -851,7 +872,7 @@ iframe .videoAdUiSkipButton {
     margin-bottom: 30% !important;
 }
 
-iframe .videoAdUiAction {
+.videoAdUiAction {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     background: rgba(0, 0, 0, 0.8);
     border: 1pxsolidrgba (255, 255, 255, 0.5);
