@@ -18,8 +18,9 @@
 <link href="{{ asset('css/videojs.markers.min.css') }}" rel="stylesheet">
 <!-- <link href="{{ asset('css/videojs-custom-playlist.css') }}" rel="stylesheet">
 <link href="{{ asset('css/videojs-playlist-ui.css') }}" rel="stylesheet"> -->
-
 <link href="{{ asset('css/videojs.ima.css') }}" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/videojs-airplay@1.1.1/dist/videojs.airplay.css"
+    integrity="sha256-AFKv/7KwkC3yfaW6eqO7ZYY5lNobgi5/yzm8Bcxf1Ko=" crossorigin="anonymous">
 
 <style>
 
@@ -86,6 +87,8 @@
 <!-- <script src="{{ asset('js/videojs-playlist.min.js') }}"></script>
 <script src="{{ asset('js/videojs-playlist-ui.min.js') }}"></script> -->
 
+<script src="https://cdn.jsdelivr.net/npm/videojs-airplay@1.1.1/dist/videojs.airplay.js"
+    integrity="sha256-/2LGgKgI773/MD82uHY0ey0sMN73W3U6VoI5fTFtYhk=" crossorigin="anonymous"></script>
 
 
 <script>
@@ -120,7 +123,7 @@ var videoObject = @json($video);;
 //     }]
 // }, ];
 const options = {
-    techOrder: ['html5'],
+    techOrder: ['airPlay', 'html5'],
     controlBar: {
         children: [
             "playToggle",
@@ -154,7 +157,12 @@ const options = {
         nativeVideoTracks: false,
         nativeTextTracks: false,
     },
-    textTrackSettings: true
+    textTrackSettings: true,
+    plugins: {
+        airPlay: {
+            addButtonToControlBar: true, // defaults to `true`
+        }
+    }
 }
 
 videojs.Hls.xhr.beforeRequest = function(options) {
@@ -196,6 +204,14 @@ var marker = [{
     },
     {
         time: 120,
+        adsUrl: "https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/single_preroll_skippable&sz=640x480&ciu_szs=300x250%2C728x90&gdfp_req=1&output=vast&unviewed_position_start=1&env=vp&impl=s&correlator=",
+    },
+    {
+        time: 340,
+        adsUrl: "https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/single_preroll_skippable&sz=640x480&ciu_szs=300x250%2C728x90&gdfp_req=1&output=vast&unviewed_position_start=1&env=vp&impl=s&correlator=",
+    },
+    {
+        time: 540,
         adsUrl: "https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/single_preroll_skippable&sz=640x480&ciu_szs=300x250%2C728x90&gdfp_req=1&output=vast&unviewed_position_start=1&env=vp&impl=s&correlator=",
     },
 ];
