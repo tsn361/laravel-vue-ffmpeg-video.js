@@ -123,7 +123,7 @@ var videoObject = @json($video);;
 //     }]
 // }, ];
 const options = {
-    techOrder: ['airPlay', 'html5'],
+    techOrder: ['html5'],
     controlBar: {
         children: [
             "playToggle",
