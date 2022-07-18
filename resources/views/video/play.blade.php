@@ -19,8 +19,7 @@
 <!-- <link href="{{ asset('css/videojs-custom-playlist.css') }}" rel="stylesheet">
 <link href="{{ asset('css/videojs-playlist-ui.css') }}" rel="stylesheet"> -->
 <link href="{{ asset('css/videojs.ima.css') }}" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/videojs-airplay@1.1.1/dist/videojs.airplay.css"
-    integrity="sha256-AFKv/7KwkC3yfaW6eqO7ZYY5lNobgi5/yzm8Bcxf1Ko=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/videojs-airplay@1.1.1/dist/videojs.airplay.css">
 
 <style>
 
@@ -38,7 +37,8 @@
             </div>
         </div>
         <div class="col-md-12 p-0 text-end">
-            <video id="hls-video" class="video-js vjs-big-play-centered playsinline webkit-playsinline vjs-theme-forest"
+            <video id="hls-video" x-webkit-airplay="allow"
+                class="video-js vjs-big-play-centered playsinline webkit-playsinline vjs-theme-forest"
                 preload="{{$video->stg_preload_configration}}" controls height="560" poster="{{$video->poster}}">
                 <track kind='captions' src='{{ asset("sample.vtt") }}' srclang='en' label='English' />
                 <track kind='captions' src='https://dotsub.com/media/5d5f008c-b5d5-466f-bb83-2b3cfa997992/c/spa/vtt'
@@ -87,8 +87,7 @@
 <!-- <script src="{{ asset('js/videojs-playlist.min.js') }}"></script>
 <script src="{{ asset('js/videojs-playlist-ui.min.js') }}"></script> -->
 
-<script src="https://cdn.jsdelivr.net/npm/videojs-airplay@1.1.1/dist/videojs.airplay.js"
-    integrity="sha256-/2LGgKgI773/MD82uHY0ey0sMN73W3U6VoI5fTFtYhk=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/videojs-airplay@1.1.1/dist/videojs.airplay.js"></script>
 
 
 <script>
@@ -158,11 +157,6 @@ const options = {
         nativeTextTracks: false,
     },
     textTrackSettings: true,
-    plugins: {
-        airPlay: {
-            addButtonToControlBar: true, // defaults to `true`
-        }
-    }
 }
 
 videojs.Hls.xhr.beforeRequest = function(options) {
@@ -307,6 +301,7 @@ player.on('ended', function() {
     });
 });
 
+player.airplayButton();
 
 function getDomain() {
     var domain = ''
