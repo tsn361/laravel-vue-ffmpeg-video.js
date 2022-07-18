@@ -719,7 +719,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    height: 5.7em !important;
+    height: 4em !important;
     /* background-color: transparent !important; */
     /* background-color: rgb(0 0 0 / 17%) !important; */
     background: linear-gradient(
@@ -731,14 +731,19 @@
 }
 
 .vjs-theme-forest .ima-controls-div.ima-controls-div-showing {
-    height: 5.7em;
+    height: 4em;
 }
 
-.vjs-theme-forest .ima-controls-div .ima-play-pause-div:before,
+.vjs-theme-forest .ima-controls-div .ima-play-pause-div:before {
+    font-size: 1.8em;
+    line-height: inherit !important;
+    left: -0.5em;
+    color: #fff;
+}
+
 .vjs-theme-forest .ima-controls-div .ima-mute-div:before,
 .vjs-theme-forest .ima-controls-div .ima-fullscreen-div:before {
-    font-size: 1.8em;
-    /* line-height: 1.67; */
+    font-size: 1.3em;
     line-height: inherit !important;
     left: -0.5em;
     color: #fff;
@@ -747,6 +752,10 @@
 .vjs-theme-forest .ima-controls-div .ima-play-pause-div,
 .vjs-theme-forest .ima-controls-div .ima-mute-div {
     width: 3em !important;
+    top: 0.233em !important;
+    left: 0.2em;
+    font-size: 1.2em !important;
+    line-height: 2.5 !important;
 }
 
 .vjs-theme-forest .ima-controls-div .ima-seek-bar-div {
@@ -760,24 +769,6 @@
     position: absolute;
     background: rgba(255, 255, 255, 0.4);
 }
-
-/* volumn var */
-/* .vjs-theme-forest .ima-controls-div .ima-volume-panel {
-    right: 9.667em;
-}
-
-.vjs-theme-forest .ima-controls-div .ima-slider-div {
-    background-color: #555555;
-    height: 0.267em;
-    position: absolute;
-    left: 2.5em;
-    width: 6.8em;
-    top: 1.6em;
-}
-.vjs-theme-forest .ima-controls-div .ima-slider-div .ima-slider-level-div {
-    height: 0.267em !important;
-    background-color: #ecc546;
-} */
 
 /* Ads label & remaining time */
 .vjs-theme-forest .ima-controls-div .ima-countdown-div {
@@ -807,10 +798,11 @@
 .vjs-theme-forest .ima-controls-div .ima-non-fullscreen {
     width: 2.33em;
     height: 1.33em;
-    top: 1.933em !important;
+    top: 1.3em !important;
     position: absolute;
     font-size: 1.5em;
     line-height: 2;
+    right: -0.4em !important;
 }
 .vjs-theme-forest .ima-controls-div .ima-non-fullscreen:before {
     background: url(/img/fullscreen-expand.svg) no-repeat 50%;
@@ -819,7 +811,7 @@
     display: block;
     height: 100%;
     left: 0.35em;
-    width: 50%;
+    width: 40%;
 }
 .vjs-theme-forest .ima-controls-div .ima-non-fullscreen:hover:before {
     background: url("/img/fullscreen-expand-hover.svg") no-repeat 50%;
@@ -828,7 +820,7 @@
     display: block;
     height: 100%;
     left: 0.35em;
-    width: 50%;
+    width: 40%;
 }
 
 .vjs-theme-forest .ima-controls-div .ima-fullscreen:before {
@@ -846,7 +838,10 @@
 
 .vjs-theme-forest.vjs-ad-playing .vjs-control-bar .vjs-volume-panel {
     z-index: 111111;
-    left: 3em;
+    left: 3.5em !important;
+    top: 1.8em;
+    font-size: 0.7em !important;
+    line-height: 2.5 !important;
 }
 
 .vjs-theme-forest.vjs-ad-playing .vjs-control-bar .vjs-play-control,
@@ -854,39 +849,9 @@
     display: none !important;
 }
 
-.videoAdUiBottomBar {
-    bottom: 7em !important;
-}
-.videoAdUiPreSkipContainer {
-    min-width: 50px !important;
-    margin-right: 20px !important;
-    margin-bottom: 40% !important;
-}
+/* ads player in full screen mode */
 
-.videoAdUiSkipButton {
-    line-height: normal;
-    min-width: 0;
-    padding: 7px 6px 7px 0px;
-    width: auto;
-    margin: 0;
-    margin-bottom: 30% !important;
-}
-
-.videoAdUiAction {
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    background: rgba(0, 0, 0, 0.8);
-    border: 1pxsolidrgba (255, 255, 255, 0.5);
-    border-right: 0;
-    box-sizing: content-box;
-    color: #fff;
-    cursor: pointer;
-    direction: ltr;
-    font-family: arial, sans-serif;
-    font-weight: normal;
-    font-size: 18px;
-    line-height: normal;
-    min-width: 150px;
-    padding: 10px 7px;
-    text-align: center;
-    margin-top: -84px;
+.vjs-theme-forest.vjs-fullscreen .ima-controls-div .ima-seek-bar-div {
+    width: 98% !important;
+    margin: 0 15px 0 20px;
 }
