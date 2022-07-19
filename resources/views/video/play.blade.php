@@ -19,11 +19,11 @@
 <!-- <link href="{{ asset('css/videojs-custom-playlist.css') }}" rel="stylesheet">
 <link href="{{ asset('css/videojs-playlist-ui.css') }}" rel="stylesheet"> -->
 <link href="{{ asset('css/videojs.ima.css') }}" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/videojs-airplay@1.1.1/dist/videojs.airplay.css">
 
 <style>
 
 </style>
+{!! $video->custom_script !!}
 @endsection
 
 @section('content')
@@ -87,7 +87,6 @@
 <!-- <script src="{{ asset('js/videojs-playlist.min.js') }}"></script>
 <script src="{{ asset('js/videojs-playlist-ui.min.js') }}"></script> -->
 
-<script src="https://cdn.jsdelivr.net/npm/videojs-airplay@1.1.1/dist/videojs.airplay.js"></script>
 
 
 <script>
@@ -301,8 +300,6 @@ player.on('ended', function() {
     });
 });
 
-player.airplayButton();
-
 function getDomain() {
     var domain = ''
     if (document.referrer) {
@@ -327,4 +324,6 @@ function copyEmbedCode() {
     })
 }
 </script>
+
+
 @endsection

@@ -38,7 +38,8 @@ class Video extends Model
         'stg_muted',
         'stg_loop',
         'stg_autopause',
-        'stg_preload_configration'
+        'stg_preload_configration',
+        'custom_script'
     ];
     // protected $appends = ['video_original_type'];
     public function sluggable(): array
@@ -128,6 +129,16 @@ class Video extends Model
         }else{
             return '/img/thumb.png';
         }
+    }
+
+
+    protected function setCustomScriptAttribute($value)
+    {
+        $this->attributes['custom_script'] = $value;
+    }
+    protected function getCustomScriptAttribute($value)
+    {
+        return $this->attributes['custom_script'] = $value;
     }
     
 }

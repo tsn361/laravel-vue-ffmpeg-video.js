@@ -148,6 +148,16 @@
                                         class="img-thumbnail" style="max-height:300px">
                                 </div>
                             </div>
+                            <hr>
+                            <div class="mb-3 row">
+                                <label for="staticEmail" class="col-sm-4 col-form-label">Custom Script</label>
+                                <div class="col-sm-8">
+                                    <div>
+                                        <textarea class="form-control" id="customScript"
+                                            rows="3">{!! $video->custom_script !!}</textarea>
+                                    </div>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -230,6 +240,7 @@ function saveVideoInfo() {
     formData.append("stg_loop", $('#stg_loop:checked').val());
     formData.append("stg_autopause", $('#stg_autopause:checked').val());
     formData.append("stg_preload_configration", $('#preloadConfigration').val());
+    formData.append("custom_script", $('#customScript').val());
 
     formData.append("poster", file);
     if ($('#VideoSkipIntroTimer').val() <= 0) {
