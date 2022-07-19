@@ -61,10 +61,17 @@
 }
 
 .vjs-theme-forest .vjs-control-bar {
-    background-color: transparent !important;
+    /* background-color: transparent !important; */
     /* background-color: rgb(0 0 0 / 17%) !important; */
+    background: linear-gradient(
+        to top,
+        rgb(0 0 0 / 80%) 0%,
+        rgb(100 102 104 / 0%) 100%
+    );
     color: #ffffff;
     font-size: 20px;
+    -webkit-transition: opacity 0.25s cubic-bezier(0, 0, 0.2, 1);
+    transition: opacity 0.25s cubic-bezier(0, 0, 0.2, 1);
 }
 
 .vjs-theme-forest .vjs-spacer,
