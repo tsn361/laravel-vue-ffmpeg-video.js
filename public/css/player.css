@@ -214,6 +214,7 @@
 
 .vjs-theme-forest .vjs-menu-button-popup .vjs-menu {
     left: -3em;
+    z-index: 99999;
 }
 
 .vjs-theme-forest .vjs-quality-selector .vjs-menu .vjs-menu-content {
