@@ -1,6 +1,6 @@
 @if($video->id)
 <div class="container">
-    <div class="row mt-4 p-2">
+    <div class="row mt-4 p-sm-2">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
@@ -9,7 +9,7 @@
                 <div class="card-body">
                     <p class="py-1">{{ $video->description }}</p>
                     <p class="py-1">Created at: {{$video->created_at}}</p>
-                    <p class="py-1">Playback URL:
+                    <p class="py-1 playBackUrlMaster">Playback URL:
                         <a class="badge bg-dark text-start"
                             href="{{ config('app.playback_url')}}/video/playback/{{$video->user_id}}/{{$video->file_name}}/master.m3u8">
                             {{ config('app.playback_url')}}/video/playback/{{$video->user_id}}/{{$video->file_name}}/master.m3u8

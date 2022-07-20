@@ -114,6 +114,19 @@ Page header
     header #navbarDropdown {
         padding: 0px;
     }
+    #embedCode,
+    .playBackUrlMaster {
+        width: 100%;
+        width: -moz-available; /* WebKit-based browsers will ignore this. */
+        width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
+        width: fill-available;
+    }
+    .playBackUrlMaster a {
+        display: block;
+        overflow: hidden;
+        white-space: unset !important;
+        overflow-wrap: break-word;
+    }
 }
 
 /* 481px — 768px: iPads, Tablets */

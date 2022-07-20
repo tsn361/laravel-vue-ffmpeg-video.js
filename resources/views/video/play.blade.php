@@ -39,7 +39,7 @@
         </div>
         <div class="col-md-12 p-0 text-end">
             <video id="hls-video" x-webkit-airplay="allow"
-                class="video-js vjs-big-play-centered playsinline webkit-playsinline vjs-theme-forest"
+                class="video-js vjs-16-9 vjs-big-play-centered playsinline webkit-playsinline vjs-theme-forest"
                 preload="{{$video->stg_preload_configration}}" controls height="560" poster="{{$video->poster}}">
                 <track kind='captions' src='{{ asset("sample.vtt") }}' srclang='en' label='English' />
                 <track kind='captions' src='https://dotsub.com/media/5d5f008c-b5d5-466f-bb83-2b3cfa997992/c/spa/vtt'
@@ -123,6 +123,7 @@ var videoObject = @json($video);;
 // }, ];
 const options = {
     techOrder: ['html5'],
+    responsive: true,
     controlBar: {
         children: [
             "playToggle",
