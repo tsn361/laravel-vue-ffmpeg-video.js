@@ -25,12 +25,12 @@
 @section('content')
 <div class="container shadow-sm">
     <div class="row bg-dark rounded-top">
-        <div class="col-md-4 p-2 text-white">
+        <div class="col-6 col-md-4 order-1 order-sm-1 p-2 text-white">
             <div class="mt-2">
                 List of videos
             </div>
         </div>
-        <div class="col-md-6 p-2 text-end ">
+        <div class="col-12 col-md-6 order-3 order-sm-2 p-2 text-end ">
             <div class="input-group">
                 <input class="form-control border-end-0 border rounded-pill" type="search" value="" placeholder="Search"
                     aria-label="Search" id="search-input">
@@ -42,13 +42,13 @@
                 </span>
             </div>
         </div>
-        <div class="col-md-2 p-2 text-end">
+        <div class="col-6 col-md-2 order-2 order-sm-3 p-2 text-end">
             <a class="btn btn-primary btn-sm mt-1" href="{{ route('video.upload') }}"> <i class="fas fa-plus"></i>
                 Create</a>
         </div>
     </div>
     <div class="row border-bottom">
-        <div class="col-md-1 p-3">
+        <div class="col-2 col-md-1 p-3">
             <div class="d-flex align-items-center">
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" value="" id="selectAll">
@@ -57,10 +57,10 @@
             </div>
 
         </div>
-        <div class="col-md-3">&nbsp;</div>
-        <div class="col-md-8 p-3">
+        <div class="col-md-3 d-none d-sm-block">&nbsp;</div>
+        <div class="col-10 col-md-8 p-3">
             <div class="d-flex align-items-center">
-                <strong>Title</strong>
+                <strong class="d-none d-sm-block">Title</strong>
                 <div class="form-check">
                     <button class="btn btn-sm btn-danger mb-0" data-bs-toggle="modal"
                         data-bs-target="#deleteSelectedVideos" id="deleteSelected">

@@ -14,10 +14,10 @@
             <div class="card">
                 <div class="card-header bg-dark text-white">
                     <div class="row">
-                        <div class="col-md-6 float-start pt-2">
+                        <div class="col-6 col-md-6 float-start pt-2">
                             <h4>Edit Video</h4>
                         </div>
-                        <div class="col-md-6 text-end">
+                        <div class="col-6 col-md-6 text-end">
                             <button id="createBtn" class="btn btn-primary btn-sm" type="submit"
                                 onclick="saveVideoInfo()">Save</button>
 

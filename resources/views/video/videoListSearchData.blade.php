@@ -1,7 +1,7 @@
 @if(count($videos) > 0)
 @foreach ($videos as $key => $video)
 <div class="row border-bottom d-flex align-items-center" id="individualList" index="{{$video->id}}">
-    <div class="col-md-1 p-3">
+    <div class="col-2 col-md-1 p-3 order-1 order-sm-1">
         <div class="d-flex align-items-center">
             <div class="form-check">
                 <input class="form-check-input checkItem" type="checkbox" value="{{$video->id}}" name="checkItem">
@@ -11,7 +11,7 @@
             </button>
         </div>
     </div>
-    <div class="col-md-3 p-3">
+    <div class="col-6 col-md-3 p-3 order-2 order-sm-2">
         @if($video->is_transcoded == 1)
         <a href="{{ route('video.index', ['v' => $video->file_name])}}">
             <img src="{{$video->poster}}" />
@@ -28,7 +28,7 @@
         @endif
 
     </div>
-    <div class="col-md-6 p-3 ts-sm">
+    <div class="col-12 col-md-6 p-sm-3 ts-sm order-4 order-sm-3">
         <div>
             <strong>{{$video->title}}</strong>
         </div>
@@ -51,7 +51,7 @@
 
             </strong></div>
     </div>
-    <div class="col-md-2 text-end p-3">
+    <div class="col-4 col-md-2 text-end p-3 order-3 order-sm-4">
         <a href="{{ route('video.index',['v' => $video->file_name])}}">
             <button class="btn btn-info btn-sm text-white">
                 <strong><i class="fas fa-info"></i></strong>
