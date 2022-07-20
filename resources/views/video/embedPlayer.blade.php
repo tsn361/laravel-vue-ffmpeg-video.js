@@ -19,6 +19,9 @@
        <link href="{{ asset('css/videojs.sprite.thumbnails.css') }}" rel="stylesheet">
        <script src="{{ asset('js/jquery.min.js') }}"></script>
        <script src="{{ asset('js/video.min.js') }}"></script>
+
+       {!! $video->custom_script_one !!}
+       {!! $video->custom_script_two !!}
        <style>
        body {
            margin: 0;

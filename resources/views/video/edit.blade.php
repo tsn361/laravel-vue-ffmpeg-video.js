@@ -150,11 +150,20 @@
                             </div>
                             <hr>
                             <div class="mb-3 row">
-                                <label for="staticEmail" class="col-sm-4 col-form-label">Custom Script</label>
+                                <label for="staticEmail" class="col-sm-4 col-form-label">Custom Script Box One</label>
                                 <div class="col-sm-8">
                                     <div>
-                                        <textarea class="form-control" id="customScript"
-                                            rows="3">{!! $video->custom_script !!}</textarea>
+                                        <textarea class="form-control" id="customScriptBoxOne"
+                                            rows="3">{!! $video->custom_script_one !!}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="staticEmail" class="col-sm-4 col-form-label">Custom Script Box Two</label>
+                                <div class="col-sm-8">
+                                    <div>
+                                        <textarea class="form-control" id="customScriptBoxTwo"
+                                            rows="3">{!! $video->custom_script_two !!}</textarea>
                                     </div>
                                 </div>
                             </div>
@@ -240,7 +249,8 @@ function saveVideoInfo() {
     formData.append("stg_loop", $('#stg_loop:checked').val());
     formData.append("stg_autopause", $('#stg_autopause:checked').val());
     formData.append("stg_preload_configration", $('#preloadConfigration').val());
-    formData.append("custom_script", $('#customScript').val());
+    formData.append("custom_script_one", $('#customScriptBoxOne').val());
+    formData.append("custom_script_two", $('#customScriptBoxTwo').val());
 
     formData.append("poster", file);
     if ($('#VideoSkipIntroTimer').val() <= 0) {

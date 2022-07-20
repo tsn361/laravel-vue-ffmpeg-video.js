@@ -39,7 +39,8 @@ class Video extends Model
         'stg_loop',
         'stg_autopause',
         'stg_preload_configration',
-        'custom_script'
+        'custom_script_one',
+        'custom_script_two',
     ];
     // protected $appends = ['video_original_type'];
     public function sluggable(): array
@@ -132,13 +133,13 @@ class Video extends Model
     }
 
 
-    protected function setCustomScriptAttribute($value)
-    {
-        $this->attributes['custom_script'] = $value;
-    }
-    protected function getCustomScriptAttribute($value)
-    {
-        return $this->attributes['custom_script'] = $value;
-    }
+    // protected function setCustomScriptAttribute($value)
+    // {
+    //     $this->attributes['custom_script'] = $value;
+    // }
+    // protected function getCustomScriptAttribute($value)
+    // {
+    //     return $this->attributes['custom_script'] = $value;
+    // }
     
 }

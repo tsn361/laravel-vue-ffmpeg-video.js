@@ -23,7 +23,8 @@
 <style>
 
 </style>
-{!! $video->custom_script !!}
+{!! $video->custom_script_one !!}
+{!! $video->custom_script_two !!}
 @endsection
 
 @section('content')

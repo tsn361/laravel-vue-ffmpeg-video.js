@@ -139,8 +139,11 @@ class VideoController extends Controller
         $video->stg_autopause = $request->stg_autopause == 1 ? $request->stg_autopause:false;
         $video->stg_preload_configration = isset($request->stg_preload_configration) ? $request->stg_preload_configration:'none';
 
-        if (isset($request->custom_script)) {
-           $video->custom_script = $request->custom_script;
+        if (isset($request->custom_script_one)) {
+           $video->custom_script_one = $request->custom_script_one;
+        }
+        if (isset($request->custom_script_two)) {
+           $video->custom_script_two = $request->custom_script_two;
         }
         
 

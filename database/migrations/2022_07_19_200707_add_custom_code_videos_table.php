@@ -14,7 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('videos', function (Blueprint $table) {
-            $table->text('custom_script')->null(true);
+            $table->text('custom_script_one')->null(true);
+            $table->text('custom_script_two')->null(true);
         });
     }
 };
