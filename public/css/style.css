@@ -96,3 +96,38 @@ Page header
     justify-content: flex-end;
     column-gap: 20px;
 }
+
+/* 320px — 480px: Mobile devices */
+@media only screen and (min-width: 320px) and (max-width: 480px) {
+    header .logo {
+        padding-left: 0px;
+    }
+    header .code {
+        min-height: 77px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+    }
+    header .dropdown-menu {
+        left: 2% !important;
+    }
+    header #navbarDropdown {
+        padding: 0px;
+    }
+}
+
+/* 481px — 768px: iPads, Tablets */
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+}
+
+/* 769px — 1024px: Small screens, laptops */
+@media only screen and (min-width: 769px) and (max-width: 1024px) {
+}
+
+/* 1025px — 1200px: Desktops, large screens */
+@media only screen and (min-width: 1025px) and (max-width: 1200px) {
+}
+
+/* 1201px and more —  Extra large screens, TV */
+@media only screen and (min-width: 1201px) {
+}

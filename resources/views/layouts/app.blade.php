@@ -29,78 +29,91 @@
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
     <script src="//imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
-
     @yield('style')
 </head>
 
 <body>
     <div id="app">
         <header>
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-6 d-flex">
-                        <div>
-                            <a class="" href="{{ route('home') }}">
-                                <div class="logo">
-                                    {{ config('app.name', 'Laravel') }}
-                                </div>
-                            </a>
+            <nav class="navbar navbar-expand-lg">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="{{ route('home') }}">
+                        <div class="logo">
+                            {{ config('app.name', 'Laravel') }}
                         </div>
-                        <div class="ms-5" style="margin-top: 30px;">
-                            <a href="{{ route('video.upload') }}">
-                                Create Video
-                            </a>
-                            <a href="{{ route('video.index') }}" class="ms-3">
-                                Video Management
-                            </a>
-                        </div>
-
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="code">
-                            <div class="" id="navbarSupportedContent">
-                                <!-- Right Side Of Navbar -->
-                                <ul class="ms-auto">
-                                    <!-- Authentication Links -->
-                                    @guest
-                                    @if (Route::has('login'))
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                        <div class="row w-100">
+                            <div class="col-12 col-sm-10 menu-left" style="
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+">
+                                <ul class="navbar-nav">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                    </li>
-                                    @endif
-
-                                    {{-- @if (Route::has('register'))
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                    </li>
-                                    @endif --}}
-                                    @else
-                                    <li class="nav-item dropdown">
-                                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                            {{ Auth::user()->name }}
+                                        <a class="nav-link" href="{{ route('video.upload') }}">
+                                            Create Video
                                         </a>
-
-                                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                            <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                            document.getElementById('logout-form').submit();">
-                                                {{ __('Logout') }}
-                                            </a>
-
-                                            <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                                class="d-none">
-                                                @csrf
-                                            </form>
-                                        </div>
                                     </li>
-                                    @endguest
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('video.index') }}">
+                                            Video Management
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
+                            <div class="col-12 col-sm-2">
+                                <div class="code">
+                                    <div class="" id="navbarSupportedContent">
+                                        <ul class="ms-auto">
+                                            @guest
+                                            @if (Route::has('login'))
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                            </li>
+                                            @endif
+
+                                            {{-- @if (Route::has('register'))
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                            </li>
+                                            @endif --}}
+                                            @else
+                                            <li class="nav-item dropdown">
+                                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#"
+                                                    role="button" data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false" v-pre>
+                                                    {{ Auth::user()->name }}
+                                                </a>
+
+                                                <div class="dropdown-menu dropdown-menu-end"
+                                                    aria-labelledby="navbarDropdown">
+                                                    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                                                            document.getElementById('logout-form').submit();">
+                                                        {{ __('Logout') }}
+                                                    </a>
+
+                                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                                        class="d-none">
+                                                        @csrf
+                                                    </form>
+                                                </div>
+                                            </li>
+                                            @endguest
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
                     </div>
                 </div>
-            </div>
+            </nav>
         </header>
         <main class="py-4 pageContent">
             @yield('content')
