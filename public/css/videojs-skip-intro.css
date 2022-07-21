@@ -56,3 +56,29 @@
 .video-js.vjs-skip-intro .vjs-skip-intro-button:hover span:before {
     color: var(--vjs-accent-colour);
 }
+
+/* 481px — 768px: iPads, Tablets */
+@media only screen and (min-width: 375px) and (max-width: 768px) {
+    .video-js .vjs-float-button {
+        position: absolute;
+        font-size: 10px;
+        height: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(90deg, #0c9, #09f);
+        border-radius: 20px;
+        cursor: pointer;
+        opacity: 1;
+        transition: opacity 1s;
+        font-weight: 900;
+    }
+    .video-js .vjs-float-button.vjs-fb-right {
+        right: 4%;
+        bottom: 30% !important;
+    }
+    .video-js .vjs-float-button span,
+    .video-js.vjs-skip-intro .vjs-float-float-button span {
+        padding: 0 0.5em;
+    }
+}
