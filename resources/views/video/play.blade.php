@@ -123,7 +123,7 @@ var videoObject = @json($video);;
 // }, ];
 const options = {
     techOrder: ['html5'],
-    responsive: true,
+    // responsive: true,
     controlBar: {
         children: [
             "playToggle",
@@ -233,8 +233,8 @@ player.markers({
 
         console.log("onMarkerReached == ", index, marker);
 
-        // player.ima.changeAdTag(marker.adsUrl); // really null
-        // player.ima.requestAds();
+        player.ima.changeAdTag(marker.adsUrl); // really null
+        player.ima.requestAds();
 
     },
     markers: marker,

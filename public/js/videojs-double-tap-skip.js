@@ -67,6 +67,7 @@ function doubleTap(player, options = {}) {
     MainDiv.addEventListener(
         "click",
         function (e) {
+            console.log("click on player");
             clickCount++;
             if (clickCount === 1) {
                 singleClickTimer = setTimeout(function () {
@@ -76,7 +77,7 @@ function doubleTap(player, options = {}) {
             } else if (clickCount === 2) {
                 clearTimeout(singleClickTimer);
                 clickCount = 0;
-                // console.log("e.target.id single click = ", e.target.id);
+                console.log("e.target.id single click = ", e.target.id);
                 if (
                     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
                         navigator.userAgent
