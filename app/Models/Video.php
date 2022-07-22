@@ -80,6 +80,10 @@ class Video extends Model
             get: fn ($value) => round($value / 1024 / 1024, 2) . ' MB',
         );
     }
+    protected function getOriginalFilesizeRawAttribute()
+    {
+       return (int)$this->attributes['original_filesize'];
+    }
 
     protected function originalBitrate(): Attribute
     {

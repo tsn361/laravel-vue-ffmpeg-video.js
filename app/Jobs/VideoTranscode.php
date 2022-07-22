@@ -81,6 +81,29 @@ class VideoTranscode implements ShouldQueue
                 $masetPath = $video->user_id.'/'.$video->file_name.'/master.m3u8';
                 $vttPath = $video->user_id.'/'.$video->file_name.'/';
 
+                $keyTime = 10;
+                switch (true) {
+                    case round($video->original_filesize_raw / 1024 / 1024) >= 5120:
+                        $keyTime = 240;
+                        break;
+                    case round($video->original_filesize_raw / 1024 / 1024) >= 3072:
+                        $keyTime = 180;
+                        break;
+                    case round($video->original_filesize_raw / 1024 / 1024) >= 2048:
+                        $keyTime = 120;
+                        break;
+                    case round($video->original_filesize_raw / 1024 / 1024) >= 1024:
+                        $keyTime = 60;
+                        break;
+                    case round($video->original_filesize_raw / 1024 / 1024) >= 500:
+                        $keyTime = 20;
+                        break;
+                    default:
+                        $keyTime = 10;
+                        break;
+                }
+                \Log::info("withRotatingEncryptionKey == ", $keyTime);
+
                
                 $p240 = (new X264)->setKiloBitrate(150)->setAdditionalParameters(['-c:v', 'h264', '-profile:v', 'main', '-pix_fmt', 'yuv420p', '-movflags', '+faststart']);
                 $p360 = (new X264)->setKiloBitrate(276)->setAdditionalParameters(['-c:v', 'h264', '-profile:v', 'main', '-pix_fmt', 'yuv420p', '-movflags', '+faststart']);
@@ -98,9 +121,9 @@ class VideoTranscode implements ShouldQueue
                             })->save($vttPath.'preview_%02d.jpg')
                             ->exportForHLS()
                             ->setSegmentLength(4)
-                            ->withRotatingEncryptionKey(function ($filename, $contents) use($Keypath){
+                            ->withRotatingEncryptionKey(function ($filename, $contents) use($Keypath,$keyTime){
                                 Storage::disk('uploads')->put("{$Keypath}/$filename", $contents);
-                            },10);
+                            },$keyTime);
                             
                     foreach($newArray as $key => $value){
                         

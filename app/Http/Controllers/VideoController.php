@@ -376,12 +376,36 @@ class VideoController extends Controller
     }
 
     public function test(){
-        $ffprobe = '/usr/bin/ffprobe';
-        $videoFile = '/var/www/html/upwork/laravel-vue-ffmpeg-video.js/public/uploads/3/0nD0AHMQP_g/0nD0AHMQP_g.webm';
-        $cmd = shell_exec($ffprobe .' -v quiet -print_format json -select_streams v:0  -show_streams "'.$videoFile.'"');
-        $parsed = json_decode($cmd, true);
-        $bitrate = @$parsed['streams'][0]['bit_rate'];
-        $duration = @$parsed['streams'][0]['duration'];
-        return response()->json($parsed);
+        // $ffprobe = '/usr/bin/ffprobe';
+        // $videoFile = '/var/www/html/upwork/laravel-vue-ffmpeg-video.js/public/uploads/3/0nD0AHMQP_g/0nD0AHMQP_g.webm';
+        // $cmd = shell_exec($ffprobe .' -v quiet -print_format json -select_streams v:0  -show_streams "'.$videoFile.'"');
+        // $parsed = json_decode($cmd, true);
+        // $bitrate = @$parsed['streams'][0]['bit_rate'];
+        // $duration = @$parsed['streams'][0]['duration'];
+        // return response()->json($parsed);
+
+        $video = Video::where('id','=','326')->first();
+         $keyTime = 10;
+                switch (true) {
+                    case round($video->original_filesize_raw / 1024 / 1024) >= 5120:
+                        $keyTime = 240;
+                        break;
+                    case round($video->original_filesize_raw / 1024 / 1024) >= 3072:
+                        $keyTime = 180;
+                        break;
+                    case round($video->original_filesize_raw / 1024 / 1024) >= 2048:
+                        $keyTime = 120;
+                        break;
+                    case round($video->original_filesize_raw / 1024 / 1024) >= 1024:
+                        $keyTime = 60;
+                        break;
+                    case round($video->original_filesize_raw / 1024 / 1024) >= 500:
+                        $keyTime = 20;
+                        break;
+                    default:
+                        $keyTime = 10;
+                        break;
+                }
+                echo json_encode($keyTime);
     }
 }
