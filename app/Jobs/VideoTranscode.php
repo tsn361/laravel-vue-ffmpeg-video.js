@@ -102,7 +102,7 @@ class VideoTranscode implements ShouldQueue
                         $keyTime = 10;
                         break;
                 }
-                \Log::info("withRotatingEncryptionKey == ", $keyTime);
+                \Log::info("withRotatingEncryptionKey == ". $keyTime);
 
                
                 $p240 = (new X264)->setKiloBitrate(150)->setAdditionalParameters(['-c:v', 'h264', '-profile:v', 'main', '-pix_fmt', 'yuv420p', '-movflags', '+faststart']);
